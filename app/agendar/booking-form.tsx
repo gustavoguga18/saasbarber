@@ -18,7 +18,6 @@ export function BookingForm({ services }: { services: Service[] }) {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,7 +35,6 @@ export function BookingForm({ services }: { services: Service[] }) {
         time,
         name,
         phone,
-        email,
       }),
     });
 
@@ -107,16 +105,6 @@ export function BookingForm({ services }: { services: Service[] }) {
         />
       </label>
 
-      <label>
-        E-mail
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="seuemail@gmail.com"
-          required
-        />
-      </label>
 
       {error && <p className="error">{error}</p>}
 
