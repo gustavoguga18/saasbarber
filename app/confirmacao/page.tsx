@@ -1,6 +1,5 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import Link from "next/link";
+import { createAdminClient } from "@/lib/admin";
 
 export default async function ConfirmacaoPage({
   searchParams,
@@ -16,6 +15,7 @@ export default async function ConfirmacaoPage({
         <div className="card">
           <h1>Agendamento recebido</h1>
           <p>Não foi possível localizar o agendamento.</p>
+
           <Link href="/agendar" className="button">
             Fazer novo agendamento
           </Link>
@@ -24,22 +24,7 @@ export default async function ConfirmacaoPage({
     );
   }
 
-  const cookieStore = await cookies();
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll() {
-          // Não precisamos alterar cookies nesta página.
-        },
-      },
-    }
-  );
+  const supabase = createAdminClient();
 
   const { data: appointment, error } = await supabase
     .from("appointments")
@@ -56,9 +41,11 @@ export default async function ConfirmacaoPage({
     .eq("id", id)
     .maybeSingle();
 
-  if (error || !appointment) {
-    console.error("Erro ao localizar agendamento:", error);
+  if (error) {
+    console.error("Erro ao buscar agendamento:", error);
+  }
 
+  if (!appointment) {
     return (
       <main className="container">
         <div className="card">
@@ -76,6 +63,13 @@ export default async function ConfirmacaoPage({
   const service = Array.isArray(appointment.services)
     ? appointment.services[0]
     : appointment.services;
+
+  const statusText =
+    appointment.status === "pending"
+      ? "Aguardando confirmação"
+      : appointment.status === "confirmed"
+        ? "Confirmado"
+        : appointment.status;
 
   return (
     <main className="container">
@@ -109,11 +103,7 @@ export default async function ConfirmacaoPage({
 
           <p>
             <strong>Status:</strong>{" "}
-            {appointment.status === "pending"
-              ? "Aguardando confirmação"
-              : appointment.status === "confirmed"
-                ? "Confirmado"
-                : appointment.status}
+            {statusText}
           </p>
         </div>
 
