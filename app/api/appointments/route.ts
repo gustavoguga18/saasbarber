@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { serviceId, date, time, name, phone, email } = body;
 
-    if (!serviceId || !date || !time || !name || !phone || !email) {
+    if (!serviceId || !date || !time || !name || !phone) {
       return NextResponse.json(
         { error: "Preencha todos os campos." },
         { status: 400 }
