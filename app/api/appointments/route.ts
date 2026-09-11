@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { serviceId, date, time, name, phone, email } = body;
+    const { serviceId, date, time, name, phone } = body;
 
     if (!serviceId || !date || !time || !name || !phone) {
       return NextResponse.json(
@@ -55,7 +55,6 @@ export async function POST(request: Request) {
           establishment_id: service.establishment_id,
           name: String(name).trim(),
           phone: String(phone).trim(),
-          email: String(email).trim().toLowerCase(),
         },
         { onConflict: "establishment_id,phone" }
       )
@@ -109,58 +108,36 @@ export async function POST(request: Request) {
      * E-MAIL PARA O ADMINISTRADOR
      */
     try {
-  const clientEmail = await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: email,
-    subject: "📅 Agendamento recebido - Yago Barbershop",
-    html: `
-      <h2>Agendamento recebido! 💈</h2>
-      <p>Olá, ${name}!</p>
-      <p>Recebemos seu agendamento na Yago Barbershop.</p>
-
-      <p><strong>Serviço:</strong> ${service.name}</p>
-      <p><strong>Data:</strong> ${date}</p>
-      <p><strong>Horário:</strong> ${time}</p>
-      <p><strong>Valor:</strong> R$ ${Number(service.price).toFixed(2)}</p>
-      <p><strong>Status:</strong> Pendente</p>
-
-      <p>A barbearia entrará em contato pelo WhatsApp para confirmar o atendimento.</p>
-    `,
-  });
-
-  console.log("RESEND CLIENTE - RESPOSTA:", clientEmail);
-} catch (emailError) {
-  console.error("RESEND CLIENTE - ERRO:", emailError);
-}
-
-    /*
-     * E-MAIL PARA O CLIENTE
-     */
-    try {
       await resend.emails.send({
         from: "onboarding@resend.dev",
-        to: String(email).trim().toLowerCase(),
-        subject: "📅 Agendamento recebido - Yago Barbershop",
+        to: "gustavobarbosagbn@gmail.com",
+        subject: "🔔 Novo agendamento - Yago Barbershop",
         html: `
-          <h2>Olá, ${String(name).trim()}! 👋</h2>
+          <h2>Novo agendamento! 💈</h2>
 
           <p>
-            Recebemos seu pedido de agendamento na
-            <strong>Yago Barbershop</strong>.
-          </p>
-
-          <h3>Detalhes do agendamento</h3>
-
-          <p>
-            <strong>Serviço:</strong> ${service.name}
+            <strong>Cliente:</strong>
+            ${String(name).trim()}
           </p>
 
           <p>
-            <strong>Data:</strong> ${date}
+            <strong>WhatsApp:</strong>
+            ${String(phone).trim()}
           </p>
 
           <p>
-            <strong>Horário:</strong> ${String(time).slice(0, 5)}
+            <strong>Serviço:</strong>
+            ${service.name}
+          </p>
+
+          <p>
+            <strong>Data:</strong>
+            ${date}
+          </p>
+
+          <p>
+            <strong>Horário:</strong>
+            ${String(time).slice(0, 5)}
           </p>
 
           <p>
@@ -169,29 +146,14 @@ export async function POST(request: Request) {
           </p>
 
           <p>
-            <strong>Status:</strong> Aguardando confirmação
-          </p>
-
-          <hr />
-
-          <p>
-            Seu horário foi registrado, mas ainda precisa ser confirmado
-            pela barbearia.
-          </p>
-
-          <p>
-            Caso seja necessário algum ajuste, entraremos em contato
-            pelo WhatsApp informado no agendamento.
-          </p>
-
-          <p>
-            Obrigado por escolher a Yago Barbershop! 💈
+            <strong>Status:</strong>
+            Aguardando confirmação
           </p>
         `,
       });
     } catch (emailError) {
       console.error(
-        "Erro ao enviar e-mail para o cliente:",
+        "Erro ao enviar e-mail para o administrador:",
         emailError
       );
     }
