@@ -29,15 +29,19 @@ export default async function ConfirmacaoPage({
   const { data: appointment, error } = await supabase
     .from("appointments")
     .select(`
-      id,
-      appointment_date,
-      start_time,
-      status,
-      price,
-      services (
-        name
-      )
-    `)
+  id,
+  appointment_date,
+  start_time,
+  status,
+  price,
+  services (
+    name
+  ),
+  customers (
+    name,
+    phone
+  )
+`)
     .eq("id", id)
     .maybeSingle();
 
@@ -63,6 +67,30 @@ export default async function ConfirmacaoPage({
   const service = Array.isArray(appointment.services)
     ? appointment.services[0]
     : appointment.services;
+  const customer = Array.isArray(appointment.customers)
+  ? appointment.customers[0]
+  : appointment.customers;
+
+const phone = customer?.phone?.replace(/\D/g, "");
+
+const whatsappMessage = encodeURIComponent(
+  `Olá, ${customer?.name ?? "cliente"}! 💈
+
+Seu agendamento na Yago Barbershop foi recebido!
+
+✂️ Serviço: ${service?.name ?? "Serviço"}
+📅 Data: ${appointment.appointment_date}
+🕐 Horário: ${appointment.start_time?.slice(0, 5)}
+💰 Valor: R$ ${Number(appointment.price).toFixed(2).replace(".", ",")}
+
+Aguardamos você! 💈
+
+📍 Rua Bom Jesus, 957`
+);
+
+const whatsappUrl = phone
+  ? `https://wa.me/55${phone}?text=${whatsappMessage}`
+  : null;
 
   const statusText =
     appointment.status === "pending"
@@ -110,7 +138,16 @@ export default async function ConfirmacaoPage({
         <p>
           Em breve entraremos em contato para confirmar seu horário.
         </p>
-
+{whatsappUrl && (
+  <a
+    href={whatsappUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="button"
+  >
+    📲 Enviar confirmação pelo WhatsApp
+  </a>
+)}
         <Link href="/agendar" className="button">
           Fazer novo agendamento
         </Link>
