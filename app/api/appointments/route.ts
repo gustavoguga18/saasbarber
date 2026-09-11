@@ -7,9 +7,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { serviceId, date, time, name, phone } = body;
+    const { serviceId, date, time, name, phone, email } = body;
 
-    if (!serviceId || !date || !time || !name || !phone) {
+    if (!serviceId || !date || !time || !name || !phone || !email) {
       return NextResponse.json(
         { error: "Preencha todos os campos." },
         { status: 400 }
@@ -55,6 +55,7 @@ export async function POST(request: Request) {
           establishment_id: service.establishment_id,
           name: String(name).trim(),
           phone: String(phone).trim(),
+          email: String(email).trim().toLowerCase(),
         },
         { onConflict: "establishment_id,phone" }
       )
@@ -62,6 +63,8 @@ export async function POST(request: Request) {
       .single();
 
     if (customerError || !customer) {
+      console.error("Erro ao cadastrar cliente:", customerError);
+
       return NextResponse.json(
         { error: "Não foi possível cadastrar o cliente." },
         { status: 500 }
@@ -69,6 +72,7 @@ export async function POST(request: Request) {
     }
 
     const [h, m] = String(time).split(":").map(Number);
+
     const total =
       h * 60 + m + Number(service.duration_minutes);
 
@@ -93,13 +97,17 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !appointment) {
+      console.error("Erro ao criar agendamento:", error);
+
       return NextResponse.json(
         { error: "Não foi possível criar o agendamento." },
         { status: 500 }
       );
     }
 
-    // Envia a notificação por e-mail após criar o agendamento
+    /*
+     * E-MAIL PARA O ADMINISTRADOR
+     */
     try {
       await resend.emails.send({
         from: "onboarding@resend.dev",
@@ -110,12 +118,14 @@ export async function POST(request: Request) {
 
           <p><strong>Cliente:</strong> ${String(name).trim()}</p>
           <p><strong>Telefone:</strong> ${String(phone).trim()}</p>
+          <p><strong>E-mail:</strong> ${String(email).trim()}</p>
           <p><strong>Serviço:</strong> ${service.name}</p>
           <p><strong>Data:</strong> ${date}</p>
           <p><strong>Horário:</strong> ${String(time).slice(0, 5)}</p>
-          <p><strong>Valor:</strong> R$ ${Number(service.price)
-            .toFixed(2)
-            .replace(".", ",")}</p>
+          <p>
+            <strong>Valor:</strong>
+            R$ ${Number(service.price).toFixed(2).replace(".", ",")}
+          </p>
           <p><strong>Status:</strong> Aguardando confirmação</p>
 
           <hr />
@@ -126,8 +136,73 @@ export async function POST(request: Request) {
         `,
       });
     } catch (emailError) {
-      // O agendamento continua válido mesmo se o e-mail falhar.
-      console.error("Erro ao enviar e-mail pelo Resend:", emailError);
+      console.error(
+        "Erro ao enviar e-mail para o administrador:",
+        emailError
+      );
+    }
+
+    /*
+     * E-MAIL PARA O CLIENTE
+     */
+    try {
+      await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: String(email).trim().toLowerCase(),
+        subject: "📅 Agendamento recebido - Yago Barbershop",
+        html: `
+          <h2>Olá, ${String(name).trim()}! 👋</h2>
+
+          <p>
+            Recebemos seu pedido de agendamento na
+            <strong>Yago Barbershop</strong>.
+          </p>
+
+          <h3>Detalhes do agendamento</h3>
+
+          <p>
+            <strong>Serviço:</strong> ${service.name}
+          </p>
+
+          <p>
+            <strong>Data:</strong> ${date}
+          </p>
+
+          <p>
+            <strong>Horário:</strong> ${String(time).slice(0, 5)}
+          </p>
+
+          <p>
+            <strong>Valor:</strong>
+            R$ ${Number(service.price).toFixed(2).replace(".", ",")}
+          </p>
+
+          <p>
+            <strong>Status:</strong> Aguardando confirmação
+          </p>
+
+          <hr />
+
+          <p>
+            Seu horário foi registrado, mas ainda precisa ser confirmado
+            pela barbearia.
+          </p>
+
+          <p>
+            Caso seja necessário algum ajuste, entraremos em contato
+            pelo WhatsApp informado no agendamento.
+          </p>
+
+          <p>
+            Obrigado por escolher a Yago Barbershop! 💈
+          </p>
+        `,
+      });
+    } catch (emailError) {
+      console.error(
+        "Erro ao enviar e-mail para o cliente:",
+        emailError
+      );
     }
 
     return NextResponse.json({ id: appointment.id });
