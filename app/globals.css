@@ -370,3 +370,93 @@ a {
     text-align: left;
   }
 }
+/* =========================
+   FORMULÁRIO DE AGENDAMENTO
+========================= */
+
+.booking-form {
+  margin-top: 30px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.form-header h1 {
+  margin: 8px 0 10px;
+  font-size: 32px;
+}
+
+.form-header p:not(.eyebrow) {
+  margin: 0 auto;
+  color: #999;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.selected-service {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 17px;
+  background: #0e0e0e;
+  border: 1px solid #292929;
+  border-radius: 10px;
+  margin-top: -4px;
+}
+
+.selected-service strong {
+  color: #c9a45c;
+}
+
+.selected-service p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.selected-service span {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #999;
+}
+
+.booking-submit {
+  width: 100%;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.booking-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-note {
+  text-align: center;
+  font-size: 12px !important;
+  color: #666 !important;
+  margin: -5px 0 0 !important;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .form-header h1 {
+    font-size: 28px;
+  }
+
+  .selected-service {
+    align-items: flex-start;
+  }
+}
