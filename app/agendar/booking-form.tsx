@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type Service = {
@@ -19,48 +19,101 @@ export function BookingForm({ services }: { services: Service[] }) {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+
+  const [slots, setSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    const response = await fetch("/api/appointments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        serviceId,
-        date,
-        time,
-        name,
-        phone,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      setError(data.error ?? "Não foi possível agendar.");
-      setLoading(false);
-      return;
-    }
-
-    router.push(`/confirmacao?id=${data.id}`);
-  }
 
   const selectedService = services.find(
     (service) => service.id === serviceId
   );
 
+  useEffect(() => {
+    if (!serviceId || !date) {
+      setSlots([]);
+      setTime("");
+      return;
+    }
+
+    async function loadSlots() {
+      setLoadingSlots(true);
+      setSlots([]);
+      setTime("");
+      setError("");
+
+      try {
+        const response = await fetch(
+          `/api/availability?serviceId=${encodeURIComponent(
+            serviceId
+          )}&date=${encodeURIComponent(date)}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError(
+            data.error ?? "Não foi possível consultar os horários."
+          );
+          return;
+        }
+
+        setSlots(data.slots ?? []);
+      } catch {
+        setError("Não foi possível consultar os horários.");
+      } finally {
+        setLoadingSlots(false);
+      }
+    }
+
+    loadSlots();
+  }, [serviceId, date]);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!time) {
+      setError("Escolha um horário.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceId,
+          date,
+          time,
+          name,
+          phone,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error ?? "Não foi possível agendar.");
+        setLoading(false);
+        return;
+      }
+
+      router.push(`/confirmacao?id=${data.id}`);
+    } catch {
+      setError("Não foi possível realizar o agendamento.");
+      setLoading(false);
+    }
+  }
+
   return (
     <form className="form booking-form" onSubmit={submit}>
       <div className="form-header">
         <p className="eyebrow">AGENDAMENTO</p>
-
         <h1>Escolha seu horário</h1>
-
         <p>
           Preencha os dados abaixo para solicitar seu atendimento.
         </p>
@@ -68,7 +121,6 @@ export function BookingForm({ services }: { services: Service[] }) {
 
       <label>
         Serviço
-
         <select
           value={serviceId}
           onChange={(e) => setServiceId(e.target.value)}
@@ -92,39 +144,60 @@ export function BookingForm({ services }: { services: Service[] }) {
             )}
           </div>
 
-          <span>
-            {selectedService.duration_minutes} min
-          </span>
+          <span>{selectedService.duration_minutes} min</span>
         </div>
       )}
 
-      <div className="form-grid">
-        <label>
-          Data
+      <label>
+        Data
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+        />
+      </label>
 
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </label>
+      {date && (
+        <div className="time-selection">
+          <div className="time-selection-header">
+            <span>Horários disponíveis</span>
 
-        <label>
-          Horário
+            {loadingSlots && (
+              <small>Consultando...</small>
+            )}
+          </div>
 
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            required
-          />
-        </label>
-      </div>
+          {!loadingSlots && slots.length === 0 && (
+            <p className="no-slots">
+              Não há horários disponíveis para esta data.
+            </p>
+          )}
+
+          {!loadingSlots && slots.length > 0 && (
+            <div className="time-grid">
+              {slots.map((slot) => (
+                <button
+                  key={slot}
+                  type="button"
+                  className={`time-slot ${
+                    time === slot ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setTime(slot);
+                    setError("");
+                  }}
+                >
+                  {slot}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <label>
         Nome
-
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -135,7 +208,6 @@ export function BookingForm({ services }: { services: Service[] }) {
 
       <label>
         WhatsApp
-
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
@@ -150,7 +222,7 @@ export function BookingForm({ services }: { services: Service[] }) {
       <button
         type="submit"
         className="button booking-submit"
-        disabled={loading}
+        disabled={loading || loadingSlots || !time}
       >
         {loading ? "Agendando..." : "Confirmar agendamento"}
       </button>
