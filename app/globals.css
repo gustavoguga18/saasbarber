@@ -460,3 +460,71 @@ a {
     align-items: flex-start;
   }
 }
+/* =========================
+   HORÁRIOS DISPONÍVEIS
+========================= */
+
+.time-selection {
+  display: grid;
+  gap: 12px;
+  margin-top: -2px;
+}
+
+.time-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f5f1e8;
+  font-weight: 700;
+}
+
+.time-selection-header small {
+  color: #888;
+  font-weight: 400;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.time-slot {
+  padding: 13px 8px;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  background: #0e0e0e;
+  color: #f5f1e8;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-slot:hover {
+  border-color: #c9a45c;
+  color: #c9a45c;
+}
+
+.time-slot.selected {
+  background: #c9a45c;
+  border-color: #c9a45c;
+  color: #0b0b0b;
+}
+
+.no-slots {
+  margin: 0 !important;
+  padding: 14px;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  background: #0e0e0e;
+  color: #888 !important;
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .time-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
