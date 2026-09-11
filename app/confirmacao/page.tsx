@@ -11,9 +11,10 @@ export default async function ConfirmacaoPage({
 
   if (!id) {
     return (
-      <main className="container">
+      <main className="page narrow">
         <div className="card">
           <h1>Agendamento recebido</h1>
+
           <p>Não foi possível localizar o agendamento.</p>
 
           <Link href="/agendar" className="button">
@@ -29,19 +30,19 @@ export default async function ConfirmacaoPage({
   const { data: appointment, error } = await supabase
     .from("appointments")
     .select(`
-  id,
-  appointment_date,
-  start_time,
-  status,
-  price,
-  services (
-    name
-  ),
-  customers (
-    name,
-    phone
-  )
-`)
+      id,
+      appointment_date,
+      start_time,
+      status,
+      price,
+      services (
+        name
+      ),
+      customers (
+        name,
+        phone
+      )
+    `)
     .eq("id", id)
     .maybeSingle();
 
@@ -51,9 +52,10 @@ export default async function ConfirmacaoPage({
 
   if (!appointment) {
     return (
-      <main className="container">
+      <main className="page narrow">
         <div className="card">
           <h1>Agendamento recebido</h1>
+
           <p>Não foi possível localizar o agendamento.</p>
 
           <Link href="/agendar" className="button">
@@ -67,30 +69,33 @@ export default async function ConfirmacaoPage({
   const service = Array.isArray(appointment.services)
     ? appointment.services[0]
     : appointment.services;
+
   const customer = Array.isArray(appointment.customers)
-  ? appointment.customers[0]
-  : appointment.customers;
+    ? appointment.customers[0]
+    : appointment.customers;
 
-const phone = customer?.phone?.replace(/\D/g, "");
+  const phone = customer?.phone?.replace(/\D/g, "");
 
-const whatsappMessage = encodeURIComponent(
-  `Olá, ${customer?.name ?? "cliente"}! 💈
+  const whatsappMessage = encodeURIComponent(
+    `Olá, ${customer?.name ?? "cliente"}! 💈
 
 Seu agendamento na Yago Barbershop foi recebido!
 
 ✂️ Serviço: ${service?.name ?? "Serviço"}
 📅 Data: ${appointment.appointment_date}
 🕐 Horário: ${appointment.start_time?.slice(0, 5)}
-💰 Valor: R$ ${Number(appointment.price).toFixed(2).replace(".", ",")}
+💰 Valor: R$ ${Number(appointment.price)
+      .toFixed(2)
+      .replace(".", ",")}
 
 Aguardamos você! 💈
 
 📍 Rua Bom Jesus, 957`
-);
+  );
 
-const whatsappUrl = phone
-  ? `https://wa.me/55${phone}?text=${whatsappMessage}`
-  : null;
+  const whatsappUrl = phone
+    ? `https://wa.me/55${phone}?text=${whatsappMessage}`
+    : null;
 
   const statusText =
     appointment.status === "pending"
@@ -100,55 +105,65 @@ const whatsappUrl = phone
         : appointment.status;
 
   return (
-    <main className="container">
-      <div className="card">
-        <h1>Agendamento recebido! ✅</h1>
+    <main className="page narrow">
+      <div className="card confirmation-card">
+        <div className="confirmation-icon">✓</div>
+
+        <p className="eyebrow">YAGO BARBERSHOP</p>
+
+        <h1>Agendamento recebido!</h1>
 
         <p>
           Seu pedido de agendamento foi registrado com sucesso.
         </p>
 
         <div className="appointment-details">
-          <p>
-            <strong>Serviço:</strong>{" "}
-            {service?.name ?? "Serviço"}
-          </p>
+          <div className="confirmation-row">
+            <span>Serviço</span>
+            <strong>{service?.name ?? "Serviço"}</strong>
+          </div>
 
-          <p>
-            <strong>Data:</strong>{" "}
-            {appointment.appointment_date}
-          </p>
+          <div className="confirmation-row">
+            <span>Data</span>
+            <strong>{appointment.appointment_date}</strong>
+          </div>
 
-          <p>
-            <strong>Horário:</strong>{" "}
-            {appointment.start_time?.slice(0, 5)}
-          </p>
+          <div className="confirmation-row">
+            <span>Horário</span>
+            <strong>{appointment.start_time?.slice(0, 5)}</strong>
+          </div>
 
-          <p>
-            <strong>Valor:</strong>{" "}
-            R$ {Number(appointment.price).toFixed(2).replace(".", ",")}
-          </p>
+          <div className="confirmation-row">
+            <span>Valor</span>
+            <strong>
+              R$ {Number(appointment.price).toFixed(2).replace(".", ",")}
+            </strong>
+          </div>
 
-          <p>
-            <strong>Status:</strong>{" "}
-            {statusText}
-          </p>
+          <div className="confirmation-row">
+            <span>Status</span>
+            <strong className="status">
+              {statusText}
+            </strong>
+          </div>
         </div>
 
-        <p>
+        <p className="confirmation-message">
           Em breve entraremos em contato para confirmar seu horário.
         </p>
-{whatsappUrl && (
-  <a
-    href={whatsappUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="button"
-  >
-    📲 Enviar confirmação pelo WhatsApp
-  </a>
-)}
-        <Link href="/agendar" className="button">
+
+        {whatsappUrl && (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="button whatsapp-button"
+          >
+            📲 Enviar confirmação pelo WhatsApp
+          </a>
+        )}
+
+        <Link href="/agendar" className="button secondary-button">
           Fazer novo agendamento
         </Link>
       </div>
