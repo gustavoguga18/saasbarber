@@ -1,1 +1,372 @@
-:root{font-family:Arial,sans-serif;color:#171717;background:#f5f5f5}*{box-sizing:border-box}body{margin:0}.page{min-height:100vh;padding:48px 20px;max-width:1000px;margin:auto}.narrow{max-width:600px}.hero{padding:70px 20px;text-align:center}.hero h1{font-size:48px;margin:8px 0}.eyebrow{letter-spacing:4px}.slogan{max-width:650px;margin:20px auto 30px;line-height:1.6}.button{display:inline-block;border:0;border-radius:10px;padding:13px 20px;background:#111;color:white;text-decoration:none;cursor:pointer;font-weight:700}.card{background:white;border-radius:16px;padding:24px;margin:20px 0;box-shadow:0 8px 30px rgba(0,0,0,.06)}.form{display:grid;gap:16px;background:white;padding:24px;border-radius:16px;margin-top:20px}.form label{display:grid;gap:7px;font-weight:700}.form input,.form select{padding:12px;border:1px solid #ddd;border-radius:9px;font-size:16px}.error{color:#b00020}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #eee}a{color:inherit}
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f5f1e8;
+  background: #0b0b0b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, #1c1c1c 0%, #0b0b0b 45%, #050505 100%);
+  color: #f5f1e8;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 40px 20px 70px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.narrow {
+  max-width: 600px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  padding: 80px 20px 90px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 7vw, 64px);
+  margin: 12px 0;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #f5f1e8;
+}
+
+.eyebrow {
+  letter-spacing: 6px;
+  font-size: 13px;
+  color: #c9a45c;
+  font-weight: 700;
+}
+
+.slogan {
+  max-width: 650px;
+  margin: 22px auto 34px;
+  line-height: 1.7;
+  color: #cfc8ba;
+  font-size: 15px;
+  font-style: italic;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.button {
+  display: inline-block;
+  border: 1px solid #c9a45c;
+  border-radius: 8px;
+  padding: 14px 24px;
+  background: #c9a45c;
+  color: #0b0b0b;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: #e0bd73;
+  border-color: #e0bd73;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+  background: #151515;
+  border: 1px solid #292929;
+  border-radius: 18px;
+  padding: 30px;
+  margin: 24px 0;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+.card h1,
+.card h2,
+.card h3 {
+  color: #f5f1e8;
+}
+
+.card h1 {
+  margin-top: 0;
+}
+
+.card p {
+  color: #cfcfcf;
+  line-height: 1.6;
+}
+
+/* =========================
+   FORMULÁRIO
+========================= */
+
+.form {
+  display: grid;
+  gap: 18px;
+  background: #151515;
+  border: 1px solid #292929;
+  padding: 30px;
+  border-radius: 18px;
+  margin-top: 24px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+  color: #f5f1e8;
+}
+
+.form input,
+.form select {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid #3a3a3a;
+  border-radius: 9px;
+  background: #0e0e0e;
+  color: #f5f1e8;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form input::placeholder {
+  color: #777;
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: #c9a45c;
+  box-shadow: 0 0 0 3px rgba(201, 164, 92, 0.12);
+}
+
+/* =========================
+   ERROS
+========================= */
+
+.error {
+  color: #ff6b6b;
+  background: rgba(255, 70, 70, 0.08);
+  border: 1px solid rgba(255, 70, 70, 0.2);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* =========================
+   LINHAS
+========================= */
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid #292929;
+  color: #d8d8d8;
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* =========================
+   DETALHES DO AGENDAMENTO
+========================= */
+
+.appointment-details {
+  background: #0e0e0e;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 24px 0;
+}
+
+.appointment-details p {
+  margin: 9px 0;
+}
+
+.appointment-details strong {
+  color: #c9a45c;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 15px 50px;
+  }
+
+  .hero {
+    padding: 55px 15px 65px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .eyebrow {
+    letter-spacing: 4px;
+  }
+
+  .card {
+    padding: 22px;
+    border-radius: 15px;
+  }
+
+  .form {
+    padding: 22px;
+    border-radius: 15px;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+}
+/* =========================
+   CONFIRMAÇÃO
+========================= */
+
+.confirmation-card {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #c9a45c;
+  color: #0b0b0b;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.confirmation-card .eyebrow {
+  margin-bottom: 8px;
+}
+
+.confirmation-card h1 {
+  font-size: 34px;
+  margin: 8px 0 12px;
+}
+
+.confirmation-card > p {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.appointment-details {
+  text-align: left;
+  margin: 30px 0;
+  padding: 8px 20px;
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid #292929;
+}
+
+.confirmation-row:last-child {
+  border-bottom: 0;
+}
+
+.confirmation-row span {
+  color: #888;
+}
+
+.confirmation-row strong {
+  color: #f5f1e8;
+  text-align: right;
+}
+
+.confirmation-row .status {
+  color: #c9a45c;
+}
+
+.confirmation-message {
+  margin-bottom: 24px !important;
+}
+
+.whatsapp-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.secondary-button {
+  display: block;
+  width: 100%;
+  background: transparent;
+  color: #c9a45c;
+  border-color: #3a3a3a;
+}
+
+.secondary-button:hover {
+  background: #1e1e1e;
+  border-color: #c9a45c;
+}
+
+@media (max-width: 600px) {
+  .confirmation-card {
+    margin-top: 20px;
+  }
+
+  .confirmation-card h1 {
+    font-size: 28px;
+  }
+
+  .confirmation-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .confirmation-row strong {
+    text-align: left;
+  }
+}
