@@ -1,38 +1,84 @@
-import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+"use client";
 
-export default async function AdminPage() {
-  const supabase = await createServerSupabaseClient();
-  const { data: { user } } = await supabase.auth.getUser();
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 
-  if (!user) redirect("/login");
+export default function AdminLoginPage() {
+  const router = useRouter();
 
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  if (profile?.role !== "admin") redirect("/login");
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
 
-  const today = new Date().toISOString().slice(0,10);
-  const { data: appointments } = await supabase
-    .from("appointments")
-    .select("id,appointment_date,start_time,status,customer_id,service_id")
-    .eq("appointment_date", today)
-    .order("start_time");
+    setLoading(true);
+    setError("");
+
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError("Email ou senha incorretos.");
+      setLoading(false);
+      return;
+    }
+
+    router.push("/admin");
+    router.refresh();
+  }
 
   return (
-    <main className="page">
-      <h1>Painel administrativo</h1>
-      <div className="grid">
-        <div className="card"><h2>Hoje</h2><strong>{appointments?.length ?? 0}</strong><p>agendamentos</p></div>
-        <div className="card"><h2>Status</h2><p>Login protegido pelo Supabase Auth.</p></div>
-      </div>
-      <div className="card">
-        <h2>Agenda de hoje</h2>
-        {appointments?.length ? appointments.map(a => (
-          <div className="row" key={a.id}>
-            <span>{a.start_time.slice(0,5)}</span>
-            <span>{a.status}</span>
-          </div>
-        )) : <p>Nenhum agendamento para hoje.</p>}
+    <main className="page narrow">
+      <div className="card admin-login-card">
+        <div className="form-header">
+          <p className="eyebrow">ÁREA ADMINISTRATIVA</p>
+          <h1>Yago Barbershop</h1>
+          <p>Entre para acessar o painel administrativo.</p>
+        </div>
+
+        <form className="form admin-login-form" onSubmit={handleLogin}>
+          <label>
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
+              autoComplete="email"
+              required
+            />
+          </label>
+
+          <label>
+            Senha
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Sua senha"
+              autoComplete="current-password"
+              required
+            />
+          </label>
+
+          {error && <p className="error">{error}</p>}
+
+          <button
+            type="submit"
+            className="button booking-submit"
+            disabled={loading}
+          >
+            {loading ? "Entrando..." : "Entrar no painel"}
+          </button>
+        </form>
       </div>
     </main>
   );
