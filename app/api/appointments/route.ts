@@ -109,38 +109,29 @@ export async function POST(request: Request) {
      * E-MAIL PARA O ADMINISTRADOR
      */
     try {
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "gustavobarbosagbn@gmail.com",
-        subject: "🔔 Novo agendamento - Yago Barbershop",
-        html: `
-          <h2>Novo agendamento recebido! 💈</h2>
+  const clientEmail = await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "📅 Agendamento recebido - Yago Barbershop",
+    html: `
+      <h2>Agendamento recebido! 💈</h2>
+      <p>Olá, ${name}!</p>
+      <p>Recebemos seu agendamento na Yago Barbershop.</p>
 
-          <p><strong>Cliente:</strong> ${String(name).trim()}</p>
-          <p><strong>Telefone:</strong> ${String(phone).trim()}</p>
-          <p><strong>E-mail:</strong> ${String(email).trim()}</p>
-          <p><strong>Serviço:</strong> ${service.name}</p>
-          <p><strong>Data:</strong> ${date}</p>
-          <p><strong>Horário:</strong> ${String(time).slice(0, 5)}</p>
-          <p>
-            <strong>Valor:</strong>
-            R$ ${Number(service.price).toFixed(2).replace(".", ",")}
-          </p>
-          <p><strong>Status:</strong> Aguardando confirmação</p>
+      <p><strong>Serviço:</strong> ${service.name}</p>
+      <p><strong>Data:</strong> ${date}</p>
+      <p><strong>Horário:</strong> ${time}</p>
+      <p><strong>Valor:</strong> R$ ${Number(service.price).toFixed(2)}</p>
+      <p><strong>Status:</strong> Pendente</p>
 
-          <hr />
+      <p>A barbearia entrará em contato pelo WhatsApp para confirmar o atendimento.</p>
+    `,
+  });
 
-          <p>
-            O agendamento foi registrado no sistema e aguarda confirmação.
-          </p>
-        `,
-      });
-    } catch (emailError) {
-      console.error(
-        "Erro ao enviar e-mail para o administrador:",
-        emailError
-      );
-    }
+  console.log("RESEND CLIENTE - RESPOSTA:", clientEmail);
+} catch (emailError) {
+  console.error("RESEND CLIENTE - ERRO:", emailError);
+}
 
     /*
      * E-MAIL PARA O CLIENTE
