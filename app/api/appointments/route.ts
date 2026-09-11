@@ -32,21 +32,32 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: existing } = await admin
-      .from("appointments")
-      .select("id")
-      .eq("establishment_id", service.establishment_id)
-      .eq("appointment_date", date)
-      .eq("start_time", `${time}:00`)
-      .in("status", ["pending", "confirmed"])
-      .limit(1);
+   const [h, m] = String(time).split(":").map(Number);
 
-    if (existing?.length) {
-      return NextResponse.json(
-        { error: "Esse horário já está ocupado." },
-        { status: 409 }
-      );
-    }
+const total =
+  h * 60 + m + Number(service.duration_minutes);
+
+const endTime = `${String(Math.floor(total / 60) % 24).padStart(
+  2,
+  "0"
+)}:${String(total % 60).padStart(2, "0")}:00`;
+
+const { data: existing } = await admin
+  .from("appointments")
+  .select("id,start_time,end_time")
+  .eq("establishment_id", service.establishment_id)
+  .eq("appointment_date", date)
+  .in("status", ["pending", "confirmed"])
+  .lt("start_time", endTime)
+  .gt("end_time", `${time}:00`)
+  .limit(1);
+
+if (existing?.length) {
+  return NextResponse.json(
+    { error: "Esse horário está dentro de outro agendamento." },
+    { status: 409 }
+  );
+}
 
     const { data: customer, error: customerError } = await admin
       .from("customers")
@@ -70,15 +81,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const [h, m] = String(time).split(":").map(Number);
-
-    const total =
-      h * 60 + m + Number(service.duration_minutes);
-
-    const endTime = `${String(Math.floor(total / 60) % 24).padStart(
-      2,
-      "0"
-    )}:${String(total % 60).padStart(2, "0")}:00`;
 
     const { data: appointment, error } = await admin
       .from("appointments")
