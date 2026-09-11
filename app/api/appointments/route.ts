@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       .select("id")
       .eq("establishment_id", service.establishment_id)
       .eq("appointment_date", date)
-      .eq("start_time", time)
+      .eq("start_time", `${time}:00`)
       .in("status", ["pending", "confirmed"])
       .limit(1);
 
@@ -96,13 +96,20 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !appointment) {
-      console.error("Erro ao criar agendamento:", error);
+  if (error?.code === "23505") {
+    return NextResponse.json(
+      { error: "Esse horário já está ocupado." },
+      { status: 409 }
+    );
+  }
 
-      return NextResponse.json(
-        { error: "Não foi possível criar o agendamento." },
-        { status: 500 }
-      );
-    }
+  console.error("Erro ao criar agendamento:", error);
+
+  return NextResponse.json(
+    { error: "Não foi possível criar o agendamento." },
+    { status: 500 }
+  );
+}
 
     /*
      * E-MAIL PARA O ADMINISTRADOR
