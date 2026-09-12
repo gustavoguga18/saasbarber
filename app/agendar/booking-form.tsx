@@ -165,9 +165,7 @@ export function BookingForm({ services }: { services: Service[] }) {
           <div className="time-selection-header">
             <span>Horários disponíveis</span>
 
-            {loadingSlots && (
-              <small>Consultando...</small>
-            )}
+            {loadingSlots && <small>Consultando...</small>}
           </div>
 
           {!loadingSlots && slots.length === 0 && (
@@ -218,22 +216,21 @@ export function BookingForm({ services }: { services: Service[] }) {
           required
         />
       </label>
-      
+
       <label>
-  Forma de pagamento
-  <select
-    value={paymentMethod}
-    onChange={(e) => setPaymentMethod(e.target.value)}
-    required
-  >
-    <option value="">Selecione uma opção</option>
-    <option value="pix">PIX</option>
-    <option value="credit">Cartão de crédito</option>
-    <option value="debit">Cartão de débito</option>
-    <option value="cash">Espécie</option>
-  </select>
-</label>
-      
+        Forma de pagamento
+        <select
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+          required
+        >
+          <option value="">Selecione uma opção</option>
+          <option value="pix">PIX</option>
+          <option value="card">Crédito / Débito</option>
+          <option value="cash">Espécie</option>
+        </select>
+      </label>
+
       {error && <p className="error">{error}</p>}
 
       <button
