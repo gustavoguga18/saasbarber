@@ -163,15 +163,22 @@ if (customerIds.length > 0) {
                 </div>
 
                 <div className="admin-appointment-right">
-                  <a
-                    href={`https://wa.me/55${customer.phone.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="button"
-                  >
-                    WhatsApp
-                  </a>
-                </div>
+  <a
+    href={`#historico-${customer.id}`}
+    className="button"
+  >
+    Ver histórico
+  </a>
+
+  <a
+    href={`https://wa.me/55${customer.phone.replace(/\D/g, "")}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="button"
+  >
+    WhatsApp
+  </a>
+</div>
               </div>
             ))}
           </div>
