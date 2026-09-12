@@ -50,7 +50,7 @@ export default async function AdminPage() {
       (appointment) => appointment.status === "pending"
     ).length ?? 0;
 
-    const totalValue =
+  const totalValue =
     appointments
       ?.filter(
         (appointment) =>
@@ -96,6 +96,14 @@ export default async function AdminPage() {
       appointment.status === "confirmed"
   );
 
+  const nextCustomer = Array.isArray(nextAppointment?.customers)
+    ? nextAppointment.customers[0]
+    : nextAppointment?.customers;
+
+  const nextService = Array.isArray(nextAppointment?.services)
+    ? nextAppointment.services[0]
+    : nextAppointment?.services;
+
   return (
     <main className="admin-page">
       <AdminSidebar />
@@ -135,6 +143,7 @@ export default async function AdminPage() {
           </strong>
         </div>
       </section>
+
       <section className="admin-day-summary">
         <div className="admin-day-summary-card">
           <span className="admin-day-summary-label">
@@ -172,11 +181,13 @@ export default async function AdminPage() {
           </small>
         </div>
       </section>
+
       <section className="admin-content">
         {nextAppointment && (
           <div className="admin-card admin-next-appointment">
             <div>
               <p className="eyebrow">PRÓXIMO ATENDIMENTO</p>
+
               <h2>
                 {nextAppointment.start_time?.slice(0, 5)}
               </h2>
@@ -184,22 +195,18 @@ export default async function AdminPage() {
 
             <div className="admin-next-info">
               <strong>
-  {Array.isArray(nextAppointment.customers)
-    ? nextAppointment.customers[0]?.name ?? "Cliente"
-    : "Cliente"}
-</strong>
+                {nextCustomer?.name ?? "Cliente"}
+              </strong>
 
               <span>
-  {Array.isArray(nextAppointment.services)
-    ? nextAppointment.services[0]?.name ?? "Serviço"
-    : "Serviço"}
-</span>
+                {nextService?.name ?? "Serviço"}
+              </span>
             </div>
 
             <div className="admin-next-value">
               <strong>
                 R${" "}
-                {Number(nextAppointment.price)
+                {Number(nextAppointment.price ?? 0)
                   .toFixed(2)
                   .replace(".", ",")}
               </strong>
@@ -273,7 +280,7 @@ export default async function AdminPage() {
                     <div className="admin-appointment-right">
                       <strong>
                         R${" "}
-                        {Number(appointment.price)
+                        {Number(appointment.price ?? 0)
                           .toFixed(2)
                           .replace(".", ",")}
                       </strong>
@@ -291,7 +298,9 @@ export default async function AdminPage() {
           ) : (
             <div className="admin-empty">
               <span>📅</span>
+
               <strong>Nenhum agendamento hoje</strong>
+
               <p>
                 Quando houver novos agendamentos, eles aparecerão
                 aqui.
@@ -303,6 +312,7 @@ export default async function AdminPage() {
         <aside className="admin-sidebar">
           <div className="admin-card">
             <p className="eyebrow">ACESSO RÁPIDO</p>
+
             <h2>Gerenciar</h2>
 
             <div className="admin-menu">
