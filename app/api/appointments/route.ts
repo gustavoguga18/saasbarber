@@ -7,16 +7,30 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { serviceId, date, time, name, phone } = body;
+    const {
+  serviceId,
+  date,
+  time,
+  name,
+  phone,
+  paymentMethod,
+} = body;
 
-    if (!serviceId || !date || !time || !name || !phone) {
-      return NextResponse.json(
-        { error: "Preencha todos os campos." },
-        { status: 400 }
-      );
-    }
+if (!serviceId || !date || !time || !name || !phone || !paymentMethod) {
+  return NextResponse.json(
+    { error: "Preencha todos os campos." },
+    { status: 400 }
+  );
+}
 
-    const admin = createAdminClient();
+if (!["pix", "credit", "debit", "cash"].includes(paymentMethod)) {
+  return NextResponse.json(
+    { error: "Forma de pagamento inválida." },
+    { status: 400 }
+  );
+}
+
+const admin = createAdminClient();
 
     const { data: service, error: serviceError } = await admin
       .from("services")
