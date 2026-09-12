@@ -25,10 +25,6 @@ export default async function ClientesPage() {
   if (profileError || !profile?.establishment_id) {
     return (
       <main className="admin-page">
-        <a href="/admin" className="admin-back-button">
-          ← Voltar
-        </a>
-
         <div className="admin-card">
           <p className="error">
             Não foi possível identificar o estabelecimento.
@@ -99,10 +95,6 @@ export default async function ClientesPage() {
     <main className="admin-page">
       <header className="admin-header">
         <div>
-          <a href="/admin" className="admin-back-button">
-            ← Voltar
-          </a>
-
           <p className="eyebrow">CLIENTES</p>
 
           <h1>Clientes</h1>
@@ -166,7 +158,6 @@ export default async function ClientesPage() {
                   </div>
 
                   <div className="admin-appointment-right">
-
                     <a
                       href={`https://wa.me/55${customer.phone.replace(/\D/g, "")}`}
                       target="_blank"
@@ -177,9 +168,12 @@ export default async function ClientesPage() {
                     </a>
                   </div>
                 </div>
-<CustomerHistory
-  appointments={customerAppointments[customer.id] ?? []}
-/>
+
+                <CustomerHistory
+                  appointments={
+                    customerAppointments[customer.id] ?? []
+                  }
+                />
               </div>
             ))}
           </div>
