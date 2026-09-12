@@ -64,17 +64,20 @@ export default async function AgendaPage() {
   return (
     <main className="admin-page">
       <header className="admin-header">
-        <div>
-          <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
-          <h1>Agenda</h1>
-          <p>Gerencie os agendamentos da barbearia.</p>
-        </div>
+  <a href="/admin" className="admin-back-button">
+    ← Voltar
+  </a>
 
-        <div className="admin-user">
-          <span>{user.email}</span>
-        </div>
-      </header>
+  <div>
+    <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
+    <h1>Agenda</h1>
+    <p>Gerencie os agendamentos da barbearia.</p>
+  </div>
 
+  <div className="admin-user">
+    <span>{user.email}</span>
+  </div>
+</header>
       {/* =========================
           PENDENTES
       ========================= */}
