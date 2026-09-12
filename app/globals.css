@@ -883,3 +883,107 @@ a {
     gap: 6px;
   }
 }
+/* =========================
+   SERVIÇOS
+========================= */
+
+.service-form {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  background: #101010;
+}
+
+.service-form .admin-card-header {
+  margin-bottom: 20px;
+}
+
+.service-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 180px 220px;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.service-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #999;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.service-form input,
+.service-form select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  outline: none;
+  background: #0b0b0b;
+  color: #ddd;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.service-form input:focus,
+.service-form select:focus {
+  border-color: #c9a45c;
+}
+
+.service-form input::placeholder {
+  color: #555;
+}
+
+.service-form select {
+  cursor: pointer;
+}
+
+.service-form .button {
+  padding: 10px 16px;
+}
+
+.service-form .button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.service-form-message {
+  margin: 14px 0 0;
+  color: #c9a45c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Serviços cadastrados */
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-card-header > span {
+  color: #777;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .service-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .service-form {
+    padding: 18px;
+  }
+
+  .service-form .button {
+    width: 100%;
+  }
+}
