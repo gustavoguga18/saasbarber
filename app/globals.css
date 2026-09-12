@@ -1095,3 +1095,111 @@ a {
     flex: 1;
   }
 }
+/* =========================
+   HORÁRIOS
+========================= */
+
+.working-hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.working-hours-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border: 1px solid #292929;
+  border-radius: 10px;
+  background: #0b0b0b;
+}
+
+.working-hours-day {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.working-hours-day strong {
+  color: #ddd;
+  font-size: 14px;
+}
+
+.working-hours-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.working-hours-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #c9a45c;
+  cursor: pointer;
+}
+
+.working-hours-times {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.working-hours-times label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #777;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.working-hours-times input {
+  padding: 8px 10px;
+  border: 1px solid #292929;
+  border-radius: 7px;
+  outline: none;
+  background: #101010;
+  color: #ddd;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.working-hours-times input:focus {
+  border-color: #c9a45c;
+}
+
+.working-hours-save {
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .working-hours-item {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .working-hours-day {
+    justify-content: space-between;
+  }
+
+  .working-hours-times {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .working-hours-save {
+    width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .working-hours-times {
+    grid-template-columns: 1fr;
+  }
+}
