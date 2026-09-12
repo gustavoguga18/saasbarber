@@ -23,7 +23,7 @@ if (!serviceId || !date || !time || !name || !phone || !paymentMethod) {
   );
 }
 
-if (!["pix", "credit", "debit", "cash"].includes(paymentMethod)) {
+if (!["pix", "card", "cash"].includes(paymentMethod)) {
   return NextResponse.json(
     { error: "Forma de pagamento inválida." },
     { status: 400 }
