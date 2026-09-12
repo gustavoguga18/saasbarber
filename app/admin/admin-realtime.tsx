@@ -28,9 +28,10 @@ export default function AdminRealtime() {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        console.log("📡 Realtime status:", status);
-      });
+      .subscribe((status, err) => {
+  console.log("📡 Realtime status:", status);
+  console.log("📡 Realtime error:", err);
+});
 
     return () => {
       supabase.removeChannel(channel);
