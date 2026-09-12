@@ -3404,3 +3404,135 @@ a {
   border-radius: 99px;
   background: #c9a45c;
 }
+.blocked-dates-card {
+  margin-top: 24px;
+}
+
+.blocked-dates-wrapper {
+  display: grid;
+  gap: 24px;
+}
+
+.blocked-dates-form {
+  padding: 18px;
+  border: 1px solid #292929;
+  border-radius: 16px;
+  background: linear-gradient(
+    145deg,
+    #181818,
+    #101010
+  );
+}
+
+.blocked-dates-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.blocked-dates-form label {
+  display: grid;
+  gap: 8px;
+  color: #bdbdbd;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.blocked-dates-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #303030;
+  border-radius: 10px;
+  background: #0d0d0d;
+  color: #f5f1e8;
+  outline: none;
+}
+
+.blocked-dates-form input:focus {
+  border-color: rgba(201, 164, 92, 0.55);
+}
+
+.blocked-dates-reason {
+  grid-column: 1 / -1;
+}
+
+.blocked-dates-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.blocked-dates-list {
+  display: grid;
+  gap: 10px;
+}
+
+.blocked-date-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 16px;
+  border: 1px solid #292929;
+  border-radius: 14px;
+  background: #121212;
+}
+
+.blocked-date-item > div {
+  display: grid;
+  gap: 4px;
+}
+
+.blocked-date-item strong {
+  color: #f5f1e8;
+}
+
+.blocked-date-item span {
+  color: #9d9d9d;
+  font-size: 13px;
+}
+
+.blocked-date-remove {
+  border: 1px solid rgba(190, 70, 70, 0.35);
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: rgba(190, 70, 70, 0.08);
+  color: #e28b8b;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.blocked-date-remove:hover {
+  background: rgba(190, 70, 70, 0.15);
+  border-color: rgba(190, 70, 70, 0.55);
+}
+
+@media (max-width: 700px) {
+  .blocked-dates-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blocked-dates-reason {
+    grid-column: auto;
+  }
+
+  .blocked-dates-action {
+    justify-content: stretch;
+  }
+
+  .blocked-dates-action .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .blocked-date-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .blocked-date-remove {
+    width: 100%;
+  }
+}
