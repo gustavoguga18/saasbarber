@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
+import WorkingHoursForm from "./working-hours-form";
 
 export default async function HorariosPage() {
   const supabase = await createServerSupabaseClient();
@@ -47,16 +48,6 @@ export default async function HorariosPage() {
     console.error("Erro ao buscar horários:", error);
   }
 
-  const days = [
-    { value: 0, name: "Domingo" },
-    { value: 1, name: "Segunda-feira" },
-    { value: 2, name: "Terça-feira" },
-    { value: 3, name: "Quarta-feira" },
-    { value: 4, name: "Quinta-feira" },
-    { value: 5, name: "Sexta-feira" },
-    { value: 6, name: "Sábado" },
-  ];
-
   return (
     <main className="admin-page">
       <header className="admin-header">
@@ -90,32 +81,9 @@ export default async function HorariosPage() {
             <p>Tente novamente mais tarde.</p>
           </div>
         ) : (
-          <div className="admin-appointments">
-            {days.map((day) => {
-              const schedule = workingHours?.find(
-                (item) => item.weekday === day.value
-              );
-
-              return (
-                <div className="admin-appointment" key={day.value}>
-                  <div className="admin-time">📅</div>
-
-                  <div className="admin-appointment-info">
-                    <strong>{day.name}</strong>
-
-                    {schedule?.active ? (
-                      <span>
-                        🟢 {schedule.open_time?.slice(0, 5)} às{" "}
-                        {schedule.close_time?.slice(0, 5)}
-                      </span>
-                    ) : (
-                      <span>🔴 Fechado</span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <WorkingHoursForm
+            workingHours={workingHours ?? []}
+          />
         )}
       </section>
     </main>
