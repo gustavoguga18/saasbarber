@@ -1,31 +1,10 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/admin";
 
-function getWorkingHours(date: string) {
+function getWeekday(date: string) {
   const [year, month, day] = date.split("-").map(Number);
 
-  // 0 = domingo
-  const weekday = new Date(year, month - 1, day).getDay();
-
-  if (weekday === 0) {
-    return null;
-  }
-
-  if (weekday >= 1 && weekday <= 4) {
-    return {
-      start: 9 * 60,
-      end: 19 * 60,
-    };
-  }
-
-  if (weekday === 5 || weekday === 6) {
-    return {
-      start: 9 * 60,
-      end: 20 * 60,
-    };
-  }
-
-  return null;
+  return new Date(year, month - 1, day).getDay();
 }
 
 function minutesToTime(minutes: number) {
@@ -36,6 +15,12 @@ function minutesToTime(minutes: number) {
     2,
     "0"
   )}:00`;
+}
+
+function timeToMinutes(time: string) {
+  const [hours, minutes] = time.slice(0, 5).split(":").map(Number);
+
+  return hours * 60 + minutes;
 }
 
 export async function GET(request: Request) {
@@ -68,11 +53,38 @@ export async function GET(request: Request) {
       );
     }
 
-    const workingHours = getWorkingHours(date);
+    const weekday = getWeekday(date);
 
-    if (!workingHours) {
+    const { data: workingHour, error: workingHourError } = await admin
+      .from("working_hours")
+      .select("open_time,close_time,active")
+      .eq("establishment_id", service.establishment_id)
+      .eq("weekday", weekday)
+      .single();
+
+    if (workingHourError) {
+      console.error(
+        "Erro ao buscar horário de funcionamento:",
+        workingHourError
+      );
+
+      return NextResponse.json(
+        { error: "Não foi possível consultar o horário de funcionamento." },
+        { status: 500 }
+      );
+    }
+
+    if (
+      !workingHour ||
+      !workingHour.active ||
+      !workingHour.open_time ||
+      !workingHour.close_time
+    ) {
       return NextResponse.json({ slots: [] });
     }
+
+    const workingStart = timeToMinutes(workingHour.open_time);
+    const workingEnd = timeToMinutes(workingHour.close_time);
 
     const { data: appointments, error: appointmentsError } = await admin
       .from("appointments")
@@ -111,7 +123,7 @@ export async function GET(request: Request) {
 
     const isToday = date === fortalezaDate;
 
-    let minimumTime = workingHours.start;
+    let minimumTime = workingStart;
 
     if (isToday) {
       const [currentHour, currentMinute] = fortalezaTime
@@ -128,8 +140,8 @@ export async function GET(request: Request) {
     const slots: string[] = [];
 
     for (
-      let start = workingHours.start;
-      start + Number(service.duration_minutes) <= workingHours.end;
+      let start = workingStart;
+      start + Number(service.duration_minutes) <= workingEnd;
       start += 30
     ) {
       if (start < minimumTime) {
