@@ -11,39 +11,16 @@ export default function AdminRealtime() {
     const supabase = createClient();
 
     const channel = supabase
-      .channel(`admin-appointments-${Date.now()}`)
-      .on(
-  "postgres_changes",
-  {
-    event: "UPDATE",
-    schema: "public",
-  },
-        (payload) => {
-          console.log("🟢 INSERT recebido:", payload);
-          router.refresh();
-        }
-      )
+      .channel("admin-appointments-realtime")
       .on(
         "postgres_changes",
         {
-          event: "UPDATE",
+          event: "*",
           schema: "public",
           table: "appointments",
         },
         (payload) => {
-          console.log("🟡 UPDATE recebido:", payload);
-          router.refresh();
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "appointments",
-        },
-        (payload) => {
-          console.log("🔴 DELETE recebido:", payload);
+          console.log("🔔 REALTIME RECEBIDO:", payload);
           router.refresh();
         }
       )
