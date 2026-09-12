@@ -64,9 +64,6 @@ export default async function AgendaPage() {
   return (
     <main className="admin-page">
       <header className="admin-header">
-  <a href="/admin" className="admin-back-button">
-    ← Voltar
-  </a>
 
   <div>
     <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
