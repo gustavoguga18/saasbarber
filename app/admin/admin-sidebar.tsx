@@ -88,14 +88,15 @@ export default function AdminSidebar() {
         <nav className="admin-sidebar-nav">
           {menuItems.map((item) => (
             <Link
-              key={item.href}
-              href={item.href}
-              className={`admin-sidebar-link ${
-                pathname === item.href
-                  ? "admin-sidebar-link-active"
-                  : ""
-              }`}
-            >
+  key={item.href}
+  href={item.href}
+  className={`admin-sidebar-link ${
+    pathname === item.href
+      ? "admin-sidebar-link-active"
+      : ""
+  }`}
+  onClick={() => setOpen(false)}
+>
               <span className="admin-sidebar-icon">
                 {item.icon}
               </span>
