@@ -19,6 +19,7 @@ export function BookingForm({ services }: { services: Service[] }) {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const [slots, setSlots] = useState<string[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
@@ -216,7 +217,22 @@ export function BookingForm({ services }: { services: Service[] }) {
           required
         />
       </label>
-
+      
+      <label>
+  Forma de pagamento
+  <select
+    value={paymentMethod}
+    onChange={(e) => setPaymentMethod(e.target.value)}
+    required
+  >
+    <option value="">Selecione uma opção</option>
+    <option value="pix">PIX</option>
+    <option value="credit">Cartão de crédito</option>
+    <option value="debit">Cartão de débito</option>
+    <option value="cash">Espécie</option>
+  </select>
+</label>
+      
       {error && <p className="error">{error}</p>}
 
       <button
