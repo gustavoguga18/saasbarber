@@ -169,23 +169,43 @@ export function BookingForm({ services }: { services: Service[] }) {
           </div>
 
           {!loadingSlots && slots.length > 0 && (
-  <div className={`time-grid ${time ? "time-selected" : ""}`}>
-    {slots.map((slot) => (
-      <button
-        key={slot}
-        type="button"
-        className={`time-slot ${
-          time === slot ? "selected" : ""
-        } ${time && time !== slot ? "hidden-slot" : ""}`}
-        onClick={() => {
-          setTime(slot);
-          setError("");
-        }}
-      >
-        {slot}
-      </button>
-    ))}
-  </div>
+  <>
+    {!time ? (
+      <div className="time-grid">
+        {slots.map((slot) => (
+          <button
+            key={slot}
+            type="button"
+            className="time-slot"
+            onClick={() => {
+              setTime(slot);
+              setError("");
+            }}
+          >
+            {slot}
+          </button>
+        ))}
+      </div>
+    ) : (
+      <div className="selected-time-container">
+        <div className="selected-time">
+          <span>Horário selecionado</span>
+          <strong>{time}</strong>
+        </div>
+
+        <button
+          type="button"
+          className="change-time-button"
+          onClick={() => {
+            setTime("");
+            setError("");
+          }}
+        >
+          Alterar horário
+        </button>
+      </div>
+    )}
+  </>
 )}
         </div>
       )}
