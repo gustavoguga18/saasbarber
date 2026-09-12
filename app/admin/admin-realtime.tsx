@@ -1,17 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 
 export default function AdminRealtime() {
   const router = useRouter();
 
   useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = createClient();
 
     const channel = supabase
       .channel("admin-appointments-realtime")
@@ -22,11 +19,18 @@ export default function AdminRealtime() {
           schema: "public",
           table: "appointments",
         },
-        () => {
+        (payload) => {
+          console.log(
+            "🔔 Realtime: alteração em appointments",
+            payload
+          );
+
           router.refresh();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log("📡 Realtime status:", status);
+      });
 
     return () => {
       supabase.removeChannel(channel);
