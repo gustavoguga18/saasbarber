@@ -3588,3 +3588,98 @@ a {
     align-items: flex-start;
   }
 }
+/* Próximo atendimento */
+.admin-next-appointment {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 22px 24px;
+  border: 1px solid rgba(201, 164, 92, 0.3);
+  background:
+    linear-gradient(145deg, rgba(201, 164, 92, 0.08), rgba(18, 18, 18, 0.98));
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.admin-next-appointment > div:first-child {
+  min-width: 100px;
+  padding-right: 24px;
+  border-right: 1px solid #292929;
+}
+
+.admin-next-appointment h2 {
+  margin: 4px 0 0;
+  color: #c9a45c;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.admin-next-info {
+  display: grid;
+  gap: 5px;
+}
+
+.admin-next-info strong {
+  color: #f5f1e8;
+  font-size: 18px;
+}
+
+.admin-next-info span {
+  color: #a9a9a9;
+  font-size: 14px;
+}
+
+.admin-next-value {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.admin-next-value strong {
+  color: #f5f1e8;
+  font-size: 17px;
+}
+
+@media (max-width: 700px) {
+  .admin-next-appointment {
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+  }
+
+  .admin-next-appointment > div:first-child {
+    padding-right: 18px;
+  }
+
+  .admin-next-info {
+    grid-column: 1 / -1;
+    order: 3;
+    padding-top: 14px;
+    border-top: 1px solid #292929;
+  }
+
+  .admin-next-value {
+    justify-items: end;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-next-appointment {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-next-appointment > div:first-child {
+    padding-right: 0;
+    padding-bottom: 14px;
+    border-right: 0;
+    border-bottom: 1px solid #292929;
+  }
+
+  .admin-next-info {
+    grid-column: auto;
+  }
+
+  .admin-next-value {
+    justify-items: start;
+  }
+}
