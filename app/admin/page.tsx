@@ -197,7 +197,7 @@ export default async function AdminPage() {
               <a href="/admin/servicos">✂️ Serviços</a>
               <a href="/admin/horarios">🕐 Horários</a>
               <a href="/admin/financeiro">💰 Financeiro</a>
-              <a href="/admin/configuracoes">⚙️ Configurações</a>
+              
             </div>
           </div>
         </aside>
