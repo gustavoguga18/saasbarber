@@ -1282,3 +1282,589 @@ a {
     font-size: 22px;
   }
 }
+/* =========================================================
+   HOME MODERNA — YAGO BARBERSHOP
+   ========================================================= */
+
+.page {
+  width: min(100%, 1100px);
+  padding: 30px 20px 0;
+}
+
+/* ---------------------------------------------------------
+   HERO
+   --------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 30px 110px;
+  text-align: center;
+  border-radius: 28px;
+  margin-bottom: 28px;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(201, 164, 92, 0.16),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      #181818 0%,
+      #0d0d0d 55%,
+      #080808 100%
+    );
+  border: 1px solid rgba(201, 164, 92, 0.16);
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  animation: homeFadeUp 0.7s ease both;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(201, 164, 92, 0.12);
+  filter: blur(70px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  margin: 14px 0 18px;
+  font-size: clamp(42px, 8vw, 76px);
+  line-height: 0.98;
+  letter-spacing: -2.5px;
+  font-weight: 900;
+  color: #f8f4eb;
+  text-wrap: balance;
+}
+
+.hero .slogan {
+  max-width: 720px;
+  margin: 0 auto 22px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #d7d0c3;
+}
+
+.hero p:not(.eyebrow):not(.slogan) {
+  max-width: 650px;
+  margin: 0 auto 32px;
+  color: #9f9f9f;
+  line-height: 1.7;
+}
+
+/* ---------------------------------------------------------
+   EYEBROW
+   --------------------------------------------------------- */
+
+.eyebrow {
+  margin: 0;
+  color: #c9a45c;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------
+   BOTÕES
+   --------------------------------------------------------- */
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 14px 25px;
+  border: 1px solid #c9a45c;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #d9b56a,
+    #c9a45c
+  );
+  color: #0a0a0a;
+  text-decoration: none;
+  font-weight: 850;
+  letter-spacing: 0.1px;
+  box-shadow:
+    0 10px 25px rgba(201, 164, 92, 0.14);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 15px 35px rgba(201, 164, 92, 0.22);
+  background: linear-gradient(
+    135deg,
+    #e4c27c,
+    #d4ae61
+  );
+}
+
+.button:hover::before {
+  left: 130%;
+}
+
+.button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ---------------------------------------------------------
+   CARDS
+   --------------------------------------------------------- */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: 32px;
+  margin: 24px 0;
+  border: 1px solid #292929;
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 25, 25, 0.98),
+      rgba(15, 15, 15, 0.98)
+    );
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.28);
+  animation: homeFadeUp 0.7s ease both;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.card:hover {
+  border-color: rgba(201, 164, 92, 0.28);
+  transform: translateY(-2px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.36);
+}
+
+.card h2 {
+  margin: 0 0 22px;
+  color: #f7f2e8;
+  font-size: 27px;
+  letter-spacing: -0.5px;
+}
+
+.card h2::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 2px;
+  margin-top: 10px;
+  border-radius: 99px;
+  background: #c9a45c;
+}
+
+.card p {
+  color: #b8b8b8;
+}
+
+/* ---------------------------------------------------------
+   AVALIAÇÃO GOOGLE
+   --------------------------------------------------------- */
+
+.home-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 8px;
+  text-align: center;
+}
+
+.rating-number {
+  display: block;
+  font-size: 48px;
+  line-height: 1;
+  color: #f5f1e8;
+}
+
+.stars,
+.review-stars {
+  color: #c9a45c;
+  letter-spacing: 3px;
+  font-size: 18px;
+}
+
+.rating-label {
+  display: block;
+  margin-top: 5px;
+  color: #888;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------
+   SERVIÇOS
+   --------------------------------------------------------- */
+
+.services-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #2b2b2b;
+  border-radius: 15px;
+  background: #101010;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.service-item:hover {
+  transform: translateX(4px);
+  border-color: rgba(201, 164, 92, 0.45);
+  background: #151515;
+}
+
+.service-item > div {
+  min-width: 0;
+}
+
+.service-item strong {
+  color: #f5f1e8;
+}
+
+.service-item > strong {
+  flex-shrink: 0;
+  color: #c9a45c;
+  font-size: 18px;
+}
+
+.service-item p {
+  margin: 6px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.service-item span {
+  color: #707070;
+  font-size: 12px;
+}
+
+/* ---------------------------------------------------------
+   LINHAS DE INFORMAÇÃO
+   --------------------------------------------------------- */
+
+.row {
+  align-items: center;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row span:first-child {
+  color: #a5a5a5;
+}
+
+.row strong {
+  color: #f2eee5;
+}
+
+.row a {
+  color: #c9a45c;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.row a:hover {
+  color: #e1bd73;
+}
+
+/* ---------------------------------------------------------
+   MAPA
+   --------------------------------------------------------- */
+
+.map-container {
+  position: relative;
+  overflow: hidden;
+  margin: 22px 0;
+  border: 1px solid #303030;
+  border-radius: 18px;
+  background: #0a0a0a;
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.map-container iframe {
+  display: block;
+  width: 100%;
+  height: 260px;
+  filter: grayscale(0.25) contrast(1.05);
+}
+
+/* ---------------------------------------------------------
+   AVALIAÇÕES
+   --------------------------------------------------------- */
+
+.review {
+  position: relative;
+  margin: 14px 0;
+  padding: 20px;
+  border: 1px solid #292929;
+  border-radius: 15px;
+  background: #101010;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.review:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 164, 92, 0.35);
+}
+
+.review p {
+  margin: 10px 0 12px;
+  color: #d0d0d0;
+  line-height: 1.65;
+}
+
+.review strong {
+  color: #888;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------
+   BOTÃO SECUNDÁRIO
+   --------------------------------------------------------- */
+
+.secondary-button {
+  margin-top: 12px;
+  background: transparent;
+  color: #c9a45c;
+  box-shadow: none;
+}
+
+.secondary-button:hover {
+  background: rgba(201, 164, 92, 0.08);
+  color: #e1bd73;
+}
+
+/* ---------------------------------------------------------
+   CTA FINAL
+   --------------------------------------------------------- */
+
+.final-cta {
+  margin-top: 32px;
+  padding: 70px 30px;
+}
+
+.final-cta h2 {
+  max-width: 700px;
+  margin: 0 auto 14px;
+  color: #f5f1e8;
+  font-size: clamp(30px, 5vw, 46px);
+  letter-spacing: -1.5px;
+}
+
+.final-cta h2::after {
+  display: none;
+}
+
+.final-cta p {
+  margin-bottom: 28px !important;
+}
+
+/* ---------------------------------------------------------
+   RODAPÉ
+   --------------------------------------------------------- */
+
+.site-footer {
+  padding: 40px 20px 30px;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+}
+
+.site-footer p {
+  margin: 7px 0;
+}
+
+.site-footer strong {
+  color: #c9a45c;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------
+   ANIMAÇÕES
+   --------------------------------------------------------- */
+
+@keyframes homeFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVIDADE
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .page {
+    padding: 15px 14px 0;
+  }
+
+  .hero {
+    padding: 72px 20px 78px;
+    border-radius: 22px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 12vw, 56px);
+    letter-spacing: -1.8px;
+  }
+
+  .hero .slogan {
+    font-size: 15px;
+  }
+
+  .card {
+    padding: 23px 19px;
+    border-radius: 18px;
+    margin: 17px 0;
+  }
+
+  .card h2 {
+    font-size: 23px;
+  }
+
+  .home-rating {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rating-number {
+    font-size: 42px;
+  }
+
+  .service-item {
+    align-items: flex-start;
+    padding: 17px;
+  }
+
+  .service-item > strong {
+    font-size: 16px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .row strong {
+    text-align: left;
+  }
+
+  .map-container iframe {
+    height: 220px;
+  }
+
+  .final-cta {
+    padding: 55px 20px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero {
+    padding: 62px 16px 68px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .service-item {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .service-item > strong {
+    align-self: flex-start;
+  }
+
+  .map-container iframe {
+    height: 200px;
+  }
+}
+
+/* ---------------------------------------------------------
+   ACESSIBILIDADE
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
