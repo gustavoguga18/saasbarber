@@ -1203,3 +1203,26 @@ a {
     grid-template-columns: 1fr;
   }
 }
+.working-hours-save-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.working-hours-success {
+  color: #c9a45c;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .working-hours-save-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .working-hours-success {
+    text-align: center;
+  }
+}
