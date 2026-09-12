@@ -8,10 +8,26 @@ export default async function Home() {
 
   const { data: establishment } = await admin
     .from("establishments")
-    .select("name, slogan, address, instagram")
+    .select("id, name, slogan, address, instagram")
     .eq("active", true)
     .limit(1)
     .single();
+
+  const { data: workingHours } = await admin
+    .from("working_hours")
+    .select("weekday, open_time, close_time, active")
+    .eq("establishment_id", establishment?.id ?? "")
+    .order("weekday");
+
+  const days = [
+    "Domingo",
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
+  ];
 
   return (
     <main className="page">
@@ -32,15 +48,23 @@ export default async function Home() {
       <section className="card">
         <h2>Horários</h2>
 
-        <div className="row">
-          <span>Segunda a quinta</span>
-          <strong>09:00 às 19:00</strong>
-        </div>
+        {workingHours
+          ?.filter(
+            (hour) =>
+              hour.active &&
+              hour.open_time &&
+              hour.close_time
+          )
+          .map((hour) => (
+            <div className="row" key={hour.weekday}>
+              <span>{days[hour.weekday]}</span>
 
-        <div className="row">
-          <span>Sexta e sábado</span>
-          <strong>09:00 às 20:00</strong>
-        </div>
+              <strong>
+                {hour.open_time.slice(0, 5)} às{" "}
+                {hour.close_time.slice(0, 5)}
+              </strong>
+            </div>
+          ))}
 
         <div className="row">
           <span>📍 Endereço</span>
