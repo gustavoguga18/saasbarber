@@ -39,7 +39,7 @@ export default async function HorariosPage() {
 
   const { data: workingHours, error } = await admin
     .from("working_hours")
-    .select("*")
+    .select("id, weekday, open_time, close_time, active")
     .eq("establishment_id", profile.establishment_id)
     .order("weekday", { ascending: true });
 
@@ -103,7 +103,7 @@ export default async function HorariosPage() {
                   <div className="admin-appointment-info">
                     <strong>{day.name}</strong>
 
-                    {schedule?.is_open ? (
+                    {schedule?.active ? (
                       <span>
                         🟢 {schedule.open_time?.slice(0, 5)} às{" "}
                         {schedule.close_time?.slice(0, 5)}
