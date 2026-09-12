@@ -547,6 +547,24 @@ a {
   margin-bottom: 30px;
 }
 
+.admin-back-button {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 14px;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  color: #999;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.admin-back-button:hover {
+  border-color: #c9a45c;
+  color: #c9a45c;
+}
 .admin-header h1 {
   margin: 8px 0;
   font-size: clamp(32px, 5vw, 46px);
