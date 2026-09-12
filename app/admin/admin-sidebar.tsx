@@ -91,9 +91,10 @@ export default function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={`admin-sidebar-link ${
-  pathname === item.href ? "admin-sidebar-link-active" : ""
-}`}
-              onClick={() => setOpen(false)}
+                pathname === item.href
+                  ? "admin-sidebar-link-active"
+                  : ""
+              }`}
             >
               <span className="admin-sidebar-icon">
                 {item.icon}
