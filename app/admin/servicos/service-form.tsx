@@ -16,7 +16,7 @@ export default function ServiceForm() {
     setMessage("");
 
     try {
-      const response = await fetch("/api/admin/services", {
+      const response = await fetch("/api/services", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
