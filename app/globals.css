@@ -528,3 +528,261 @@ a {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+/* =========================
+   PAINEL ADMINISTRATIVO
+========================= */
+
+.admin-page {
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px 70px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  margin: 8px 0;
+  font-size: clamp(32px, 5vw, 46px);
+}
+
+.admin-header p:not(.eyebrow) {
+  margin: 0;
+  color: #999;
+}
+
+.admin-user {
+  padding: 10px 14px;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  color: #999;
+  font-size: 13px;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-stat {
+  background: #151515;
+  border: 1px solid #292929;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.admin-stat span {
+  display: block;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.admin-stat strong {
+  color: #c9a45c;
+  font-size: 28px;
+}
+
+.admin-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+}
+
+.admin-card {
+  background: #151515;
+  border: 1px solid #292929;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-card-header h2,
+.admin-card h2 {
+  margin: 6px 0 0;
+  color: #f5f1e8;
+}
+
+.admin-card-header > span {
+  color: #888;
+  font-size: 13px;
+}
+
+.admin-appointments {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-appointment {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  background: #0e0e0e;
+  border: 1px solid #292929;
+  border-radius: 10px;
+}
+
+.admin-time {
+  color: #c9a45c;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.admin-appointment-info {
+  display: grid;
+  gap: 3px;
+}
+
+.admin-appointment-info strong {
+  color: #f5f1e8;
+}
+
+.admin-appointment-info span {
+  color: #bbb;
+  font-size: 14px;
+}
+
+.admin-appointment-info small {
+  color: #666;
+}
+
+.admin-appointment-right {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.admin-appointment-right > strong {
+  color: #f5f1e8;
+}
+
+.admin-status {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-status.confirmed {
+  color: #78c091;
+}
+
+.admin-status.pending {
+  color: #c9a45c;
+}
+
+.admin-menu {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.admin-menu a {
+  display: block;
+  padding: 13px 14px;
+  background: #0e0e0e;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  color: #d8d8d8;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.admin-menu a:hover {
+  border-color: #c9a45c;
+  color: #c9a45c;
+}
+
+.admin-empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 50px 20px;
+  color: #888;
+}
+
+.admin-empty > span {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.admin-empty strong {
+  color: #ddd;
+}
+
+.admin-empty p {
+  margin-bottom: 0;
+  color: #777;
+}
+
+@media (max-width: 800px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-page {
+    padding: 24px 15px 50px;
+  }
+
+  .admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-user {
+    width: 100%;
+  }
+
+  .admin-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .admin-stat {
+    padding: 16px;
+  }
+
+  .admin-stat strong {
+    font-size: 23px;
+  }
+
+  .admin-card {
+    padding: 18px;
+  }
+
+  .admin-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-appointment {
+    grid-template-columns: 55px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .admin-appointment-right {
+    grid-column: 2;
+    justify-items: start;
+  }
+}
