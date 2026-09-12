@@ -25,10 +25,6 @@ export default async function FinanceiroPage() {
   if (profileError || !profile?.establishment_id) {
     return (
       <main className="admin-page">
-        <a href="/admin" className="admin-back-button">
-          ← Voltar
-        </a>
-
         <div className="admin-card">
           <p className="error">
             Não foi possível identificar o estabelecimento.
@@ -82,60 +78,62 @@ export default async function FinanceiroPage() {
   const cancelledAppointments = allAppointments.filter(
     (appointment) => appointment.status === "cancelled"
   );
+
   const pendingPaymentsValue = allAppointments.reduce(
-  (total, appointment) => {
-    const payment = Array.isArray(appointment.payments)
-      ? appointment.payments[0]
-      : appointment.payments;
+    (total, appointment) => {
+      const payment = Array.isArray(appointment.payments)
+        ? appointment.payments[0]
+        : appointment.payments;
 
-    if (
-      appointment.status !== "confirmed" ||
-      payment?.status !== "pending"
-    ) {
-      return total;
-    }
+      if (
+        appointment.status !== "confirmed" ||
+        payment?.status !== "pending"
+      ) {
+        return total;
+      }
 
-    return total + Number(
-      payment.amount ?? appointment.price ?? 0
-    );
-  },
-  0
-);
+      return (
+        total +
+        Number(payment.amount ?? appointment.price ?? 0)
+      );
+    },
+    0
+  );
 
   const paidValue = allAppointments.reduce(
-  (total, appointment) => {
-    const payment = Array.isArray(appointment.payments)
-      ? appointment.payments[0]
-      : appointment.payments;
+    (total, appointment) => {
+      const payment = Array.isArray(appointment.payments)
+        ? appointment.payments[0]
+        : appointment.payments;
 
-    if (payment?.status !== "paid") {
-      return total;
-    }
+      if (payment?.status !== "paid") {
+        return total;
+      }
 
-    return total + Number(payment.amount ?? appointment.price ?? 0);
-  },
-  0
-);
+      return (
+        total +
+        Number(payment.amount ?? appointment.price ?? 0)
+      );
+    },
+    0
+  );
 
-const pendingValue = pendingAppointments.reduce(
-  (total, appointment) =>
-    total + Number(appointment.price ?? 0),
-  0
-);
+  const pendingValue = pendingAppointments.reduce(
+    (total, appointment) =>
+      total + Number(appointment.price ?? 0),
+    0
+  );
 
-const cancelledValue = cancelledAppointments.reduce(
-  (total, appointment) =>
-    total + Number(appointment.price ?? 0),
-  0
-);
+  const cancelledValue = cancelledAppointments.reduce(
+    (total, appointment) =>
+      total + Number(appointment.price ?? 0),
+    0
+  );
+
   return (
     <main className="admin-page">
       <header className="admin-header">
         <div>
-          <a href="/admin" className="admin-back-button">
-            ← Voltar
-          </a>
-
           <p className="eyebrow">FINANCEIRO</p>
 
           <h1>Financeiro</h1>
@@ -162,19 +160,19 @@ const cancelledValue = cancelledAppointments.reduce(
         <>
           <section className="admin-stats">
             <div className="admin-stat-card">
-  <span>Recebidos</span>
+              <span>Recebidos</span>
 
-  <strong>
-    R${" "}
-    {paidValue
-      .toFixed(2)
-      .replace(".", ",")}
-  </strong>
+              <strong>
+                R${" "}
+                {paidValue
+                  .toFixed(2)
+                  .replace(".", ",")}
+              </strong>
 
-  <small>
-    Pagamentos realizados
-  </small>
-</div>
+              <small>
+                Pagamentos realizados
+              </small>
+            </div>
 
             <div className="admin-stat-card">
               <span>Pagamentos Pendentes</span>
@@ -182,8 +180,8 @@ const cancelledValue = cancelledAppointments.reduce(
               <strong>
                 R${" "}
                 {pendingPaymentsValue
-  .toFixed(2)
-  .replace(".", ",")}
+                  .toFixed(2)
+                  .replace(".", ",")}
               </strong>
 
               <small>
