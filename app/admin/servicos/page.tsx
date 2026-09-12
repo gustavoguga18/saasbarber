@@ -26,10 +26,6 @@ export default async function ServicosPage() {
   if (profileError || !profile?.establishment_id) {
     return (
       <main className="admin-page">
-        <a href="/admin" className="admin-back-button">
-          ← Voltar
-        </a>
-
         <div className="admin-card">
           <p className="error">
             Não foi possível identificar o estabelecimento.
@@ -53,10 +49,6 @@ export default async function ServicosPage() {
     <main className="admin-page">
       <header className="admin-header">
         <div>
-          <a href="/admin" className="admin-back-button">
-            ← Voltar
-          </a>
-
           <p className="eyebrow">SERVIÇOS</p>
 
           <h1>Serviços</h1>
