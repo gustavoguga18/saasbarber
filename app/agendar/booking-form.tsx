@@ -92,6 +92,7 @@ export function BookingForm({ services }: { services: Service[] }) {
           time,
           name,
           phone,
+          paymentMethod,
         }),
       });
 
