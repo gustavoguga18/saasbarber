@@ -138,7 +138,12 @@ const { error: paymentError } = await admin
   });
 
 if (paymentError) {
-  console.error("Erro ao registrar pagamento:", paymentError);
+  console.error("ERRO COMPLETO AO REGISTRAR PAGAMENTO:", {
+    code: paymentError.code,
+    message: paymentError.message,
+    details: paymentError.details,
+    hint: paymentError.hint,
+  });
 
   return NextResponse.json(
     { error: "Não foi possível registrar a forma de pagamento." },
