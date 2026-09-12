@@ -184,16 +184,16 @@ export default async function AdminPage() {
 
             <div className="admin-next-info">
               <strong>
-                {Array.isArray(nextAppointment.customers)
-                  ? nextAppointment.customers[0]?.name ?? "Cliente"
-                  : nextAppointment.customers?.name ?? "Cliente"}
-              </strong>
+  {Array.isArray(nextAppointment.customers)
+    ? nextAppointment.customers[0]?.name ?? "Cliente"
+    : "Cliente"}
+</strong>
 
               <span>
-                {Array.isArray(nextAppointment.services)
-                  ? nextAppointment.services[0]?.name ?? "Serviço"
-                  : nextAppointment.services?.name ?? "Serviço"}
-              </span>
+  {Array.isArray(nextAppointment.services)
+    ? nextAppointment.services[0]?.name ?? "Serviço"
+    : "Serviço"}
+</span>
             </div>
 
             <div className="admin-next-value">
