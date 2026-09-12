@@ -32,6 +32,7 @@ export default function WorkingHoursForm({
 
   const [hours, setHours] = useState(workingHours);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [messageId, setMessageId] = useState<string | null>(null);
 
   function updateLocalHour(
     id: string,
@@ -48,10 +49,13 @@ export default function WorkingHoursForm({
           : hour
       )
     );
+
+    setMessageId(null);
   }
 
   async function saveHour(hour: WorkingHour) {
     setLoadingId(hour.id);
+    setMessageId(null);
 
     try {
       const response = await fetch("/api/working-hours", {
@@ -70,24 +74,28 @@ export default function WorkingHoursForm({
       const data = await response.json();
 
       if (!response.ok) {
-  alert(data.error ?? "Não foi possível salvar o horário.");
-  return;
-}
+        alert(
+          data.error ?? "Não foi possível salvar o horário."
+        );
+        return;
+      }
 
-setHours((current) =>
-  current.map((item) =>
-    item.id === hour.id
-      ? {
-          ...item,
-          open_time: data.workingHour.open_time,
-          close_time: data.workingHour.close_time,
-          active: data.workingHour.active,
-        }
-      : item
-  )
-);
+      setHours((current) =>
+        current.map((item) =>
+          item.id === hour.id
+            ? {
+                ...item,
+                open_time: data.workingHour.open_time,
+                close_time: data.workingHour.close_time,
+                active: data.workingHour.active,
+              }
+            : item
+        )
+      );
 
-router.refresh();
+      setMessageId(hour.id);
+
+      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Erro ao salvar o horário.");
@@ -110,7 +118,10 @@ router.refresh();
         const loading = loadingId === hour.id;
 
         return (
-          <div className="working-hours-item" key={hour.id}>
+          <div
+            className="working-hours-item"
+            key={hour.id}
+          >
             <div className="working-hours-day">
               <strong>{day.name}</strong>
 
@@ -137,9 +148,12 @@ router.refresh();
               <div className="working-hours-times">
                 <label>
                   Abertura
+
                   <input
                     type="time"
-                    value={hour.open_time?.slice(0, 5) ?? ""}
+                    value={
+                      hour.open_time?.slice(0, 5) ?? ""
+                    }
                     onChange={(event) =>
                       updateLocalHour(
                         hour.id,
@@ -152,9 +166,12 @@ router.refresh();
 
                 <label>
                   Fechamento
+
                   <input
                     type="time"
-                    value={hour.close_time?.slice(0, 5) ?? ""}
+                    value={
+                      hour.close_time?.slice(0, 5) ?? ""
+                    }
                     onChange={(event) =>
                       updateLocalHour(
                         hour.id,
@@ -167,14 +184,22 @@ router.refresh();
               </div>
             )}
 
-            <button
-              type="button"
-              className="button working-hours-save"
-              onClick={() => saveHour(hour)}
-              disabled={loading}
-            >
-              {loading ? "Salvando..." : "Salvar"}
-            </button>
+            <div className="working-hours-save-wrapper">
+              <button
+                type="button"
+                className="button working-hours-save"
+                onClick={() => saveHour(hour)}
+                disabled={loading}
+              >
+                {loading ? "Salvando..." : "Salvar"}
+              </button>
+
+              {messageId === hour.id && (
+                <span className="working-hours-success">
+                  ✓ Horário alterado com sucesso
+                </span>
+              )}
+            </div>
           </div>
         );
       })}
