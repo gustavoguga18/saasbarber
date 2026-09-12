@@ -126,7 +126,23 @@ if (existing?.length) {
     { status: 500 }
   );
 }
+const { error: paymentError } = await admin
+  .from("payments")
+  .insert({
+    appointment_id: appointment.id,
+    amount: service.price,
+    method: paymentMethod,
+    status: "pending",
+  });
 
+if (paymentError) {
+  console.error("Erro ao registrar pagamento:", paymentError);
+
+  return NextResponse.json(
+    { error: "Não foi possível registrar a forma de pagamento." },
+    { status: 500 }
+  );
+}
     /*
      * E-MAIL PARA O ADMINISTRADOR
      */
