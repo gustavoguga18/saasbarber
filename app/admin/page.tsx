@@ -50,7 +50,13 @@ export default async function AdminPage() {
     ).length ?? 0;
 
   const totalValue =
-    appointments?.reduce(
+  appointments
+    ?.filter(
+      (appointment) =>
+        appointment.status === "pending" ||
+        appointment.status === "confirmed"
+    )
+    .reduce(
       (total, appointment) =>
         total + Number(appointment.price ?? 0),
       0
