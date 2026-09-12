@@ -3361,3 +3361,24 @@ a {
     padding: 22px 16px;
   }
 }
+/* Ajuste do botão do menu no cabeçalho do admin */
+
+.admin-header {
+  padding-left: 80px;
+}
+
+.admin-menu-toggle {
+  top: 22px;
+  left: 20px;
+}
+
+@media (max-width: 600px) {
+  .admin-header {
+    padding-left: 70px;
+  }
+
+  .admin-menu-toggle {
+    top: 16px;
+    left: 16px;
+  }
+}
