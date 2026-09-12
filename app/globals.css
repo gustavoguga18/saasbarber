@@ -1868,3 +1868,367 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+/* =========================================================
+   CONFIGURAÇÕES — ADMIN
+   ========================================================= */
+
+.settings-form {
+  width: 100%;
+}
+
+.settings-section-title {
+  margin-bottom: 18px;
+}
+
+.settings-section-title > span {
+  display: block;
+  color: #c9a45c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+.settings-section-title p {
+  margin: 7px 0 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.settings-section-spacing {
+  margin-top: 38px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-field-full {
+  grid-column: 1 / -1;
+}
+
+.settings-field label {
+  color: #cfcfcf;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.settings-field input,
+.settings-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #303030;
+  border-radius: 11px;
+  outline: none;
+  background: #0d0d0d;
+  color: #f3f0e8;
+  font: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.settings-field input::placeholder {
+  color: #555;
+}
+
+.settings-field input:hover,
+.settings-field select:hover {
+  border-color: #444;
+  background: #101010;
+}
+
+.settings-field input:focus,
+.settings-field select:focus {
+  border-color: #c9a45c;
+  background: #111;
+  box-shadow:
+    0 0 0 3px rgba(201, 164, 92, 0.10),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.settings-field select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+/* Campo com ícone */
+
+.settings-input-prefix {
+  position: relative;
+}
+
+.settings-input-prefix > span {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c9a45c;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.settings-input-prefix input {
+  padding-left: 42px;
+}
+
+/* Toggle */
+
+.settings-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid #303030;
+  border-radius: 12px;
+  background: #0d0d0d;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.settings-toggle:hover {
+  border-color: #454545;
+  background: #111;
+  transform: translateY(-1px);
+}
+
+.settings-toggle > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.settings-toggle-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 43px;
+  height: 24px;
+  border-radius: 99px;
+  background: #292929;
+  transition: background 0.25s ease;
+}
+
+.settings-toggle-switch > span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #888;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.settings-toggle input:checked + .settings-toggle-switch {
+  background: #c9a45c;
+}
+
+.settings-toggle input:checked + .settings-toggle-switch > span {
+  transform: translateX(19px);
+  background: #111;
+}
+
+.settings-toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-toggle-content strong {
+  color: #e8e4dc;
+  font-size: 13px;
+}
+
+.settings-toggle-content small {
+  color: #666;
+  font-size: 11px;
+}
+
+/* Área de salvar */
+
+.settings-save-area {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 38px;
+  padding-top: 24px;
+  border-top: 1px solid #292929;
+}
+
+.settings-save-button {
+  min-width: 220px;
+}
+
+.settings-save-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+
+.settings-spinner {
+  width: 15px;
+  height: 15px;
+  margin-right: 9px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-top-color: #111;
+  border-radius: 50%;
+  animation: settingsSpin 0.7s linear infinite;
+}
+
+@keyframes settingsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mensagens */
+
+.settings-feedback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  animation: settingsFeedbackIn 0.3s ease both;
+}
+
+.settings-feedback > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.settings-feedback div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-feedback strong {
+  font-size: 12px;
+}
+
+.settings-feedback small {
+  font-size: 11px;
+}
+
+.settings-feedback-success {
+  border: 1px solid rgba(86, 170, 108, 0.25);
+  background: rgba(86, 170, 108, 0.07);
+}
+
+.settings-feedback-success > span {
+  background: rgba(86, 170, 108, 0.15);
+  color: #7fd28d;
+}
+
+.settings-feedback-success strong {
+  color: #9cdda5;
+}
+
+.settings-feedback-success small {
+  color: #6e9974;
+}
+
+.settings-feedback-error {
+  border: 1px solid rgba(190, 80, 80, 0.25);
+  background: rgba(190, 80, 80, 0.07);
+}
+
+.settings-feedback-error > span {
+  background: rgba(190, 80, 80, 0.15);
+  color: #e58a8a;
+}
+
+.settings-feedback-error strong {
+  color: #eaa0a0;
+}
+
+.settings-feedback-error small {
+  color: #a97878;
+}
+
+@keyframes settingsFeedbackIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------
+   CONFIGURAÇÕES — MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-field-full {
+    grid-column: auto;
+  }
+
+  .settings-section-spacing {
+    margin-top: 30px;
+  }
+
+  .settings-save-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-save-button {
+    width: 100%;
+  }
+
+  .settings-feedback {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .settings-section-title > span {
+    letter-spacing: 3px;
+  }
+
+  .settings-field input,
+  .settings-field select {
+    min-height: 46px;
+  }
+
+  .settings-toggle {
+    padding: 11px 12px;
+  }
+}
