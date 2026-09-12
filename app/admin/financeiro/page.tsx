@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
+import PaymentAction from "./payment-action";
 
 export default async function FinanceiroPage() {
   const supabase = await createServerSupabaseClient();
@@ -53,6 +54,7 @@ export default async function FinanceiroPage() {
         name
       ),
       payments (
+        id,
         amount,
         method,
         status,
@@ -274,6 +276,12 @@ export default async function FinanceiroPage() {
                             ? "Espécie"
                             : "Não informado"}
                         </small>
+
+                        {payment?.status === "paid" && (
+                          <small className="payment-paid">
+                            ✓ Pago
+                          </small>
+                        )}
                       </div>
 
                       <div className="admin-appointment-right">
@@ -302,6 +310,14 @@ export default async function FinanceiroPage() {
                             ? "Cancelado"
                             : appointment.status}
                         </span>
+
+                        {payment?.id &&
+                          appointment.status === "confirmed" &&
+                          payment.status !== "paid" && (
+                            <PaymentAction
+                              paymentId={payment.id}
+                            />
+                          )}
                       </div>
                     </div>
                   );
