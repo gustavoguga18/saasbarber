@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
+import SettingsForm from "./settings-form";
 
 export default async function ConfiguracoesPage() {
   const supabase = await createServerSupabaseClient();
@@ -86,16 +87,7 @@ export default async function ConfiguracoesPage() {
           </div>
         </div>
 
-        <div className="admin-empty">
-          <span>⚙️</span>
-
-          <strong>{establishment.name}</strong>
-
-          <p>
-            As configurações da barbearia serão disponibilizadas
-            aqui.
-          </p>
-        </div>
+        <SettingsForm establishment={establishment} />
       </section>
     </main>
   );
