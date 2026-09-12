@@ -82,6 +82,25 @@ export default async function FinanceiroPage() {
   const cancelledAppointments = allAppointments.filter(
     (appointment) => appointment.status === "cancelled"
   );
+  const pendingPaymentsValue = allAppointments.reduce(
+  (total, appointment) => {
+    const payment = Array.isArray(appointment.payments)
+      ? appointment.payments[0]
+      : appointment.payments;
+
+    if (
+      appointment.status !== "confirmed" ||
+      payment?.status !== "pending"
+    ) {
+      return total;
+    }
+
+    return total + Number(
+      payment.amount ?? appointment.price ?? 0
+    );
+  },
+  0
+);
 
   const paidValue = allAppointments.reduce(
   (total, appointment) => {
@@ -158,13 +177,13 @@ const cancelledValue = cancelledAppointments.reduce(
 </div>
 
             <div className="admin-stat-card">
-              <span>Pendentes</span>
+              <span>Pagamentos Pendentes</span>
 
               <strong>
                 R${" "}
-                {pendingValue
-                  .toFixed(2)
-                  .replace(".", ",")}
+                {pendingPaymentsValue
+  .toFixed(2)
+  .replace(".", ",")}
               </strong>
 
               <small>
