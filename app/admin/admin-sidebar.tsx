@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function AdminSidebar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   const menuItems = [
     {
@@ -88,7 +90,9 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className="admin-sidebar-link"
+              className={`admin-sidebar-link ${
+  pathname === item.href ? "admin-sidebar-link-active" : ""
+}`}
               onClick={() => setOpen(false)}
             >
               <span className="admin-sidebar-icon">
