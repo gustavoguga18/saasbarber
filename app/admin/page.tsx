@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
+import AdminSidebar from "./admin-sidebar";
 
 export default async function AdminPage() {
   const supabase = await createServerSupabaseClient();
@@ -64,6 +65,8 @@ export default async function AdminPage() {
 
   return (
     <main className="admin-page">
+      <AdminSidebar />
+      
       <header className="admin-header">
         <div>
           <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
