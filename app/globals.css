@@ -2945,3 +2945,22 @@ a {
     grid-template-columns: 1fr 1fr;
   }
 }
+/* =========================================================
+   HORÁRIO SELECIONADO
+   ========================================================= */
+
+.time-grid.time-selected {
+  grid-template-columns: 1fr;
+}
+
+.time-grid .hidden-slot {
+  display: none;
+}
+
+.time-grid.time-selected .time-slot.selected {
+  width: 100%;
+  min-height: 58px;
+  font-size: 18px;
+  cursor: default;
+  transform: none;
+}
