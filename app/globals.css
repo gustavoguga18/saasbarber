@@ -3536,3 +3536,55 @@ a {
     width: 100%;
   }
 }
+.barbershop-closed {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(201, 164, 92, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(
+    145deg,
+    rgba(201, 164, 92, 0.08),
+    rgba(201, 164, 92, 0.03)
+  );
+}
+
+.barbershop-closed-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(201, 164, 92, 0.25);
+  border-radius: 12px;
+  background: rgba(201, 164, 92, 0.08);
+  font-size: 20px;
+}
+
+.barbershop-closed strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #f5f1e8;
+  font-size: 16px;
+}
+
+.barbershop-closed p {
+  margin: 0;
+  color: #a9a9a9;
+  font-size: 13px;
+}
+
+.barbershop-closed span {
+  display: block;
+  margin-top: 5px;
+  color: #c9a45c;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .barbershop-closed {
+    align-items: flex-start;
+  }
+}
