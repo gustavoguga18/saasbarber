@@ -13,12 +13,11 @@ export default function AdminRealtime() {
     const channel = supabase
       .channel(`admin-appointments-${Date.now()}`)
       .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "appointments",
-        },
+  "postgres_changes",
+  {
+    event: "UPDATE",
+    schema: "public",
+  },
         (payload) => {
           console.log("🟢 INSERT recebido:", payload);
           router.refresh();
