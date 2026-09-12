@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { createAdminClient } from "@/lib/admin";
 
 export default async function AdminPage() {
   const supabase = await createServerSupabaseClient();
@@ -14,8 +15,10 @@ export default async function AdminPage() {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const { data: appointments } = await supabase
-    .from("appointments")
+  const admin = createAdminClient();
+
+  const { data: appointments } = await admin
+  .from("appointments")
     .select(`
       id,
       appointment_date,
