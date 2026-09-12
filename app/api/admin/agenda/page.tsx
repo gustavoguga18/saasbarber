@@ -120,25 +120,7 @@ export default async function AgendaPage() {
                         .replace(".", ",")}
                     </strong>
 
-                    <div className="admin-actions">
-                      <form action="/api/admin/appointments" method="POST">
-                        <input type="hidden" name="id" value={appointment.id} />
-                      </form>
-
-                      <a
-                        href={`/admin/agenda?confirm=${appointment.id}`}
-                        className="admin-action-confirm"
-                      >
-                        Confirmar
-                      </a>
-
-                      <a
-                        href={`/admin/agenda?cancel=${appointment.id}`}
-                        className="admin-action-cancel"
-                      >
-                        Cancelar
-                      </a>
-                    </div>
+                    <AgendaActions appointmentId={appointment.id} />
                   </div>
                 </div>
               );
