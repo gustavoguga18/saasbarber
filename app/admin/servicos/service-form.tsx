@@ -95,6 +95,8 @@ export default function ServiceForm() {
               value={duration}
               onChange={(event) => setDuration(event.target.value)}
             >
+              <option value="10">10 minutos</option>
+              <option value="15">15 minutos</option>
               <option value="30">30 minutos</option>
               <option value="45">45 minutos</option>
               <option value="60">1 hora</option>
