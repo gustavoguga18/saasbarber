@@ -2964,3 +2964,57 @@ a {
   cursor: default;
   transform: none;
 }
+/* =========================================================
+   HORÁRIO SELECIONADO
+   ========================================================= */
+
+.selected-time-container {
+  display: grid;
+  gap: 12px;
+}
+
+.selected-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(201, 164, 92, 0.45);
+  border-radius: 12px;
+  background: rgba(201, 164, 92, 0.08);
+}
+
+.selected-time span {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.selected-time strong {
+  color: #c9a45c;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.change-time-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #363636;
+  border-radius: 10px;
+  background: #171717;
+  color: #f5f1e8;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.change-time-button:hover {
+  border-color: #c9a45c;
+  background: rgba(201, 164, 92, 0.08);
+  transform: translateY(-1px);
+}
