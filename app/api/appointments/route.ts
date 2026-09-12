@@ -16,6 +16,8 @@ export async function POST(request: Request) {
   paymentMethod,
 } = body;
 
+    console.log("Método de pagamento recebido:", paymentMethod);
+    
 if (!serviceId || !date || !time || !name || !phone || !paymentMethod) {
   return NextResponse.json(
     { error: "Preencha todos os campos." },
