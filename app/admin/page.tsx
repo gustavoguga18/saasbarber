@@ -19,7 +19,7 @@ export default async function AdminPage() {
   const admin = createAdminClient();
 
   const { data: appointments } = await admin
-  .from("appointments")
+    .from("appointments")
     .select(`
       id,
       appointment_date,
@@ -51,22 +51,28 @@ export default async function AdminPage() {
     ).length ?? 0;
 
   const totalValue =
-  appointments
-    ?.filter(
-      (appointment) =>
-        appointment.status === "pending" ||
-        appointment.status === "confirmed"
-    )
-    .reduce(
-      (total, appointment) =>
-        total + Number(appointment.price ?? 0),
-      0
-    ) ?? 0;
+    appointments
+      ?.filter(
+        (appointment) =>
+          appointment.status === "pending" ||
+          appointment.status === "confirmed"
+      )
+      .reduce(
+        (total, appointment) =>
+          total + Number(appointment.price ?? 0),
+        0
+      ) ?? 0;
+
+  const nextAppointment = appointments?.find(
+    (appointment) =>
+      appointment.status === "pending" ||
+      appointment.status === "confirmed"
+  );
 
   return (
     <main className="admin-page">
       <AdminSidebar />
-      
+
       <header className="admin-header">
         <div>
           <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
@@ -104,6 +110,48 @@ export default async function AdminPage() {
       </section>
 
       <section className="admin-content">
+        {nextAppointment && (
+          <div className="admin-card admin-next-appointment">
+            <div>
+              <p className="eyebrow">PRÓXIMO ATENDIMENTO</p>
+              <h2>
+                {nextAppointment.start_time?.slice(0, 5)}
+              </h2>
+            </div>
+
+            <div className="admin-next-info">
+              <strong>
+                {Array.isArray(nextAppointment.customers)
+                  ? nextAppointment.customers[0]?.name ?? "Cliente"
+                  : nextAppointment.customers?.name ?? "Cliente"}
+              </strong>
+
+              <span>
+                {Array.isArray(nextAppointment.services)
+                  ? nextAppointment.services[0]?.name ?? "Serviço"
+                  : nextAppointment.services?.name ?? "Serviço"}
+              </span>
+            </div>
+
+            <div className="admin-next-value">
+              <strong>
+                R${" "}
+                {Number(nextAppointment.price)
+                  .toFixed(2)
+                  .replace(".", ",")}
+              </strong>
+
+              <span
+                className={`admin-status ${nextAppointment.status}`}
+              >
+                {nextAppointment.status === "confirmed"
+                  ? "Confirmado"
+                  : "Pendente"}
+              </span>
+            </div>
+          </div>
+        )}
+
         <div className="admin-card">
           <div className="admin-card-header">
             <div>
@@ -200,7 +248,6 @@ export default async function AdminPage() {
               <a href="/admin/servicos">✂️ Serviços</a>
               <a href="/admin/horarios">🕐 Horários</a>
               <a href="/admin/financeiro">💰 Financeiro</a>
-              
             </div>
           </div>
         </aside>
