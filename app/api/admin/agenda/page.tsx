@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { createAdminClient } from "@/lib/admin";
 import { AgendaActions } from "./agenda-actions";
 
 export default async function AgendaPage() {
@@ -12,10 +13,11 @@ export default async function AgendaPage() {
   if (!user) {
     redirect("/admin/login");
   }
-
+  const admin = createAdminClient();
+  
   const today = new Date().toISOString().split("T")[0];
 
-  const { data: appointments } = await supabase
+  const { data: appointments, error: appointmentsError } = await admin
     .from("appointments")
     .select(`
       id,
