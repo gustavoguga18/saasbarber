@@ -1226,3 +1226,59 @@ a {
     text-align: center;
   }
 }
+/* =========================
+   FINANCEIRO
+========================= */
+
+.admin-stat-card {
+  padding: 20px;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  background: #101010;
+}
+
+.admin-stat-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.admin-stat-card strong {
+  display: block;
+  color: #ddd;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.admin-stat-card small {
+  display: block;
+  margin-top: 6px;
+  color: #666;
+  font-size: 12px;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 800px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-stat-card {
+    padding: 18px;
+  }
+
+  .admin-stat-card strong {
+    font-size: 22px;
+  }
+}
