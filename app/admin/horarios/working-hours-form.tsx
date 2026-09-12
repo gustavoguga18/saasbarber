@@ -70,11 +70,24 @@ export default function WorkingHoursForm({
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.error ?? "Não foi possível salvar o horário.");
-        return;
-      }
+  alert(data.error ?? "Não foi possível salvar o horário.");
+  return;
+}
 
-      router.refresh();
+setHours((current) =>
+  current.map((item) =>
+    item.id === hour.id
+      ? {
+          ...item,
+          open_time: data.workingHour.open_time,
+          close_time: data.workingHour.close_time,
+          active: data.workingHour.active,
+        }
+      : item
+  )
+);
+
+router.refresh();
     } catch (error) {
       console.error(error);
       alert("Erro ao salvar o horário.");
