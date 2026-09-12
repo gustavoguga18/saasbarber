@@ -2693,3 +2693,255 @@ a {
     transition: none;
   }
 }
+/* =========================================================
+   AGENDA ADMIN — VISUAL PREMIUM
+   ========================================================= */
+
+.admin-appointment {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  background:
+    linear-gradient(
+      145deg,
+      #151515 0%,
+      #0d0d0d 100%
+    );
+  border: 1px solid #292929;
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.admin-appointment::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 99px;
+  background: #c9a45c;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.admin-appointment:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 164, 92, 0.35);
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.28);
+}
+
+.admin-appointment:hover::before {
+  opacity: 1;
+}
+
+/* Horário */
+
+.admin-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 8px;
+  border: 1px solid rgba(201, 164, 92, 0.22);
+  border-radius: 12px;
+  background: rgba(201, 164, 92, 0.07);
+  color: #c9a45c;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+/* Informações */
+
+.admin-appointment-info {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.admin-appointment-info strong {
+  color: #f5f1e8;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.admin-appointment-info span {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.admin-appointment-info small {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Lado direito */
+
+.admin-appointment-right {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 155px;
+}
+
+.admin-appointment-right > strong {
+  color: #f5f1e8;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+/* Status */
+
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.admin-status.pending {
+  border: 1px solid rgba(201, 164, 92, 0.28);
+  background: rgba(201, 164, 92, 0.10);
+  color: #d8b66d;
+}
+
+.admin-status.confirmed {
+  border: 1px solid rgba(120, 192, 145, 0.25);
+  background: rgba(120, 192, 145, 0.09);
+  color: #82ca9b;
+}
+
+/* =========================================================
+   BOTÕES CONFIRMAR / CANCELAR
+   ========================================================= */
+
+.admin-appointment-right button {
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 1px solid #343434;
+  border-radius: 9px;
+  background: #181818;
+  color: #d8d8d8;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-appointment-right button:hover {
+  transform: translateY(-1px);
+}
+
+/* Primeiro botão = Confirmar */
+
+.admin-appointment-right button:first-of-type {
+  border-color: rgba(120, 192, 145, 0.35);
+  background: rgba(120, 192, 145, 0.08);
+  color: #8bd19f;
+}
+
+.admin-appointment-right button:first-of-type:hover {
+  border-color: #78c091;
+  background: rgba(120, 192, 145, 0.15);
+  box-shadow: 0 6px 18px rgba(120, 192, 145, 0.08);
+}
+
+/* Segundo botão = Cancelar */
+
+.admin-appointment-right button:last-of-type {
+  border-color: rgba(210, 90, 90, 0.28);
+  background: rgba(210, 90, 90, 0.06);
+  color: #d98787;
+}
+
+.admin-appointment-right button:last-of-type:hover {
+  border-color: #c86f6f;
+  background: rgba(210, 90, 90, 0.13);
+  color: #eb9b9b;
+}
+
+/* Grupo de ações */
+
+.admin-appointment-right > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* =========================================================
+   AGENDA — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .admin-appointment {
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 13px;
+    padding: 15px;
+  }
+
+  .admin-time {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .admin-appointment-info strong {
+    font-size: 14px;
+  }
+
+  .admin-appointment-right {
+    grid-column: 2;
+    align-items: flex-start;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-appointment-right > div {
+    width: 100%;
+  }
+
+  .admin-appointment-right button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-appointment {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .admin-time {
+    justify-self: start;
+    min-width: 75px;
+  }
+
+  .admin-appointment-right {
+    grid-column: auto;
+  }
+
+  .admin-appointment-right > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
