@@ -987,3 +987,111 @@ a {
     width: 100%;
   }
 }
+/* =========================
+   AÇÕES DOS SERVIÇOS
+========================= */
+
+.service-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.service-actions button,
+.service-edit-form button {
+  border: 1px solid #292929;
+  border-radius: 7px;
+  padding: 7px 10px;
+  background: transparent;
+  color: #999;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.service-action-edit:hover {
+  border-color: #c9a45c;
+  color: #c9a45c;
+}
+
+.service-action-deactivate:hover {
+  border-color: #b85c5c;
+  color: #d47777;
+}
+
+.service-action-activate:hover {
+  border-color: #6fa36f;
+  color: #8bc48b;
+}
+
+.service-actions button:disabled,
+.service-edit-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   EDIÇÃO DO SERVIÇO
+========================= */
+
+.service-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  min-width: 220px;
+}
+
+.service-edit-form input,
+.service-edit-form select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #292929;
+  border-radius: 7px;
+  outline: none;
+  background: #0b0b0b;
+  color: #ddd;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.service-edit-form input:focus,
+.service-edit-form select:focus {
+  border-color: #c9a45c;
+}
+
+.service-action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.service-action-save:hover {
+  border-color: #6fa36f !important;
+  color: #8bc48b !important;
+}
+
+.service-action-cancel:hover {
+  border-color: #777 !important;
+  color: #ccc !important;
+}
+
+@media (max-width: 700px) {
+  .service-actions {
+    flex-wrap: wrap;
+  }
+
+  .service-edit-form {
+    min-width: 100%;
+  }
+
+  .service-action-buttons {
+    width: 100%;
+  }
+
+  .service-action-buttons button {
+    flex: 1;
+  }
+}
