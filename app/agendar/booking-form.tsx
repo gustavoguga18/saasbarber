@@ -23,6 +23,8 @@ export function BookingForm({ services }: { services: Service[] }) {
 
   const [slots, setSlots] = useState<string[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [barbershopClosed, setBarbershopClosed] = useState(false);
+  const [closedReason, setClosedReason] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,6 +37,8 @@ export function BookingForm({ services }: { services: Service[] }) {
     if (!serviceId || !date) {
       setSlots([]);
       setTime("");
+      setBarbershopClosed(false);
+      setClosedReason("");
       return;
     }
 
@@ -43,6 +47,8 @@ export function BookingForm({ services }: { services: Service[] }) {
       setSlots([]);
       setTime("");
       setError("");
+      setBarbershopClosed(false);
+      setClosedReason("");
 
       try {
         const response = await fetch(
@@ -60,6 +66,12 @@ export function BookingForm({ services }: { services: Service[] }) {
           return;
         }
 
+        if (data.closed) {
+          setBarbershopClosed(true);
+          setClosedReason(data.reason ?? "");
+          return;
+        }
+
         setSlots(data.slots ?? []);
       } catch {
         setError("Não foi possível consultar os horários.");
@@ -73,6 +85,11 @@ export function BookingForm({ services }: { services: Service[] }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (barbershopClosed) {
+      setError("A barbearia está fechada nesta data.");
+      return;
+    }
 
     if (!time) {
       setError("Escolha um horário.");
@@ -168,45 +185,81 @@ export function BookingForm({ services }: { services: Service[] }) {
             {loadingSlots && <small>Consultando...</small>}
           </div>
 
-          {!loadingSlots && slots.length > 0 && (
-  <>
-    {!time ? (
-      <div className="time-grid">
-        {slots.map((slot) => (
-          <button
-            key={slot}
-            type="button"
-            className="time-slot"
-            onClick={() => {
-              setTime(slot);
-              setError("");
-            }}
-          >
-            {slot}
-          </button>
-        ))}
-      </div>
-    ) : (
-      <div className="selected-time-container">
-        <div className="selected-time">
-          <span>Horário selecionado</span>
-          <strong>{time}</strong>
-        </div>
+          {!loadingSlots && barbershopClosed && (
+            <div className="barbershop-closed">
+              <div className="barbershop-closed-icon">
+                🔒
+              </div>
 
-        <button
-          type="button"
-          className="change-time-button"
-          onClick={() => {
-            setTime("");
-            setError("");
-          }}
-        >
-          Alterar horário
-        </button>
-      </div>
-    )}
-  </>
-)}
+              <div>
+                <strong>Barbearia fechada</strong>
+
+                <p>
+                  Não estamos atendendo nesta data.
+                </p>
+
+                {closedReason && (
+                  <span>
+                    Motivo: {closedReason}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {!loadingSlots &&
+            !barbershopClosed &&
+            slots.length > 0 && (
+              <>
+                {!time ? (
+                  <div className="time-grid">
+                    {slots.map((slot) => (
+                      <button
+                        key={slot}
+                        type="button"
+                        className="time-slot"
+                        onClick={() => {
+                          setTime(slot);
+                          setError("");
+                        }}
+                      >
+                        {slot}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="selected-time-container">
+                    <div className="selected-time">
+                      <span>Horário selecionado</span>
+                      <strong>{time}</strong>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="change-time-button"
+                      onClick={() => {
+                        setTime("");
+                        setError("");
+                      }}
+                    >
+                      Alterar horário
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+          {!loadingSlots &&
+            !barbershopClosed &&
+            slots.length === 0 && (
+              <div className="admin-empty">
+                <span>⏰</span>
+                <strong>Nenhum horário disponível</strong>
+                <p>
+                  Não há horários disponíveis nesta data.
+                </p>
+              </div>
+            )}
         </div>
       )}
 
@@ -250,7 +303,12 @@ export function BookingForm({ services }: { services: Service[] }) {
       <button
         type="submit"
         className="button booking-submit"
-        disabled={loading || loadingSlots || !time}
+        disabled={
+          loading ||
+          loadingSlots ||
+          !time ||
+          barbershopClosed
+        }
       >
         {loading ? "Agendando..." : "Confirmar agendamento"}
       </button>
