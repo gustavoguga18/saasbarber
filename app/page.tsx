@@ -1,15 +1,28 @@
 import Link from "next/link";
-import { establishment } from "@/config/establishment";
+import { createAdminClient } from "@/lib/admin";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const admin = createAdminClient();
+
+  const { data: establishment } = await admin
+    .from("establishments")
+    .select("name, slogan, address, instagram")
+    .eq("active", true)
+    .limit(1)
+    .single();
+
   return (
     <main className="page">
       <section className="hero">
         <p className="eyebrow">BARBEARIA</p>
 
-        <h1>{establishment.name}</h1>
+        <h1>{establishment?.name ?? "Yago Barbershop"}</h1>
 
-        <p className="slogan">{establishment.slogan}</p>
+        <p className="slogan">
+          {establishment?.slogan ?? ""}
+        </p>
 
         <Link className="button" href="/agendar">
           Agendar horário
@@ -31,14 +44,14 @@ export default function Home() {
 
         <div className="row">
           <span>📍 Endereço</span>
-          <span>{establishment.address}</span>
+          <span>{establishment?.address ?? ""}</span>
         </div>
 
         <div className="row">
           <span>Instagram</span>
 
           <a
-            href={establishment.instagram}
+            href={establishment?.instagram ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
           >
