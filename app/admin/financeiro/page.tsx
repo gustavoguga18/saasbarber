@@ -83,24 +83,32 @@ export default async function FinanceiroPage() {
     (appointment) => appointment.status === "cancelled"
   );
 
-  const confirmedValue = confirmedAppointments.reduce(
-    (total, appointment) =>
-      total + Number(appointment.price ?? 0),
-    0
-  );
+  const paidValue = allAppointments.reduce(
+  (total, appointment) => {
+    const payment = Array.isArray(appointment.payments)
+      ? appointment.payments[0]
+      : appointment.payments;
 
-  const pendingValue = pendingAppointments.reduce(
-    (total, appointment) =>
-      total + Number(appointment.price ?? 0),
-    0
-  );
+    if (payment?.status !== "paid") {
+      return total;
+    }
 
-  const cancelledValue = cancelledAppointments.reduce(
-    (total, appointment) =>
-      total + Number(appointment.price ?? 0),
-    0
-  );
+    return total + Number(payment.amount ?? appointment.price ?? 0);
+  },
+  0
+);
 
+const pendingValue = pendingAppointments.reduce(
+  (total, appointment) =>
+    total + Number(appointment.price ?? 0),
+  0
+);
+
+const cancelledValue = cancelledAppointments.reduce(
+  (total, appointment) =>
+    total + Number(appointment.price ?? 0),
+  0
+);
   return (
     <main className="admin-page">
       <header className="admin-header">
@@ -135,22 +143,19 @@ export default async function FinanceiroPage() {
         <>
           <section className="admin-stats">
             <div className="admin-stat-card">
-              <span>Confirmados</span>
+  <span>Recebidos</span>
 
-              <strong>
-                R${" "}
-                {confirmedValue
-                  .toFixed(2)
-                  .replace(".", ",")}
-              </strong>
+  <strong>
+    R${" "}
+    {paidValue
+      .toFixed(2)
+      .replace(".", ",")}
+  </strong>
 
-              <small>
-                {confirmedAppointments.length} agendamento
-                {confirmedAppointments.length === 1
-                  ? ""
-                  : "s"}
-              </small>
-            </div>
+  <small>
+    Pagamentos realizados
+  </small>
+</div>
 
             <div className="admin-stat-card">
               <span>Pendentes</span>
