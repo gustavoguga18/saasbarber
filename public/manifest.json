@@ -1,0 +1,10 @@
+{
+  "name": "Yago Barbershop",
+  "short_name": "Yago Barber",
+  "description": "Sistema de agendamento da Yago Barbershop",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "pt-BR"
+}
