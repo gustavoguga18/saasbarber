@@ -3382,3 +3382,25 @@ a {
     left: 16px;
   }
 }
+.admin-sidebar-link-active {
+  color: #f5f1e8;
+  background: rgba(201, 164, 92, 0.10);
+  border-color: rgba(201, 164, 92, 0.28);
+}
+
+.admin-sidebar-link-active .admin-sidebar-icon {
+  color: #c9a45c;
+  border-color: rgba(201, 164, 92, 0.45);
+  background: rgba(201, 164, 92, 0.10);
+}
+
+.admin-sidebar-link-active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 99px;
+  background: #c9a45c;
+}
