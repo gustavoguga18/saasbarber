@@ -31,6 +31,9 @@ export default async function AgendaPage() {
       customers (
         name,
         phone
+      ),
+      payments (
+        method
       )
     `)
     .order("appointment_date", { ascending: true })
@@ -96,7 +99,9 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
-
+              const payment = Array.isArray(appointment.payments)
+                ? appointment.payments[0]
+                : appointment.payments;
               return (
                 <div
                   className="admin-appointment"
@@ -121,6 +126,18 @@ export default async function AgendaPage() {
 
                     <small>
                       📅 {appointment.appointment_date}
+                    </small>
+                    <small>
+                      💳{" "}
+                      {payment?.method === "pix"
+                        ? "PIX"
+                        : payment?.method === "credit"
+                        ? "Cartão de crédito"
+                        : payment?.method === "debit"
+                        ? "Cartão de débito"
+                        : payment?.method === "cash"
+                        ? "Espécie"
+                        : "Não informado"}
                     </small>
                   </div>
 
@@ -181,6 +198,9 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
+              const payment = Array.isArray(appointment.payments)
+                ? appointment.payments[0]
+                : appointment.payments;
 
               return (
                 <div
@@ -206,6 +226,18 @@ export default async function AgendaPage() {
 
                     <small>
                       📅 {appointment.appointment_date}
+                    </small>
+                    <small>
+                      💳{" "}
+                      {payment?.method === "pix"
+                        ? "PIX"
+                        : payment?.method === "credit"
+                        ? "Cartão de crédito"
+                        : payment?.method === "debit"
+                        ? "Cartão de débito"
+                        : payment?.method === "cash"
+                        ? "Espécie"
+                        : "Não informado"}
                     </small>
                   </div>
 
@@ -266,7 +298,9 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
-
+              const payment = Array.isArray(appointment.payments)
+                ? appointment.payments[0]
+                : appointment.payments;
               return (
                 <div
                   className="admin-appointment"
@@ -291,6 +325,18 @@ export default async function AgendaPage() {
 
                     <small>
                       📅 {appointment.appointment_date}
+                    </small>
+                    <small>
+                      💳{" "}
+                      {payment?.method === "pix"
+                      ? "PIX"
+                      : payment?.method === "credit"
+                      ? "Cartão de crédito"
+                      : payment?.method === "debit"
+                      ? "Cartão de débito"
+                      : payment?.method === "cash"
+                      ? "Espécie"
+                      : "Não informado"}
                     </small>
                   </div>
 
