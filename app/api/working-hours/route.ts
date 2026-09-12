@@ -70,23 +70,33 @@ export async function PATCH(request: Request) {
       updates.close_time = null;
     }
 
-    const { error } = await admin
+    const { data, error } = await admin
       .from("working_hours")
       .update(updates)
       .eq("id", id)
-      .eq("establishment_id", profile.establishment_id);
+      .eq("establishment_id", profile.establishment_id)
+      .select("id, weekday, open_time, close_time, active")
+      .single();
 
     if (error) {
-      console.error("Erro ao atualizar horário:", error);
+      console.error(
+        "Erro ao atualizar horário:",
+        error
+      );
 
       return NextResponse.json(
-        { error: "Não foi possível atualizar o horário." },
+        {
+          error:
+            error.message ||
+            "Não foi possível atualizar o horário.",
+        },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
+      workingHour: data,
     });
   } catch (error) {
     console.error("Erro interno:", error);
