@@ -53,6 +53,34 @@ export async function GET(request: Request) {
       );
     }
 
+    // Verifica se a barbearia está fechada nesta data.
+    const { data: blockedDate, error: blockedDateError } = await admin
+      .from("blocked_dates")
+      .select("id,reason")
+      .eq("establishment_id", service.establishment_id)
+      .eq("blocked_date", date)
+      .maybeSingle();
+
+    if (blockedDateError) {
+      console.error(
+        "Erro ao verificar data bloqueada:",
+        blockedDateError
+      );
+
+      return NextResponse.json(
+        { error: "Não foi possível consultar a disponibilidade." },
+        { status: 500 }
+      );
+    }
+
+    if (blockedDate) {
+      return NextResponse.json({
+        slots: [],
+        closed: true,
+        reason: blockedDate.reason ?? null,
+      });
+    }
+
     const weekday = getWeekday(date);
 
     const { data: workingHour, error: workingHourError } = await admin
@@ -80,7 +108,10 @@ export async function GET(request: Request) {
       !workingHour.open_time ||
       !workingHour.close_time
     ) {
-      return NextResponse.json({ slots: [] });
+      return NextResponse.json({
+        slots: [],
+        closed: false,
+      });
     }
 
     const workingStart = timeToMinutes(workingHour.open_time);
@@ -166,7 +197,10 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json({ slots });
+    return NextResponse.json({
+      slots,
+      closed: false,
+    });
   } catch (error) {
     console.error("Erro interno:", error);
 
