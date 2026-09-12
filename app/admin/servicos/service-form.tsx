@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ServiceForm() {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("30");
@@ -31,7 +34,9 @@ export default function ServiceForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage(data.error ?? "Não foi possível cadastrar o serviço.");
+        setMessage(
+          data.error ?? "Não foi possível cadastrar o serviço."
+        );
         return;
       }
 
@@ -39,6 +44,8 @@ export default function ServiceForm() {
       setPrice("");
       setDuration("30");
       setMessage("Serviço cadastrado com sucesso.");
+
+      router.refresh();
     } catch (error) {
       console.error(error);
       setMessage("Erro ao cadastrar o serviço.");
