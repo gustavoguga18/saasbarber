@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
 import ServiceForm from "./service-form";
+import ServiceActions from "./service-actions";
 
 export default async function ServicosPage() {
   const supabase = await createServerSupabaseClient();
@@ -65,7 +66,9 @@ export default async function ServicosPage() {
           </p>
         </div>
       </header>
+
       <ServiceForm />
+
       <section className="admin-card">
         <div className="admin-card-header">
           <div>
@@ -119,6 +122,14 @@ export default async function ServicosPage() {
                       .toFixed(2)
                       .replace(".", ",")}
                   </strong>
+
+                  <ServiceActions
+                    id={service.id}
+                    name={service.name}
+                    price={Number(service.price)}
+                    duration={service.duration_minutes}
+                    active={service.active}
+                  />
                 </div>
               </div>
             ))}
