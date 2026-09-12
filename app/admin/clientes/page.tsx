@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
+import CustomerHistory from "./customer-history";
 
 export default async function ClientesPage() {
   const supabase = await createServerSupabaseClient();
@@ -165,12 +166,6 @@ export default async function ClientesPage() {
                   </div>
 
                   <div className="admin-appointment-right">
-                    <a
-                      href={`#historico-${customer.id}`}
-                      className="button"
-                    >
-                      Ver histórico
-                    </a>
 
                     <a
                       href={`https://wa.me/55${customer.phone.replace(/\D/g, "")}`}
@@ -182,69 +177,9 @@ export default async function ClientesPage() {
                     </a>
                   </div>
                 </div>
-
-                <div
-                  id={`historico-${customer.id}`}
-                  className="customer-history"
-                >
-                  <strong>Histórico de agendamentos</strong>
-
-                  {customerAppointments[customer.id]?.length ? (
-                    <div className="customer-history-list">
-                      {customerAppointments[customer.id].map(
-                        (appointment) => {
-                          const service = Array.isArray(
-                            appointment.services
-                          )
-                            ? appointment.services[0]
-                            : appointment.services;
-
-                          return (
-                            <div
-                              className="customer-history-item"
-                              key={appointment.id}
-                            >
-                              <span>
-                                📅 {appointment.appointment_date}
-                              </span>
-
-                              <span>
-                                🕐{" "}
-                                {appointment.start_time?.slice(0, 5)}
-                              </span>
-
-                              <span>
-                                ✂️{" "}
-                                {service?.name ??
-                                  "Serviço não informado"}
-                              </span>
-
-                              <span>
-                                💰 R${" "}
-                                {Number(service?.price ?? 0)
-                                  .toFixed(2)
-                                  .replace(".", ",")}
-                              </span>
-
-                              <span>
-                                📌{" "}
-                                {appointment.status === "confirmed"
-                                  ? "Confirmado"
-                                  : appointment.status === "pending"
-                                  ? "Pendente"
-                                  : appointment.status === "cancelled"
-                                  ? "Cancelado"
-                                  : appointment.status}
-                              </span>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-                  ) : (
-                    <p>Nenhum agendamento encontrado.</p>
-                  )}
-                </div>
+<CustomerHistory
+  appointments={customerAppointments[customer.id] ?? []}
+/>
               </div>
             ))}
           </div>
