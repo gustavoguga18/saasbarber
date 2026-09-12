@@ -49,25 +49,50 @@ export default async function ClientesPage() {
 
   const customerIds = (customers ?? []).map((customer) => customer.id);
 
-  let appointmentCounts: Record<string, number> = {};
+let appointmentCounts: Record<string, number> = {};
+let customerAppointments: Record<string, any[]> = {};
 
-  if (customerIds.length > 0) {
-    const { data: appointments } = await admin
-      .from("appointments")
-      .select("customer_id")
-      .in("customer_id", customerIds);
+if (customerIds.length > 0) {
+  const { data: appointments } = await admin
+    .from("appointments")
+    .select(`
+      id,
+      customer_id,
+      appointment_date,
+      start_time,
+      status,
+      services (
+        name,
+        price
+      )
+    `)
+    .in("customer_id", customerIds)
+    .order("appointment_date", { ascending: false })
+    .order("start_time", { ascending: false });
 
-    appointmentCounts = (appointments ?? []).reduce(
-      (acc, appointment) => {
-        acc[appointment.customer_id] =
-          (acc[appointment.customer_id] ?? 0) + 1;
+  appointmentCounts = (appointments ?? []).reduce(
+    (acc, appointment) => {
+      acc[appointment.customer_id] =
+        (acc[appointment.customer_id] ?? 0) + 1;
 
-        return acc;
-      },
-      {} as Record<string, number>
-    );
-  }
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
+  customerAppointments = (appointments ?? []).reduce(
+    (acc, appointment) => {
+      if (!acc[appointment.customer_id]) {
+        acc[appointment.customer_id] = [];
+      }
+
+      acc[appointment.customer_id].push(appointment);
+
+      return acc;
+    },
+    {} as Record<string, any[]>
+  );
+}
   return (
     <main className="admin-page">
       <header className="admin-header">
