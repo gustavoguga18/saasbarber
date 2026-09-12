@@ -50,12 +50,39 @@ export default async function AdminPage() {
       (appointment) => appointment.status === "pending"
     ).length ?? 0;
 
-  const totalValue =
+    const totalValue =
     appointments
       ?.filter(
         (appointment) =>
           appointment.status === "pending" ||
           appointment.status === "confirmed"
+      )
+      .reduce(
+        (total, appointment) =>
+          total + Number(appointment.price ?? 0),
+        0
+      ) ?? 0;
+
+  const cancelledAppointments =
+    appointments?.filter(
+      (appointment) => appointment.status === "cancelled"
+    ).length ?? 0;
+
+  const confirmedValue =
+    appointments
+      ?.filter(
+        (appointment) => appointment.status === "confirmed"
+      )
+      .reduce(
+        (total, appointment) =>
+          total + Number(appointment.price ?? 0),
+        0
+      ) ?? 0;
+
+  const pendingValue =
+    appointments
+      ?.filter(
+        (appointment) => appointment.status === "pending"
       )
       .reduce(
         (total, appointment) =>
@@ -108,7 +135,43 @@ export default async function AdminPage() {
           </strong>
         </div>
       </section>
+      <section className="admin-day-summary">
+        <div className="admin-day-summary-card">
+          <span className="admin-day-summary-label">
+            CONFIRMADOS
+          </span>
 
+          <strong>{confirmedAppointments}</strong>
+
+          <small>
+            R$ {confirmedValue.toFixed(2).replace(".", ",")}
+          </small>
+        </div>
+
+        <div className="admin-day-summary-card">
+          <span className="admin-day-summary-label">
+            PENDENTES
+          </span>
+
+          <strong>{pendingAppointments}</strong>
+
+          <small>
+            R$ {pendingValue.toFixed(2).replace(".", ",")}
+          </small>
+        </div>
+
+        <div className="admin-day-summary-card">
+          <span className="admin-day-summary-label">
+            CANCELADOS
+          </span>
+
+          <strong>{cancelledAppointments}</strong>
+
+          <small>
+            Agendamentos cancelados
+          </small>
+        </div>
+      </section>
       <section className="admin-content">
         {nextAppointment && (
           <div className="admin-card admin-next-appointment">
