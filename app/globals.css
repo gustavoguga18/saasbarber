@@ -4090,7 +4090,7 @@ a {
 
 .special-hours-fields {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -4101,6 +4101,7 @@ a {
 }
 
 .special-hours-fields label {
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
 }
@@ -4111,17 +4112,30 @@ a {
   padding: 10px 12px;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
-  background: #fff;
+  background: #ffffff;
+  color: #111111;
   font: inherit;
   box-sizing: border-box;
 }
 
-.special-hours-fields input:focus {
-  outline: none;
-  border-color: #111;
+.special-hours-fields input::placeholder {
+  color: #777777;
 }
 
-/* Lista dos horários cadastrados */
+.special-hours-fields input:focus {
+  outline: none;
+  border-color: #d4af5f;
+}
+
+/* BOTÃO */
+
+.special-hours-form .button {
+  width: 100%;
+}
+
+/* =========================
+   LISTA
+========================= */
 
 .special-hours-list {
   display: flex;
@@ -4137,25 +4151,32 @@ a {
   padding: 16px 18px;
   border: 1px solid #e5e5e5;
   border-radius: 10px;
-  background: #fafafa;
+  background: #ffffff;
+
+  /* IMPORTANTE:
+     força o texto a ficar visível */
+  color: #111111;
 }
 
 .special-hour-item strong {
   display: block;
-  font-size: 15px;
   margin-bottom: 4px;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .special-hour-item p {
   margin: 0;
+  color: #333333;
   font-size: 14px;
 }
 
 .special-hour-item small {
   display: block;
   margin-top: 5px;
+  color: #666666;
   font-size: 13px;
-  opacity: 0.7;
 }
 
 .special-hour-item button {
@@ -4163,10 +4184,10 @@ a {
 }
 
 /* =========================
-   CELULAR
+   TABLET / CELULAR
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .special-hours-fields {
     grid-template-columns: 1fr 1fr;
     gap: 14px;
@@ -4175,9 +4196,20 @@ a {
   .special-hours-fields > div:first-child {
     grid-column: 1 / -1;
   }
+}
 
-  .special-hours-form .button {
-    width: 100%;
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+  .special-hours-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .special-hours-fields > div:first-child,
+  .special-hours-fields > div:nth-child(4) {
+    grid-column: 1 / -1;
   }
 
   .special-hour-item {
@@ -4191,12 +4223,14 @@ a {
   }
 }
 
-@media (max-width: 480px) {
+/* CELULARES PEQUENOS */
+
+@media (max-width: 400px) {
   .special-hours-fields {
     grid-template-columns: 1fr;
   }
 
-  .special-hours-fields > div:first-child {
-    grid-column: auto;
+  .special-hours-fields > div {
+    grid-column: auto !important;
   }
 }
