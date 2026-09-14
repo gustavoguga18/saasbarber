@@ -64,18 +64,18 @@ export default async function Home() {
       {/* HERO */}
 <section className="hero">
   <Image
-    src={logo}
-    alt="Yago Barbershop"
-    width={280}
-    height={280}
-    priority
-    style={{
-      width: "280px",
-      height: "280px",
-      objectFit: "contain",
-      margin: "0 auto 20px",
-    }}
-  />
+  src={logo}
+  alt="Yago Barbershop"
+  width={160}
+  height={160}
+  priority
+  style={{
+    width: "160px",
+    height: "160px",
+    objectFit: "contain",
+    margin: "0 auto 10px",
+  }}
+/>
 
   <p className="eyebrow">BARBEARIA</p>
 
