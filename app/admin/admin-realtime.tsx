@@ -10,6 +10,10 @@ export default function AdminRealtime() {
   useEffect(() => {
     const supabase = createClient();
 
+    // =========================
+    // REALTIME - AGENDAMENTOS
+    // =========================
+
     const channel = supabase
       .channel("admin-appointments-realtime")
       .on(
@@ -21,6 +25,7 @@ export default function AdminRealtime() {
         },
         (payload) => {
           console.log("🔔 REALTIME RECEBIDO:", payload);
+
           router.refresh();
         }
       )
@@ -29,7 +34,27 @@ export default function AdminRealtime() {
         console.log("📡 Realtime error:", err);
       });
 
+    // =========================
+    // ATUALIZAÇÃO AUTOMÁTICA
+    // =========================
+    //
+    // Mesmo que não exista nenhuma alteração
+    // no banco, atualiza o dashboard a cada
+    // 30 segundos para recalcular o próximo
+    // atendimento com base no horário atual.
+
+    const interval = setInterval(() => {
+      console.log("⏰ Atualizando dashboard automaticamente...");
+
+      router.refresh();
+    }, 30_000);
+
+    // =========================
+    // LIMPEZA
+    // =========================
+
     return () => {
+      clearInterval(interval);
       supabase.removeChannel(channel);
     };
   }, [router]);
