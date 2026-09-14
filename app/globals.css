@@ -747,7 +747,116 @@ a {
   margin-bottom: 0;
   color: #777;
 }
+/* =========================
+   ADMIN — EXPERIÊNCIA MOBILE
+========================= */
 
+@media (max-width: 700px) {
+  .admin-page {
+    padding: 24px 14px 50px;
+  }
+
+  .admin-header {
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .admin-header h1 {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .admin-header p:not(.eyebrow) {
+    font-size: 13px;
+  }
+
+  .admin-user {
+    font-size: 12px;
+    padding: 8px 10px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .admin-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .admin-stat {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .admin-stat span {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .admin-stat strong {
+    font-size: 23px;
+  }
+
+  .admin-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .admin-card-header {
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .admin-card-header h2,
+  .admin-card h2 {
+    font-size: 20px;
+  }
+
+  .admin-appointment {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .admin-time {
+    font-size: 17px;
+  }
+
+  .admin-appointment-right {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    justify-items: initial;
+    gap: 10px;
+    padding-top: 6px;
+    border-top: 1px solid #292929;
+  }
+
+  .admin-appointment-right > strong {
+    font-size: 14px;
+  }
+
+  .admin-status {
+    font-size: 11px;
+  }
+
+  .admin-menu {
+    margin-top: 14px;
+  }
+
+  .admin-menu a {
+    padding: 14px;
+  }
+}
 @media (max-width: 800px) {
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
