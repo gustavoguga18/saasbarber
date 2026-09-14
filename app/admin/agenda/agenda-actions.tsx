@@ -53,27 +53,26 @@ export function AgendaActions({
       .replace(".", ",");
 
     const message =
-      status === "confirmed"
-        ? `Olá, ${customerName}! 💈
+  status === "confirmed"
+    ? `Olá, ${customerName}! \u{1F4C8}
 
-Seu agendamento na Yago Barbershop foi confirmado! ✅
+Seu agendamento na Yago Barbershop foi confirmado! \u{2705}
 
-📅 Data: ${formattedDate}
-🕐 Horário: ${formattedTime}
-✂️ Serviço: ${serviceName}
-💰 Valor: R$ ${formattedPrice}
+\u{1F4C5} Data: ${formattedDate}
+\u{1F552} Horário: ${formattedTime}
+\u{2702}\u{FE0F} Serviço: ${serviceName}
+\u{1F4B0} Valor: R$ ${formattedPrice}
 
-Te esperamos! 💈✂️`
+Te esperamos! \u{1F4C8}\u{2702}\u{FE0F}`
         : `Olá, ${customerName}!
 
-Seu agendamento na Yago Barbershop foi cancelado. ❌
+Seu agendamento na Yago Barbershop foi cancelado. \u{274C}
 
-📅 Data: ${formattedDate}
-🕐 Horário: ${formattedTime}
-✂️ Serviço: ${serviceName}
+\u{1F4C5} Data: ${formattedDate}
+\u{1F552} Horário: ${formattedTime}
+\u{2702}\u{FE0F} Serviço: ${serviceName}
 
-Caso queira, entre em contato conosco para escolher outro horário. 💈`;
-
+Caso queira, entre em contato conosco para escolher outro horário. \u{1F4C8}`;
     const whatsappUrl =
       `https://wa.me/55${phone}` +
       `?text=${encodeURIComponent(message)}`;
