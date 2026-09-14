@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createAdminClient } from "@/lib/admin";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(
+  process.env.RESEND_API_KEY
+);
 
 export async function POST(request: Request) {
   try {
@@ -79,18 +81,47 @@ export async function POST(request: Request) {
     //
     // AdminMode fica livre para o barbeiro
     // realizar agendamentos manuais.
+    //
+    // O cálculo usa o fuso de Fortaleza
+    // para não depender do fuso do servidor.
 
     if (!adminMode) {
-      const now = new Date();
+      // =========================
+      // DATA ATUAL EM FORTALEZA
+      // =========================
+
+      const fortalezaDate =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone:
+              "America/Fortaleza",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          }
+        ).format(new Date());
+
+      const [
+        currentYear,
+        currentMonth,
+        currentDay,
+      ] = fortalezaDate
+        .split("-")
+        .map(Number);
 
       const today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
+        currentYear,
+        currentMonth - 1,
+        currentDay
       );
 
       const dayOfWeek =
         today.getDay();
+
+      // =========================
+      // DEFINIR SEGUNDA-FEIRA
+      // =========================
 
       let monday: Date;
 
@@ -115,7 +146,9 @@ export async function POST(request: Request) {
         );
       }
 
-      // Sábado é o último dia permitido.
+      // =========================
+      // DEFINIR SÁBADO
+      // =========================
 
       const saturday = new Date(
         monday
@@ -125,40 +158,39 @@ export async function POST(request: Request) {
         monday.getDate() + 5
       );
 
-      const year =
-        saturday.getFullYear();
-
-      const month = String(
-        saturday.getMonth() + 1
-      ).padStart(2, "0");
-
-      const day = String(
-        saturday.getDate()
-      ).padStart(2, "0");
-
-      const maxBookingDate =
-        `${year}-${month}-${day}`;
-
-      const mondayYear =
-        monday.getFullYear();
-
-      const mondayMonth = String(
-        monday.getMonth() + 1
-      ).padStart(2, "0");
-
-      const mondayDay = String(
-        monday.getDate()
-      ).padStart(2, "0");
+      // =========================
+      // FORMATAR DATA MÍNIMA
+      // =========================
 
       const minBookingDate =
-        `${mondayYear}-${mondayMonth}-${mondayDay}`;
+        `${monday.getFullYear()}-${String(
+          monday.getMonth() + 1
+        ).padStart(2, "0")}-${String(
+          monday.getDate()
+        ).padStart(2, "0")}`;
 
-      // Domingo nunca pode ser agendado.
+      // =========================
+      // FORMATAR DATA MÁXIMA
+      // =========================
 
-      const [dateYear, dateMonth, dateDay] =
-        String(date)
-          .split("-")
-          .map(Number);
+      const maxBookingDate =
+        `${saturday.getFullYear()}-${String(
+          saturday.getMonth() + 1
+        ).padStart(2, "0")}-${String(
+          saturday.getDate()
+        ).padStart(2, "0")}`;
+
+      // =========================
+      // VALIDAR DATA SOLICITADA
+      // =========================
+
+      const [
+        dateYear,
+        dateMonth,
+        dateDay,
+      ] = String(date)
+        .split("-")
+        .map(Number);
 
       const requestedDate =
         new Date(
@@ -169,6 +201,11 @@ export async function POST(request: Request) {
 
       const requestedDay =
         requestedDate.getDay();
+
+      // Domingo nunca pode ser agendado.
+      //
+      // A data também precisa estar dentro
+      // da semana atualmente liberada.
 
       if (
         requestedDay === 0 ||
@@ -185,7 +222,8 @@ export async function POST(request: Request) {
       }
     }
 
-    const admin = createAdminClient();
+    const admin =
+      createAdminClient();
 
     // =========================
     // BUSCAR SERVIÇO
@@ -294,9 +332,11 @@ export async function POST(request: Request) {
           establishment_id:
             service.establishment_id,
 
-          name: String(name).trim(),
+          name:
+            String(name).trim(),
 
-          phone: String(phone).trim(),
+          phone:
+            String(phone).trim(),
         },
         {
           onConflict:
