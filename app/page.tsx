@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/admin";
+import logo from "./yago-logo.jpeg";
 
 export const dynamic = "force-dynamic";
 
@@ -60,8 +62,22 @@ export default async function Home() {
   return (
     <main className="page">
       {/* HERO */}
-      <section className="hero">
-        <p className="eyebrow">BARBEARIA</p>
+<section className="hero">
+  <Image
+    src={logo}
+    alt="Yago Barbershop"
+    width={280}
+    height={280}
+    priority
+    style={{
+      width: "280px",
+      height: "280px",
+      objectFit: "contain",
+      margin: "0 auto 20px",
+    }}
+  />
+
+  <p className="eyebrow">BARBEARIA</p>
 
         <h1>{establishment?.name ?? "Yago Barbershop"}</h1>
 
