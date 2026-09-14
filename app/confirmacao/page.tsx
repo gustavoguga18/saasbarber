@@ -74,26 +74,8 @@ export default async function ConfirmacaoPage({
     ? appointment.customers[0]
     : appointment.customers;
 
+  // Número fixo do WhatsApp do barbeiro
   const barberPhone = "5585986391263";
-
-  const whatsappMessage = encodeURIComponent(
-  `\u{1F514} Novo agendamento recebido!
-
-\u{1F464} Cliente: ${customer?.name ?? "Cliente"}
-\u{2702}\u{FE0F} Serviço: ${service?.name ?? "Serviço"}
-\u{1F4C5} Data: ${appointment.appointment_date}
-\u{1F552} Horário: ${appointment.start_time?.slice(0, 5)}
-\u{1F4B0} Valor: R$ ${Number(appointment.price)
-    .toFixed(2)
-    .replace(".", ",")}
-
-\u{1F4CC} Status: ${statusText}
-
-\u{1F4CD} Rua Bom Jesus, 957`
-);
-
-  const whatsappUrl =
-  `https://wa.me/${barberPhone}?text=${whatsappMessage}`;
 
   const statusText =
     appointment.status === "pending"
@@ -101,6 +83,25 @@ export default async function ConfirmacaoPage({
       : appointment.status === "confirmed"
         ? "Confirmado"
         : appointment.status;
+
+  const whatsappMessage = encodeURIComponent(
+    `\u{1F514} Novo agendamento recebido!
+
+\u{1F464} Cliente: ${customer?.name ?? "Cliente"}
+\u{2702}\u{FE0F} Serviço: ${service?.name ?? "Serviço"}
+\u{1F4C5} Data: ${appointment.appointment_date}
+\u{1F552} Horário: ${appointment.start_time?.slice(0, 5)}
+\u{1F4B0} Valor: R$ ${Number(appointment.price)
+      .toFixed(2)
+      .replace(".", ",")}
+
+\u{1F4CC} Status: ${statusText}
+
+\u{1F4CD} Rua Bom Jesus, 957`
+  );
+
+  const whatsappUrl =
+    `https://wa.me/${barberPhone}?text=${whatsappMessage}`;
 
   return (
     <main className="page narrow">
