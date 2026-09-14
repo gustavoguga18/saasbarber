@@ -3888,3 +3888,28 @@ a {
     font-size: 13px;
   }
 }
+/* =========================
+   ADMIN — MOBILE FIX
+========================= */
+
+@media (max-width: 700px) {
+  .admin-stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .admin-stat {
+    min-width: 0;
+    padding: 14px !important;
+  }
+
+  .admin-stat span {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .admin-stat strong {
+    font-size: 21px !important;
+  }
+}
