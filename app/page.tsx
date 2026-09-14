@@ -63,23 +63,35 @@ export default async function Home() {
 
   return (
     <main className="page">
-      {/* HERO */}
-<section className="hero">
-  <Image
-  src={logo}
-  alt="Yago Barbershop"
-  width={160}
-  height={160}
-  priority
-  style={{
-    width: "160px",
-    height: "160px",
-    objectFit: "contain",
-    margin: "0 auto 10px",
-  }}
-/>
 
-  <p className="eyebrow">BARBEARIA</p>
+      {/* MENU DE NAVEGAÇÃO */}
+      <nav className="home-nav">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#horarios">Horários</a>
+        <a href="#localizacao">Localização</a>
+        <a href="#contato">Contato</a>
+        <a href="#avaliacoes">Avaliações</a>
+      </nav>
+
+      {/* HERO */}
+      <section className="hero" id="inicio">
+        <Image
+          src={logo}
+          alt="Yago Barbershop"
+          width={160}
+          height={160}
+          priority
+          style={{
+            width: "160px",
+            height: "160px",
+            objectFit: "contain",
+            margin: "0 auto 10px",
+          }}
+        />
+
+        <p className="eyebrow">BARBEARIA</p>
 
         <h1>{establishment?.name ?? "Yago Barbershop"}</h1>
 
@@ -116,7 +128,7 @@ export default async function Home() {
       </section>
 
       {/* SOBRE */}
-      <section className="card">
+      <section className="card" id="sobre">
         <h2>Sobre a Yago Barbershop</h2>
 
         <p>
@@ -131,7 +143,7 @@ export default async function Home() {
       </section>
 
       {/* SERVIÇOS */}
-      <section className="card">
+      <section className="card" id="servicos">
         <h2>Serviços</h2>
 
         {services && services.length > 0 ? (
@@ -166,7 +178,7 @@ export default async function Home() {
       </section>
 
       {/* HORÁRIOS */}
-      <section className="card">
+      <section className="card" id="horarios">
         <h2>Horários de atendimento</h2>
 
         {workingHours
@@ -189,7 +201,7 @@ export default async function Home() {
       </section>
 
       {/* LOCALIZAÇÃO */}
-      <section className="card">
+      <section className="card" id="localizacao">
         <h2>Onde estamos</h2>
 
         <div className="row">
@@ -220,54 +232,60 @@ export default async function Home() {
       </section>
 
       {/* CONTATO */}
-<section className="card">
-  <h2>Entre em contato</h2>
+      <section className="card" id="contato">
+        <h2>Entre em contato</h2>
 
-  <div className="row">
-    <span>
-      <Image
-        src={whatsappIcon}
-        alt="WhatsApp"
-        width={24}
-        height={24}
-        style={{ objectFit: "contain", verticalAlign: "middle" }}
-      />{" "}
-      WhatsApp
-    </span>
+        <div className="row">
+          <span>
+            <Image
+              src={whatsappIcon}
+              alt="WhatsApp"
+              width={24}
+              height={24}
+              style={{
+                objectFit: "contain",
+                verticalAlign: "middle",
+              }}
+            />{" "}
+            WhatsApp
+          </span>
 
-    <a
-      href={`https://wa.me/${whatsappNumber}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      (85) 98601-6629
-    </a>
-  </div>
+          <a
+            href={`https://wa.me/${whatsappNumber}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            (85) 98601-6629
+          </a>
+        </div>
 
-  <div className="row">
-    <span>
-      <Image
-        src={instagramIcon}
-        alt="Instagram"
-        width={24}
-        height={24}
-        style={{ objectFit: "contain", verticalAlign: "middle" }}
-      />{" "}
-      Instagram
-    </span>
+        <div className="row">
+          <span>
+            <Image
+              src={instagramIcon}
+              alt="Instagram"
+              width={24}
+              height={24}
+              style={{
+                objectFit: "contain",
+                verticalAlign: "middle",
+              }}
+            />{" "}
+            Instagram
+          </span>
 
-    <a
-      href={instagramUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      @yago_barberr
-    </a>
-  </div>
-</section>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @yago_barberr
+          </a>
+        </div>
+      </section>
 
       {/* AVALIAÇÕES */}
-      <section className="card">
+      <section className="card" id="avaliacoes">
         <h2>O que nossos clientes dizem</h2>
 
         <div className="review">
@@ -334,6 +352,7 @@ export default async function Home() {
           Desenvolvido por <strong>Gustavo</strong>
         </p>
       </footer>
+
     </main>
   );
 }
