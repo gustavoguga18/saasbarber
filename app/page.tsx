@@ -343,15 +343,22 @@ export default async function Home() {
 
       {/* RODAPÉ */}
       <footer className="site-footer">
-        <p>
-          © {new Date().getFullYear()}{" "}
-          {establishment?.name ?? "Yago Barbershop"}
-        </p>
+  <p>
+    © {new Date().getFullYear()}{" "}
+    {establishment?.name ?? "Yago Barbershop"}
+  </p>
 
-        <p>
-          Desenvolvido por <strong>Gustavo</strong>
-        </p>
-      </footer>
+  <p>
+    Desenvolvido por <strong>Gustavo</strong>
+  </p>
+
+  <Link
+    href="/admin/login"
+    className="admin-access-link"
+  >
+    Área administrativa
+  </Link>
+</footer>
 
     </main>
   );
