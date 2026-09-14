@@ -11,7 +11,13 @@ type Service = {
   duration_minutes: number;
 };
 
-export function BookingForm({ services }: { services: Service[] }) {
+export function BookingForm({
+  services,
+  adminMode = false,
+}: {
+  services: Service[];
+  adminMode?: boolean;
+}) {
   const router = useRouter();
 
   const [serviceId, setServiceId] = useState(services[0]?.id ?? "");
@@ -110,6 +116,7 @@ export function BookingForm({ services }: { services: Service[] }) {
           name,
           phone,
           paymentMethod,
+          adminMode,
         }),
       });
 
@@ -121,8 +128,11 @@ export function BookingForm({ services }: { services: Service[] }) {
         return;
       }
 
-      router.push(`/confirmacao?id=${data.id}`);
-    } catch {
+      if (adminMode) {
+  router.push("/admin/agenda");
+} else {
+  router.push(`/confirmacao?id=${data.id}`);
+} catch {
       setError("Não foi possível realizar o agendamento.");
       setLoading(false);
     }
@@ -310,12 +320,18 @@ export function BookingForm({ services }: { services: Service[] }) {
           barbershopClosed
         }
       >
-        {loading ? "Agendando..." : "Confirmar agendamento"}
+        {loading
+  ? "Agendando..."
+  : adminMode
+    ? "Agendar manualmente"
+    : "Confirmar agendamento"}
       </button>
 
       <p className="form-note">
-        Ao confirmar, seu pedido será enviado para a barbearia.
-      </p>
+  {adminMode
+    ? "Este agendamento será confirmado imediatamente."
+    : "Ao confirmar, seu pedido será enviado para a barbearia."}
+</p>
     </form>
   );
 }
