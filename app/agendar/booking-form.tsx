@@ -129,10 +129,11 @@ export function BookingForm({
       }
 
       if (adminMode) {
-  router.push("/admin/agenda");
-} else {
-  router.push(`/confirmacao?id=${data.id}`);
-} catch {
+        router.push("/admin/agenda");
+      } else {
+        router.push(`/confirmacao?id=${data.id}`);
+      }
+    } catch {
       setError("Não foi possível realizar o agendamento.");
       setLoading(false);
     }
@@ -142,9 +143,17 @@ export function BookingForm({
     <form className="form booking-form" onSubmit={submit}>
       <div className="form-header">
         <p className="eyebrow">AGENDAMENTO</p>
-        <h1>Escolha seu horário</h1>
+
+        <h1>
+          {adminMode
+            ? "Agendamento manual"
+            : "Escolha seu horário"}
+        </h1>
+
         <p>
-          Preencha os dados abaixo para solicitar seu atendimento.
+          {adminMode
+            ? "Preencha os dados do cliente para reservar este horário."
+            : "Preencha os dados abaixo para solicitar seu atendimento."}
         </p>
       </div>
 
@@ -157,7 +166,8 @@ export function BookingForm({
         >
           {services.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.name} — R$ {Number(s.price).toFixed(2).replace(".", ",")}
+              {s.name} — R${" "}
+              {Number(s.price).toFixed(2).replace(".", ",")}
             </option>
           ))}
         </select>
@@ -264,7 +274,11 @@ export function BookingForm({
             slots.length === 0 && (
               <div className="admin-empty">
                 <span>⏰</span>
-                <strong>Nenhum horário disponível</strong>
+
+                <strong>
+                  Nenhum horário disponível
+                </strong>
+
                 <p>
                   Não há horários disponíveis nesta data.
                 </p>
@@ -321,17 +335,17 @@ export function BookingForm({
         }
       >
         {loading
-  ? "Agendando..."
-  : adminMode
-    ? "Agendar manualmente"
-    : "Confirmar agendamento"}
+          ? "Agendando..."
+          : adminMode
+          ? "Agendar manualmente"
+          : "Confirmar agendamento"}
       </button>
 
       <p className="form-note">
-  {adminMode
-    ? "Este agendamento será confirmado imediatamente."
-    : "Ao confirmar, seu pedido será enviado para a barbearia."}
-</p>
+        {adminMode
+          ? "Este agendamento será confirmado imediatamente."
+          : "Ao confirmar, seu pedido será enviado para a barbearia."}
+      </p>
     </form>
   );
 }
