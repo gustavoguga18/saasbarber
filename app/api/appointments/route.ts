@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   name,
   phone,
   paymentMethod,
+  adminMode,
 } = body;
 
     console.log("Método de pagamento recebido:", paymentMethod);
@@ -97,7 +98,7 @@ if (existing?.length) {
       );
     }
 
-
+    const appointmentStatus = adminMode ? "confirmed" : "pending";
     const { data: appointment, error } = await admin
       .from("appointments")
       .insert({
@@ -107,7 +108,7 @@ if (existing?.length) {
         appointment_date: date,
         start_time: `${time}:00`,
         end_time: endTime,
-        status: "pending",
+        status: "appointmentStatus",
         price: service.price,
       })
       .select("id")
@@ -193,7 +194,7 @@ if (paymentError) {
 
           <p>
             <strong>Status:</strong>
-            Aguardando confirmação
+${adminMode ? "Confirmado — agendamento manual" : "Aguardando confirmação"}
           </p>
         `,
       });
