@@ -77,20 +77,20 @@ export default async function ConfirmacaoPage({
   const phone = customer?.phone?.replace(/\D/g, "");
 
   const whatsappMessage = encodeURIComponent(
-    `Olá, ${customer?.name ?? "cliente"}! 💈
+    `Olá, ${customer?.name ?? "cliente"}! \u{1F4C8}
 
 Seu agendamento na Yago Barbershop foi recebido!
 
-✂️ Serviço: ${service?.name ?? "Serviço"}
-📅 Data: ${appointment.appointment_date}
-🕐 Horário: ${appointment.start_time?.slice(0, 5)}
-💰 Valor: R$ ${Number(appointment.price)
+\u{2702}\u{FE0F} Serviço: ${service?.name ?? "Serviço"}
+\u{1F4C5} Data: ${appointment.appointment_date}
+\u{1F552} Horário: ${appointment.start_time?.slice(0, 5)}
+\u{1F4B0} Valor: R$ ${Number(appointment.price)
       .toFixed(2)
       .replace(".", ",")}
 
-Aguardamos você! 💈
+Aguardamos você! \u{1F4C8}
 
-📍 Rua Bom Jesus, 957`
+\u{1F4CD} Rua Bom Jesus, 957`
   );
 
   const whatsappUrl = phone
