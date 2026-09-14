@@ -27,8 +27,9 @@ export default async function AgendaPage() {
       status,
       price,
       services (
-        name
-      ),
+  id,
+  name
+),
       customers (
         name,
         phone
@@ -170,6 +171,7 @@ export default async function AgendaPage() {
                       appointmentDate={appointment.appointment_date}
                       startTime={appointment.start_time ?? ""}
                       price={Number(appointment.price ?? 0)}
+                      serviceId={service?.id}
                     />
                   </div>
                 </div>
@@ -263,17 +265,29 @@ export default async function AgendaPage() {
                   </div>
 
                   <div className="admin-appointment-right">
-                    <strong>
-                      R${" "}
-                      {Number(appointment.price)
-                        .toFixed(2)
-                        .replace(".", ",")}
-                    </strong>
+  <strong>
+    R${" "}
+    {Number(appointment.price)
+      .toFixed(2)
+      .replace(".", ",")}
+  </strong>
 
-                    <span className="admin-status confirmed">
-                      Confirmado
-                    </span>
-                  </div>
+  <span className="admin-status confirmed">
+    Confirmado
+  </span>
+
+  <AgendaActions
+    appointmentId={appointment.id}
+    customerName={customer?.name ?? "Cliente"}
+    customerPhone={customer?.phone ?? ""}
+    serviceName={service?.name ?? "Serviço"}
+    appointmentDate={appointment.appointment_date}
+    startTime={appointment.start_time ?? ""}
+    price={Number(appointment.price ?? 0)}
+    serviceId={service?.id}
+    canEdit={true}
+  />
+</div>
                 </div>
               );
             })}
