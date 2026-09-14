@@ -5638,3 +5638,339 @@ a {
     font-size: 20px;
   }
 }
+/* =========================================================
+   TEMA BLACK + GREEN
+   ========================================================= */
+
+:root {
+  --primary: #22c55e;
+  --primary-dark: #16a34a;
+  --primary-light: #4ade80;
+  --primary-soft: rgba(34, 197, 94, 0.10);
+  --primary-border: rgba(34, 197, 94, 0.28);
+}
+
+/* =========================
+   TEXTOS / DESTAQUES
+========================= */
+
+.eyebrow {
+  color: #22c55e;
+}
+
+.card h2::after {
+  background: #22c55e;
+}
+
+.row a {
+  color: #22c55e;
+}
+
+.row a:hover {
+  color: #4ade80;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.button {
+  border-color: #22c55e;
+  background: linear-gradient(
+    135deg,
+    #4ade80,
+    #22c55e
+  );
+  color: #050505;
+  box-shadow:
+    0 10px 25px rgba(34, 197, 94, 0.14);
+}
+
+.button:hover {
+  background: linear-gradient(
+    135deg,
+    #86efac,
+    #22c55e
+  );
+
+  box-shadow:
+    0 15px 35px rgba(34, 197, 94, 0.22);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card:hover {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+/* =========================
+   AVALIAÇÕES
+========================= */
+
+.stars,
+.review-stars {
+  color: #22c55e;
+}
+
+/* =========================
+   SERVIÇOS
+========================= */
+
+.service-item:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.service-item > strong {
+  color: #22c55e;
+}
+
+/* =========================
+   BOTÃO SECUNDÁRIO
+========================= */
+
+.secondary-button {
+  color: #22c55e;
+}
+
+.secondary-button:hover {
+  background: rgba(34, 197, 94, 0.08);
+  color: #4ade80;
+}
+
+/* =========================
+   CONFIRMAÇÃO
+========================= */
+
+.confirmation-icon {
+  background: #22c55e;
+  color: #050505;
+}
+
+.confirmation-row .status {
+  color: #22c55e;
+}
+
+.secondary-button {
+  border-color: #3a3a3a;
+}
+
+.secondary-button:hover {
+  border-color: #22c55e;
+}
+
+/* =========================
+   AGENDAMENTO
+========================= */
+
+.form input:focus,
+.form select:focus {
+  border-color: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+.selected-service strong {
+  color: #22c55e;
+}
+
+.time-slot:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.time-slot.selected {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #050505;
+}
+
+/* =========================
+   ADMIN
+========================= */
+
+.admin-back-button:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.admin-stat strong {
+  color: #22c55e;
+}
+
+.admin-time {
+  color: #22c55e;
+}
+
+.admin-status.pending {
+  color: #22c55e;
+}
+
+.admin-menu a:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+/* =========================
+   HISTÓRICO DE CLIENTE
+========================= */
+
+.customer-history-button:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.customer-history > strong {
+  color: #22c55e;
+}
+
+/* =========================
+   SERVIÇOS — ADMIN
+========================= */
+
+.service-form input:focus,
+.service-form select:focus {
+  border-color: #22c55e;
+}
+
+.service-form-message {
+  color: #22c55e;
+}
+
+.service-action-edit:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+/* =========================
+   HORÁRIOS — ADMIN
+========================= */
+
+.working-hours-toggle input {
+  accent-color: #22c55e;
+}
+
+.working-hours-times input:focus {
+  border-color: #22c55e;
+}
+
+.working-hours-success {
+  color: #22c55e;
+}
+
+/* =========================
+   CONFIGURAÇÕES — ADMIN
+========================= */
+
+.settings-section-title > span {
+  color: #22c55e;
+}
+
+.settings-field input:focus,
+.settings-field select:focus {
+  border-color: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.10),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.settings-input-prefix > span {
+  color: #22c55e;
+}
+
+/* =========================================================
+   HOME — AJUSTES VERDES
+   ========================================================= */
+
+.hero {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(34, 197, 94, 0.16),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      #181818 0%,
+      #0d0d0d 55%,
+      #080808 100%
+    );
+
+  border-color: rgba(34, 197, 94, 0.16);
+}
+
+.hero::before {
+  background: rgba(34, 197, 94, 0.12);
+}
+
+/* Cards da página principal */
+
+.card:hover {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.card h2::after {
+  background: #22c55e;
+}
+
+/* Botão principal da home */
+
+.button {
+  border-color: #22c55e;
+
+  background: linear-gradient(
+    135deg,
+    #4ade80,
+    #22c55e
+  );
+
+  box-shadow:
+    0 10px 25px rgba(34, 197, 94, 0.14);
+}
+
+.button:hover {
+  background: linear-gradient(
+    135deg,
+    #86efac,
+    #22c55e
+  );
+
+  box-shadow:
+    0 15px 35px rgba(34, 197, 94, 0.22);
+}
+
+/* Serviços */
+
+.service-item:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.service-item > strong {
+  color: #22c55e;
+}
+
+/* Links */
+
+.row a {
+  color: #22c55e;
+}
+
+.row a:hover {
+  color: #4ade80;
+}
+
+/* Avaliações */
+
+.stars,
+.review-stars {
+  color: #22c55e;
+}
+
+/* Footer */
+
+.site-footer strong {
+  color: #22c55e;
+}
