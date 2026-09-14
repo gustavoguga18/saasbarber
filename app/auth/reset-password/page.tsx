@@ -16,56 +16,100 @@ export default function ResetPasswordPage() {
     const supabase = createClient();
 
     async function prepareRecoverySession() {
-      /*
-       * O Supabase envia um "code" no link de recuperação.
-       *
-       * Como o projeto usa PKCE, precisamos trocar
-       * esse código por uma sessão antes de chamar
-       * updateUser().
-       */
+      try {
+        /*
+         * ==========================================
+         * 1. FLUXO PKCE
+         * ==========================================
+         *
+         * O Supabase pode enviar:
+         *
+         * /auth/reset-password?code=...
+         *
+         * Nesse caso trocamos o código por uma sessão.
+         */
 
-      const url = new URL(window.location.href);
-      const code = url.searchParams.get("code");
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get("code");
 
-      if (code) {
-        const { error } =
-          await supabase.auth.exchangeCodeForSession(
-            code
+        if (code) {
+          const { error } =
+            await supabase.auth.exchangeCodeForSession(
+              code
+            );
+
+          if (error) {
+            console.error(
+              "Erro ao trocar código por sessão:",
+              error
+            );
+
+            setMessage(
+              "Este link de recuperação é inválido ou já foi utilizado. Solicite um novo e-mail."
+            );
+
+            return;
+          }
+
+          /*
+           * Remove o código da URL.
+           */
+          window.history.replaceState(
+            {},
+            document.title,
+            "/auth/reset-password"
           );
+        }
 
-        if (error) {
-          console.error(
-            "Erro ao criar sessão de recuperação:",
-            error
+        /*
+         * ==========================================
+         * 2. VERIFICAÇÃO DA SESSÃO
+         * ==========================================
+         *
+         * No fluxo com access_token, o cliente
+         * Supabase pode processar automaticamente
+         * os dados presentes no hash da URL.
+         */
+
+        let session = null;
+
+        for (let attempt = 0; attempt < 10; attempt++) {
+          const { data } =
+            await supabase.auth.getSession();
+
+          if (data.session) {
+            session = data.session;
+            break;
+          }
+
+          /*
+           * Dá um pequeno tempo para o Supabase
+           * processar o token da URL.
+           */
+          await new Promise((resolve) =>
+            setTimeout(resolve, 300)
           );
+        }
 
+        if (!session) {
           setMessage(
-            "Este link de recuperação é inválido ou já foi utilizado. Solicite um novo e-mail."
+            "Não foi possível iniciar a recuperação de senha. Solicite um novo link."
           );
 
           return;
         }
 
         /*
-         * Remove o código da URL depois que ele
-         * já foi utilizado.
+         * A sessão existe.
+         * Agora podemos alterar a senha.
          */
-        window.history.replaceState(
-          {},
-          document.title,
-          "/auth/reset-password"
-        );
-      }
-
-      /*
-       * Verifica se agora existe uma sessão.
-       */
-      const { data } =
-        await supabase.auth.getSession();
-
-      if (data.session) {
         setReady(true);
-      } else {
+      } catch (error) {
+        console.error(
+          "Erro ao preparar recuperação:",
+          error
+        );
+
         setMessage(
           "Não foi possível iniciar a recuperação de senha. Solicite um novo link."
         );
@@ -127,7 +171,7 @@ export default function ResetPasswordPage() {
     }
 
     setMessage(
-      "Senha alterada com sucesso! Você já pode entrar no painel administrativo."
+      "Senha alterada com sucesso!"
     );
 
     setPassword("");
