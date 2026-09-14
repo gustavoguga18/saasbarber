@@ -3983,15 +3983,23 @@ a {
   gap: 12px;
   margin-top: 10px;
   padding: 14px;
+
   border-radius: 12px;
-  background: var(--surface, #f8f8f8);
-  border: 1px solid var(--border, #e5e5e5);
+
+  /* Mesmo padrão escuro do painel */
+  background: #151515;
+  border: 1px solid #303030;
+  color: #ffffff;
+
+  box-sizing: border-box;
 }
 
 .admin-reschedule label {
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  color: #ffffff;
   font-size: 12px;
   font-weight: 600;
 }
@@ -4001,21 +4009,27 @@ a {
   width: 100%;
   min-height: 40px;
   padding: 8px 10px;
-  border: 1px solid #d9d9d9;
+
+  background: #151515;
+  color: #ffffff;
+
+  border: 1px solid #303030;
   border-radius: 8px;
-  background: #ffffff;
-  color: #222222;
+
   font: inherit;
   outline: none;
+  box-sizing: border-box;
 }
+
 .admin-reschedule input::placeholder {
-  color: #777777;
+  color: #bdbdbd;
 }
 
 .admin-reschedule select option {
-  background: #ffffff;
-  color: #222222;
+  background: #151515;
+  color: #ffffff;
 }
+
 .admin-reschedule input:focus,
 .admin-reschedule select:focus {
   border-color: var(--primary);
@@ -4026,6 +4040,8 @@ a {
       transparent
     );
 }
+
+/* Botões */
 
 .admin-reschedule-buttons {
   display: flex;
@@ -4053,17 +4069,14 @@ a {
   }
 
   .admin-reschedule {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  color: #222222;
-}
+    width: 100%;
+    padding: 14px;
+
+    background: #151515;
+    border: 1px solid #303030;
+    color: #ffffff;
+  }
+
   .admin-reschedule-buttons {
     flex-direction: column;
   }
