@@ -64,7 +64,10 @@ export default async function Home() {
   return (
     <main className="page">
 
-      {/* MENU DE NAVEGAÇÃO */}
+      {/* =========================
+          MENU DE NAVEGAÇÃO
+      ========================= */}
+
       <nav className="home-nav">
         <a href="#inicio">Início</a>
         <a href="#sobre">Sobre</a>
@@ -75,61 +78,132 @@ export default async function Home() {
         <a href="#avaliacoes">Avaliações</a>
       </nav>
 
-      {/* HERO */}
-      <section className="hero" id="inicio">
-        <Image
-          src={logo}
-          alt="Yago Barbershop"
-          width={160}
-          height={160}
-          priority
-          style={{
-            width: "160px",
-            height: "160px",
-            objectFit: "contain",
-            margin: "0 auto 10px",
-          }}
-        />
 
-        <p className="eyebrow">BARBEARIA</p>
+      {/* =========================
+          HERO
+      ========================= */}
 
-        <h1>{establishment?.name ?? "Yago Barbershop"}</h1>
+      <section className="hero hero-barber" id="inicio">
 
-        <p className="slogan">
-          {establishment?.slogan ??
-            "CUIDA VEM DEIXAR TEU CABELO NA RÉGUA 💈"}
-        </p>
+        {/* Barber Pole decorativo */}
+        <div
+          className="barber-pole"
+          aria-hidden="true"
+        >
+          <div className="barber-pole-stripes" />
+        </div>
 
-        <p>
-          Seu corte, seu estilo e aquele atendimento diferenciado.
-          Agende seu horário de forma rápida e fácil.
-        </p>
+        <div className="hero-content">
 
-        <Link className="button" href="/agendar">
-          Agendar horário
-        </Link>
+          <Image
+            src={logo}
+            alt="Yago Barbershop"
+            width={180}
+            height={180}
+            priority
+            className="hero-logo"
+          />
+
+          <p className="eyebrow">
+            ✂ BARBEARIA
+          </p>
+
+          <h1>
+            {establishment?.name ?? "Yago Barbershop"}
+          </h1>
+
+          <p className="slogan">
+            {establishment?.slogan ??
+              "CUIDA VEM DEIXAR TEU CABELO NA RÉGUA 💈"}
+          </p>
+
+          <p className="hero-description">
+            Seu corte, seu estilo e aquele atendimento diferenciado.
+            <br />
+            Agende seu horário de forma rápida e fácil.
+          </p>
+
+          <Link
+            className="button hero-button"
+            href="/agendar"
+          >
+            Agendar horário
+          </Link>
+
+          <div className="hero-pole-line">
+            <span />
+            <strong>
+              ESTILO • QUALIDADE • ATITUDE
+            </strong>
+            <span />
+          </div>
+
+        </div>
+
       </section>
 
-      {/* DESTAQUE GOOGLE */}
+
+      {/* =========================
+          DIVISÓRIA BARBER POLE
+      ========================= */}
+
+      <div
+        className="barber-pole-divider"
+        aria-hidden="true"
+      >
+        <div className="barber-pole-divider-inner">
+          💈 YAGO BARBERSHOP • ESTILO NA RÉGUA • 💈
+          YAGO BARBERSHOP • ESTILO NA RÉGUA • 💈
+          YAGO BARBERSHOP • ESTILO NA RÉGUA •
+        </div>
+      </div>
+
+
+      {/* =========================
+          DESTAQUE GOOGLE
+      ========================= */}
+
       <section className="card">
+
         <div className="home-rating">
+
           <div>
-            <strong className="rating-number">5,0</strong>
-            <span className="stars">★★★★★</span>
+            <strong className="rating-number">
+              5,0
+            </strong>
+
+            <span className="stars">
+              ★★★★★
+            </span>
           </div>
 
           <div>
-            <strong>10 avaliações</strong>
+            <strong>
+              10 avaliações
+            </strong>
+
             <span className="rating-label">
               Avaliação no Google
             </span>
           </div>
+
         </div>
+
       </section>
 
-      {/* SOBRE */}
-      <section className="card" id="sobre">
-        <h2>Sobre a Yago Barbershop</h2>
+
+      {/* =========================
+          SOBRE
+      ========================= */}
+
+      <section
+        className="card"
+        id="sobre"
+      >
+
+        <h2>
+          Sobre a Yago Barbershop
+        </h2>
 
         <p>
           Uma barbearia pensada para você cuidar do visual,
@@ -140,46 +214,99 @@ export default async function Home() {
           Ambiente aconchegante, atendimento de qualidade e
           aquele cuidado que faz a diferença.
         </p>
+
       </section>
 
-      {/* SERVIÇOS */}
-      <section className="card" id="servicos">
-        <h2>Serviços</h2>
+
+      {/* =========================
+          SERVIÇOS
+      ========================= */}
+
+      <section
+        className="card"
+        id="servicos"
+      >
+
+        <h2>
+          Serviços
+        </h2>
 
         {services && services.length > 0 ? (
+
           <div className="services-list">
+
             {services.map((service) => (
-              <div className="service-item" key={service.id}>
+
+              <div
+                className="service-item barber-service"
+                key={service.id}
+              >
+
+                <div className="service-icon">
+                  ✂
+                </div>
+
                 <div>
-                  <strong>{service.name}</strong>
+
+                  <strong>
+                    {service.name}
+                  </strong>
 
                   {service.description && (
-                    <p>{service.description}</p>
+                    <p>
+                      {service.description}
+                    </p>
                   )}
 
                   <span>
                     {service.duration_minutes} minutos
                   </span>
+
                 </div>
 
-                <strong>
-                  R$ {Number(service.price).toFixed(2).replace(".", ",")}
+                <strong className="service-price">
+                  R${" "}
+                  {Number(service.price)
+                    .toFixed(2)
+                    .replace(".", ",")}
                 </strong>
+
               </div>
+
             ))}
+
           </div>
+
         ) : (
-          <p>Nenhum serviço cadastrado no momento.</p>
+
+          <p>
+            Nenhum serviço cadastrado no momento.
+          </p>
+
         )}
 
-        <Link className="button" href="/agendar">
+        <Link
+          className="button"
+          href="/agendar"
+        >
           Escolher serviço e agendar
         </Link>
+
       </section>
 
-      {/* HORÁRIOS */}
-      <section className="card" id="horarios">
-        <h2>Horários de atendimento</h2>
+
+      {/* =========================
+          HORÁRIOS
+      ========================= */}
+
+      <section
+        className="card"
+        id="horarios"
+      >
+
+        <h2>
+          Horários de atendimento
+        </h2>
 
         {workingHours
           ?.filter(
@@ -189,27 +316,55 @@ export default async function Home() {
               hour.close_time
           )
           .map((hour) => (
-            <div className="row" key={hour.weekday}>
-              <span>{days[hour.weekday]}</span>
+
+            <div
+              className="row"
+              key={hour.weekday}
+            >
+
+              <span>
+                {days[hour.weekday]}
+              </span>
 
               <strong>
                 {hour.open_time.slice(0, 5)} às{" "}
                 {hour.close_time.slice(0, 5)}
               </strong>
+
             </div>
+
           ))}
+
       </section>
 
-      {/* LOCALIZAÇÃO */}
-      <section className="card" id="localizacao">
-        <h2>Onde estamos</h2>
+
+      {/* =========================
+          LOCALIZAÇÃO
+      ========================= */}
+
+      <section
+        className="card"
+        id="localizacao"
+      >
+
+        <h2>
+          Onde estamos
+        </h2>
 
         <div className="row">
-          <span>📍 Endereço</span>
-          <strong>{address}</strong>
+
+          <span>
+            📍 Endereço
+          </span>
+
+          <strong>
+            {address}
+          </strong>
+
         </div>
 
         <div className="map-container">
+
           <iframe
             src={mapEmbedUrl}
             width="100%"
@@ -219,6 +374,7 @@ export default async function Home() {
             referrerPolicy="no-referrer-when-downgrade"
             title="Localização da Yago Barbershop"
           />
+
         </div>
 
         <a
@@ -229,14 +385,27 @@ export default async function Home() {
         >
           📍 Como chegar
         </a>
+
       </section>
 
-      {/* CONTATO */}
-      <section className="card" id="contato">
-        <h2>Entre em contato</h2>
+
+      {/* =========================
+          CONTATO
+      ========================= */}
+
+      <section
+        className="card"
+        id="contato"
+      >
+
+        <h2>
+          Entre em contato
+        </h2>
 
         <div className="row">
+
           <span>
+
             <Image
               src={whatsappIcon}
               alt="WhatsApp"
@@ -247,7 +416,9 @@ export default async function Home() {
                 verticalAlign: "middle",
               }}
             />{" "}
+
             WhatsApp
+
           </span>
 
           <a
@@ -257,10 +428,14 @@ export default async function Home() {
           >
             (85) 98601-6629
           </a>
+
         </div>
 
+
         <div className="row">
+
           <span>
+
             <Image
               src={instagramIcon}
               alt="Instagram"
@@ -271,7 +446,9 @@ export default async function Home() {
                 verticalAlign: "middle",
               }}
             />{" "}
+
             Instagram
+
           </span>
 
           <a
@@ -281,42 +458,78 @@ export default async function Home() {
           >
             @yago_barberr
           </a>
+
         </div>
+
       </section>
 
-      {/* AVALIAÇÕES */}
-      <section className="card" id="avaliacoes">
-        <h2>O que nossos clientes dizem</h2>
+
+      {/* =========================
+          AVALIAÇÕES
+      ========================= */}
+
+      <section
+        className="card"
+        id="avaliacoes"
+      >
+
+        <h2>
+          O que nossos clientes dizem
+        </h2>
+
 
         <div className="review">
-          <div className="review-stars">★★★★★</div>
+
+          <div className="review-stars">
+            ★★★★★
+          </div>
 
           <p>
             “Atendimento top, luxo e lazer excelente e o corte
             de cabelo top”
           </p>
 
-          <strong>— Davi Silva Lima</strong>
+          <strong>
+            — Davi Silva Lima
+          </strong>
+
         </div>
 
+
         <div className="review">
-          <div className="review-stars">★★★★★</div>
+
+          <div className="review-stars">
+            ★★★★★
+          </div>
 
           <p>
             “Bom dms a barbearia, o cara corta teu cabelo e ainda
             te alimenta!”
           </p>
 
-          <strong>— Ryan Pericles</strong>
+          <strong>
+            — Ryan Pericles
+          </strong>
+
         </div>
+
 
         <div className="review">
-          <div className="review-stars">★★★★★</div>
 
-          <p>“Atendimento Excelente!”</p>
+          <div className="review-stars">
+            ★★★★★
+          </div>
 
-          <strong>— Gusttavo Dommy</strong>
+          <p>
+            “Atendimento Excelente!”
+          </p>
+
+          <strong>
+            — Gusttavo Dommy
+          </strong>
+
         </div>
+
 
         <a
           className="button secondary-button"
@@ -326,39 +539,64 @@ export default async function Home() {
         >
           Ver avaliações no Google
         </a>
+
       </section>
 
-      {/* CTA FINAL */}
+
+      {/* =========================
+          CTA FINAL
+      ========================= */}
+
       <section className="hero final-cta">
-        <h2>Pronto para deixar o cabelo na régua?</h2>
+
+        <div className="final-cta-decoration">
+          💈
+        </div>
+
+        <h2>
+          Pronto para deixar o cabelo na régua?
+        </h2>
 
         <p>
           Escolha seu serviço e reserve seu horário.
         </p>
 
-        <Link className="button" href="/agendar">
+        <Link
+          className="button"
+          href="/agendar"
+        >
           Agendar meu horário
         </Link>
+
       </section>
 
-      {/* RODAPÉ */}
+
+      {/* =========================
+          RODAPÉ
+      ========================= */}
+
       <footer className="site-footer">
-  <p>
-    © {new Date().getFullYear()}{" "}
-    {establishment?.name ?? "Yago Barbershop"}
-  </p>
 
-  <p>
-    Desenvolvido por <strong>Gustavo</strong>
-  </p>
+        <p>
+          © {new Date().getFullYear()}{" "}
+          {establishment?.name ?? "Yago Barbershop"}
+        </p>
 
-  <Link
-    href="/admin/login"
-    className="admin-access-link"
-  >
-    Área administrativa
-  </Link>
-</footer>
+        <p>
+          Desenvolvido por{" "}
+          <strong>
+            Gustavo
+          </strong>
+        </p>
+
+        <Link
+          href="/admin/login"
+          className="admin-access-link"
+        >
+          Área administrativa
+        </Link>
+
+      </footer>
 
     </main>
   );
