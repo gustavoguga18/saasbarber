@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/admin";
-import logo from "./yago-logo.jpeg";
+import logo from "./yago-logo.png";
 
 export const dynamic = "force-dynamic";
 
