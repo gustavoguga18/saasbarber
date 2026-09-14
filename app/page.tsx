@@ -65,35 +65,92 @@ export default async function Home() {
     <main className="page">
 
       {/* =========================
-          MENU DE NAVEGAÇÃO
+          MENU
       ========================= */}
 
       <nav className="home-nav">
-        <a href="#inicio">Início</a>
-        <a href="#sobre">Sobre</a>
-        <a href="#servicos">Serviços</a>
-        <a href="#horarios">Horários</a>
-        <a href="#localizacao">Localização</a>
-        <a href="#contato">Contato</a>
-        <a href="#avaliacoes">Avaliações</a>
+
+        <a href="#inicio">
+          Início
+        </a>
+
+        <a href="#sobre">
+          Sobre
+        </a>
+
+        <a href="#servicos">
+          Serviços
+        </a>
+
+        <a href="#horarios">
+          Horários
+        </a>
+
+        <a href="#localizacao">
+          Localização
+        </a>
+
+        <a href="#contato">
+          Contato
+        </a>
+
+        <a href="#avaliacoes">
+          Avaliações
+        </a>
+
       </nav>
 
 
       {/* =========================
-          HERO
+          HERO COM VÍDEO
       ========================= */}
 
-      <section className="hero hero-barber" id="inicio">
+      <section
+        className="hero hero-video-section"
+        id="inicio"
+      >
 
-        {/* Barber Pole decorativo */}
-        <div
-          className="barber-pole"
+        {/* VÍDEO DE FUNDO */}
+
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
           aria-hidden="true"
         >
-          <div className="barber-pole-stripes" />
+          <source
+            src="/barber-video.mp4"
+            type="video/mp4"
+          />
+        </video>
+
+
+        {/* CAMADA ESCURA */}
+
+        <div
+          className="hero-video-overlay"
+          aria-hidden="true"
+        />
+
+
+        {/* DETALHE BARBER POLE */}
+
+        <div
+          className="hero-color-line"
+          aria-hidden="true"
+        >
+          <span />
+          <span />
+          <span />
         </div>
 
-        <div className="hero-content">
+
+        {/* CONTEÚDO */}
+
+        <div className="hero-video-content">
 
           <Image
             src={logo}
@@ -101,41 +158,42 @@ export default async function Home() {
             width={180}
             height={180}
             priority
-            className="hero-logo"
+            className="hero-video-logo"
           />
 
           <p className="eyebrow">
-            ✂ BARBEARIA
+            BARBEARIA
           </p>
 
           <h1>
             {establishment?.name ?? "Yago Barbershop"}
           </h1>
 
-          <p className="slogan">
+          <p className="hero-video-slogan">
             {establishment?.slogan ??
               "CUIDA VEM DEIXAR TEU CABELO NA RÉGUA 💈"}
           </p>
 
-          <p className="hero-description">
-            Seu corte, seu estilo e aquele atendimento diferenciado.
-            <br />
-            Agende seu horário de forma rápida e fácil.
+          <p className="hero-video-description">
+            Seu corte, seu estilo e aquele atendimento
+            diferenciado.
           </p>
 
           <Link
-            className="button hero-button"
+            className="button hero-video-button"
             href="/agendar"
           >
             Agendar horário
           </Link>
 
-          <div className="hero-pole-line">
+
+          {/* PEQUENO INDICADOR */}
+
+          <div className="hero-scroll-indicator">
             <span />
             <strong>
-              ESTILO • QUALIDADE • ATITUDE
+              ROLE PARA CONHECER
             </strong>
-            <span />
           </div>
 
         </div>
@@ -144,18 +202,42 @@ export default async function Home() {
 
 
       {/* =========================
-          DIVISÓRIA BARBER POLE
+          FAIXA DE IDENTIDADE
       ========================= */}
 
       <div
-        className="barber-pole-divider"
+        className="barber-identity-strip"
         aria-hidden="true"
       >
-        <div className="barber-pole-divider-inner">
-          💈 YAGO BARBERSHOP • ESTILO NA RÉGUA • 💈
-          YAGO BARBERSHOP • ESTILO NA RÉGUA • 💈
-          YAGO BARBERSHOP • ESTILO NA RÉGUA •
-        </div>
+
+        <span>
+          YAGO BARBERSHOP
+        </span>
+
+        <strong>
+          ✦
+        </strong>
+
+        <span>
+          ESTILO NA RÉGUA
+        </span>
+
+        <strong>
+          ✦
+        </strong>
+
+        <span>
+          CORTE • BARBA • ESTILO
+        </span>
+
+        <strong>
+          ✦
+        </strong>
+
+        <span>
+          YAGO BARBERSHOP
+        </span>
+
       </div>
 
 
@@ -168,6 +250,7 @@ export default async function Home() {
         <div className="home-rating">
 
           <div>
+
             <strong className="rating-number">
               5,0
             </strong>
@@ -175,9 +258,11 @@ export default async function Home() {
             <span className="stars">
               ★★★★★
             </span>
+
           </div>
 
           <div>
+
             <strong>
               10 avaliações
             </strong>
@@ -185,6 +270,7 @@ export default async function Home() {
             <span className="rating-label">
               Avaliação no Google
             </span>
+
           </div>
 
         </div>
@@ -200,6 +286,10 @@ export default async function Home() {
         className="card"
         id="sobre"
       >
+
+        <div className="section-label">
+          01 / SOBRE
+        </div>
 
         <h2>
           Sobre a Yago Barbershop
@@ -227,8 +317,12 @@ export default async function Home() {
         id="servicos"
       >
 
+        <div className="section-label">
+          02 / SERVIÇOS
+        </div>
+
         <h2>
-          Serviços
+          Escolha seu estilo
         </h2>
 
         {services && services.length > 0 ? (
@@ -242,11 +336,11 @@ export default async function Home() {
                 key={service.id}
               >
 
-                <div className="service-icon">
+                <div className="service-number">
                   ✂
                 </div>
 
-                <div>
+                <div className="service-info">
 
                   <strong>
                     {service.name}
@@ -304,6 +398,10 @@ export default async function Home() {
         id="horarios"
       >
 
+        <div className="section-label">
+          03 / HORÁRIOS
+        </div>
+
         <h2>
           Horários de atendimento
         </h2>
@@ -346,6 +444,10 @@ export default async function Home() {
         className="card"
         id="localizacao"
       >
+
+        <div className="section-label">
+          04 / LOCALIZAÇÃO
+        </div>
 
         <h2>
           Onde estamos
@@ -398,8 +500,12 @@ export default async function Home() {
         id="contato"
       >
 
+        <div className="section-label">
+          05 / CONTATO
+        </div>
+
         <h2>
-          Entre em contato
+          Fale com a gente
         </h2>
 
         <div className="row">
@@ -472,6 +578,10 @@ export default async function Home() {
         className="card"
         id="avaliacoes"
       >
+
+        <div className="section-label">
+          06 / AVALIAÇÕES
+        </div>
 
         <h2>
           O que nossos clientes dizem
@@ -549,24 +659,30 @@ export default async function Home() {
 
       <section className="hero final-cta">
 
-        <div className="final-cta-decoration">
-          💈
+        <div className="final-cta-content">
+
+          <p className="eyebrow">
+            YAGO BARBERSHOP
+          </p>
+
+          <h2>
+            Pronto para deixar
+            <br />
+            o cabelo na régua?
+          </h2>
+
+          <p>
+            Escolha seu serviço e reserve seu horário.
+          </p>
+
+          <Link
+            className="button"
+            href="/agendar"
+          >
+            Agendar meu horário
+          </Link>
+
         </div>
-
-        <h2>
-          Pronto para deixar o cabelo na régua?
-        </h2>
-
-        <p>
-          Escolha seu serviço e reserve seu horário.
-        </p>
-
-        <Link
-          className="button"
-          href="/agendar"
-        >
-          Agendar meu horário
-        </Link>
 
       </section>
 
