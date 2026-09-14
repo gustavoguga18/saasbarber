@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/admin";
 import { AgendaActions } from "./agenda-actions";
+import Link from "next/link";
 
 export default async function AgendaPage() {
   const supabase = await createServerSupabaseClient();
@@ -70,8 +71,17 @@ export default async function AgendaPage() {
           <p>Gerencie os agendamentos da barbearia.</p>
         </div>
 
-        <div className="admin-user">
-          <span>{user.email}</span>
+        <div className="admin-header-actions">
+          <Link
+            href="/agendar?admin=true"
+            className="button"
+          >
+            + Agendar manualmente
+          </Link>
+
+          <div className="admin-user">
+            <span>{user.email}</span>
+          </div>
         </div>
       </header>
 
