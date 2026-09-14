@@ -18,8 +18,19 @@ export async function POST(request: Request) {
       adminMode,
     } = body;
 
-    console.log("Método de pagamento recebido:", paymentMethod);
-    console.log("Modo administrativo:", adminMode);
+    console.log(
+      "Método de pagamento recebido:",
+      paymentMethod
+    );
+
+    console.log(
+      "Modo administrativo:",
+      adminMode
+    );
+
+    // =========================
+    // VALIDAÇÃO DOS CAMPOS
+    // =========================
 
     if (
       !serviceId ||
@@ -30,21 +41,160 @@ export async function POST(request: Request) {
       !paymentMethod
     ) {
       return NextResponse.json(
-        { error: "Preencha todos os campos." },
+        {
+          error:
+            "Preencha todos os campos.",
+        },
         { status: 400 }
       );
     }
 
-    if (!["pix", "card", "cash"].includes(paymentMethod)) {
+    if (
+      !["pix", "card", "cash"].includes(
+        paymentMethod
+      )
+    ) {
       return NextResponse.json(
-        { error: "Forma de pagamento inválida." },
+        {
+          error:
+            "Forma de pagamento inválida.",
+        },
         { status: 400 }
       );
+    }
+
+    // =========================
+    // VALIDAÇÃO DA SEMANA
+    // =========================
+    //
+    // Para clientes:
+    //
+    // Segunda a sábado:
+    // → agenda da semana atual
+    //
+    // Domingo:
+    // → abre a próxima semana
+    //
+    // Domingo não é dia de atendimento.
+    //
+    // AdminMode fica livre para o barbeiro
+    // realizar agendamentos manuais.
+
+    if (!adminMode) {
+      const now = new Date();
+
+      const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+
+      const dayOfWeek =
+        today.getDay();
+
+      let monday: Date;
+
+      if (dayOfWeek === 0) {
+        // Domingo:
+        // abre a próxima semana.
+
+        monday = new Date(today);
+
+        monday.setDate(
+          today.getDate() + 1
+        );
+      } else {
+        // Segunda a sábado:
+        // usa a segunda-feira desta semana.
+
+        monday = new Date(today);
+
+        monday.setDate(
+          today.getDate() -
+            (dayOfWeek - 1)
+        );
+      }
+
+      // Sábado é o último dia permitido.
+
+      const saturday = new Date(
+        monday
+      );
+
+      saturday.setDate(
+        monday.getDate() + 5
+      );
+
+      const year =
+        saturday.getFullYear();
+
+      const month = String(
+        saturday.getMonth() + 1
+      ).padStart(2, "0");
+
+      const day = String(
+        saturday.getDate()
+      ).padStart(2, "0");
+
+      const maxBookingDate =
+        `${year}-${month}-${day}`;
+
+      const mondayYear =
+        monday.getFullYear();
+
+      const mondayMonth = String(
+        monday.getMonth() + 1
+      ).padStart(2, "0");
+
+      const mondayDay = String(
+        monday.getDate()
+      ).padStart(2, "0");
+
+      const minBookingDate =
+        `${mondayYear}-${mondayMonth}-${mondayDay}`;
+
+      // Domingo nunca pode ser agendado.
+
+      const [dateYear, dateMonth, dateDay] =
+        String(date)
+          .split("-")
+          .map(Number);
+
+      const requestedDate =
+        new Date(
+          dateYear,
+          dateMonth - 1,
+          dateDay
+        );
+
+      const requestedDay =
+        requestedDate.getDay();
+
+      if (
+        requestedDay === 0 ||
+        date < minBookingDate ||
+        date > maxBookingDate
+      ) {
+        return NextResponse.json(
+          {
+            error:
+              "Essa data não está disponível para agendamento.",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const admin = createAdminClient();
 
-    const { data: service, error: serviceError } = await admin
+    // =========================
+    // BUSCAR SERVIÇO
+    // =========================
+
+    const {
+      data: service,
+      error: serviceError,
+    } = await admin
       .from("services")
       .select(
         "id,name,price,duration_minutes,establishment_id"
@@ -53,36 +203,71 @@ export async function POST(request: Request) {
       .eq("active", true)
       .single();
 
-    if (serviceError || !service) {
+    if (
+      serviceError ||
+      !service
+    ) {
       return NextResponse.json(
-        { error: "Serviço inválido." },
+        {
+          error:
+            "Serviço inválido.",
+        },
         { status: 400 }
       );
     }
 
-    const [h, m] = String(time).split(":").map(Number);
+    // =========================
+    // CALCULAR HORÁRIO FINAL
+    // =========================
+
+    const [h, m] = String(time)
+      .split(":")
+      .map(Number);
 
     const total =
-      h * 60 + m + Number(service.duration_minutes);
+      h * 60 +
+      m +
+      Number(
+        service.duration_minutes
+      );
 
     const endTime = `${String(
       Math.floor(total / 60) % 24
-    ).padStart(2, "0")}:${String(total % 60).padStart(
-      2,
-      "0"
-    )}:00`;
+    ).padStart(2, "0")}:${String(
+      total % 60
+    ).padStart(2, "0")}:00`;
 
-    const { data: existing } = await admin
+    // =========================
+    // VERIFICAR CONFLITO
+    // =========================
+
+    const {
+      data: existing,
+    } = await admin
       .from("appointments")
-      .select("id,start_time,end_time")
+      .select(
+        "id,start_time,end_time"
+      )
       .eq(
         "establishment_id",
         service.establishment_id
       )
-      .eq("appointment_date", date)
-      .in("status", ["pending", "confirmed"])
-      .lt("start_time", endTime)
-      .gt("end_time", `${time}:00`)
+      .eq(
+        "appointment_date",
+        date
+      )
+      .in("status", [
+        "pending",
+        "confirmed",
+      ])
+      .lt(
+        "start_time",
+        endTime
+      )
+      .gt(
+        "end_time",
+        `${time}:00`
+      )
       .limit(1);
 
     if (existing?.length) {
@@ -95,23 +280,36 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: customer, error: customerError } =
-      await admin
-        .from("customers")
-        .upsert(
-          {
-            establishment_id: service.establishment_id,
-            name: String(name).trim(),
-            phone: String(phone).trim(),
-          },
-          {
-            onConflict: "establishment_id,phone",
-          }
-        )
-        .select("id")
-        .single();
+    // =========================
+    // CRIAR / ATUALIZAR CLIENTE
+    // =========================
 
-    if (customerError || !customer) {
+    const {
+      data: customer,
+      error: customerError,
+    } = await admin
+      .from("customers")
+      .upsert(
+        {
+          establishment_id:
+            service.establishment_id,
+
+          name: String(name).trim(),
+
+          phone: String(phone).trim(),
+        },
+        {
+          onConflict:
+            "establishment_id,phone",
+        }
+      )
+      .select("id")
+      .single();
+
+    if (
+      customerError ||
+      !customer
+    ) {
       console.error(
         "Erro ao cadastrar cliente:",
         customerError
@@ -126,29 +324,66 @@ export async function POST(request: Request) {
       );
     }
 
-    // Cliente normal = pendente
-    // Yago agendando manualmente = confirmado
-    const appointmentStatus = adminMode
-      ? "confirmed"
-      : "pending";
+    // =========================
+    // STATUS DO AGENDAMENTO
+    // =========================
+    //
+    // Cliente normal:
+    // → pending
+    //
+    // Agendamento manual:
+    // → confirmed
 
-    const { data: appointment, error } = await admin
+    const appointmentStatus =
+      adminMode
+        ? "confirmed"
+        : "pending";
+
+    // =========================
+    // CRIAR AGENDAMENTO
+    // =========================
+
+    const {
+      data: appointment,
+      error,
+    } = await admin
       .from("appointments")
       .insert({
-        establishment_id: service.establishment_id,
-        service_id: service.id,
-        customer_id: customer.id,
-        appointment_date: date,
-        start_time: `${time}:00`,
-        end_time: endTime,
-        status: appointmentStatus,
-        price: service.price,
+        establishment_id:
+          service.establishment_id,
+
+        service_id:
+          service.id,
+
+        customer_id:
+          customer.id,
+
+        appointment_date:
+          date,
+
+        start_time:
+          `${time}:00`,
+
+        end_time:
+          endTime,
+
+        status:
+          appointmentStatus,
+
+        price:
+          service.price,
       })
       .select("id")
       .single();
 
-    if (error || !appointment) {
-      if (error?.code === "23505") {
+    if (
+      error ||
+      !appointment
+    ) {
+      if (
+        error?.code ===
+        "23505"
+      ) {
         return NextResponse.json(
           {
             error:
@@ -172,23 +407,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error: paymentError } = await admin
+    // =========================
+    // REGISTRAR PAGAMENTO
+    // =========================
+
+    const {
+      error: paymentError,
+    } = await admin
       .from("payments")
       .insert({
-        appointment_id: appointment.id,
-        amount: service.price,
-        method: paymentMethod,
-        status: "pending",
+        appointment_id:
+          appointment.id,
+
+        amount:
+          service.price,
+
+        method:
+          paymentMethod,
+
+        status:
+          "pending",
       });
 
     if (paymentError) {
       console.error(
         "ERRO COMPLETO AO REGISTRAR PAGAMENTO:",
         {
-          code: paymentError.code,
-          message: paymentError.message,
-          details: paymentError.details,
-          hint: paymentError.hint,
+          code:
+            paymentError.code,
+
+          message:
+            paymentError.message,
+
+          details:
+            paymentError.details,
+
+          hint:
+            paymentError.hint,
         }
       );
 
@@ -202,14 +457,22 @@ export async function POST(request: Request) {
     }
 
     /*
+     * =========================
      * E-MAIL PARA O ADMINISTRADOR
+     * =========================
      */
+
     try {
       await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "gustavobarbosagbn@gmail.com",
+        from:
+          "onboarding@resend.dev",
+
+        to:
+          "gustavobarbosagbn@gmail.com",
+
         subject:
           "🔔 Novo agendamento - Yago Barbershop",
+
         html: `
           <h2>Novo agendamento! 💈</h2>
 
@@ -255,21 +518,33 @@ export async function POST(request: Request) {
           </p>
         `,
       });
-    } catch (emailError) {
+    } catch (
+      emailError
+    ) {
       console.error(
         "Erro ao enviar e-mail para o administrador:",
         emailError
       );
     }
 
+    // =========================
+    // RESPOSTA
+    // =========================
+
     return NextResponse.json({
       id: appointment.id,
     });
   } catch (error) {
-    console.error("Erro interno:", error);
+    console.error(
+      "Erro interno:",
+      error
+    );
 
     return NextResponse.json(
-      { error: "Erro interno." },
+      {
+        error:
+          "Erro interno.",
+      },
       { status: 500 }
     );
   }
