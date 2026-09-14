@@ -64,17 +64,17 @@ export default async function AgendaPage() {
   return (
     <main className="admin-page">
       <header className="admin-header">
+        <div>
+          <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
+          <h1>Agenda</h1>
+          <p>Gerencie os agendamentos da barbearia.</p>
+        </div>
 
-  <div>
-    <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
-    <h1>Agenda</h1>
-    <p>Gerencie os agendamentos da barbearia.</p>
-  </div>
+        <div className="admin-user">
+          <span>{user.email}</span>
+        </div>
+      </header>
 
-  <div className="admin-user">
-    <span>{user.email}</span>
-  </div>
-</header>
       {/* =========================
           PENDENTES
       ========================= */}
@@ -99,9 +99,11 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
+
               const payment = Array.isArray(appointment.payments)
                 ? appointment.payments[0]
                 : appointment.payments;
+
               return (
                 <div
                   className="admin-appointment"
@@ -127,6 +129,7 @@ export default async function AgendaPage() {
                     <small>
                       📅 {appointment.appointment_date}
                     </small>
+
                     <small>
                       💳{" "}
                       {payment?.method === "pix"
@@ -151,6 +154,12 @@ export default async function AgendaPage() {
 
                     <AgendaActions
                       appointmentId={appointment.id}
+                      customerName={customer?.name ?? "Cliente"}
+                      customerPhone={customer?.phone ?? ""}
+                      serviceName={service?.name ?? "Serviço"}
+                      appointmentDate={appointment.appointment_date}
+                      startTime={appointment.start_time ?? ""}
+                      price={Number(appointment.price ?? 0)}
                     />
                   </div>
                 </div>
@@ -198,6 +207,7 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
+
               const payment = Array.isArray(appointment.payments)
                 ? appointment.payments[0]
                 : appointment.payments;
@@ -227,6 +237,7 @@ export default async function AgendaPage() {
                     <small>
                       📅 {appointment.appointment_date}
                     </small>
+
                     <small>
                       💳{" "}
                       {payment?.method === "pix"
@@ -298,9 +309,11 @@ export default async function AgendaPage() {
               const customer = Array.isArray(appointment.customers)
                 ? appointment.customers[0]
                 : appointment.customers;
+
               const payment = Array.isArray(appointment.payments)
                 ? appointment.payments[0]
                 : appointment.payments;
+
               return (
                 <div
                   className="admin-appointment"
@@ -326,17 +339,18 @@ export default async function AgendaPage() {
                     <small>
                       📅 {appointment.appointment_date}
                     </small>
+
                     <small>
                       💳{" "}
                       {payment?.method === "pix"
-                      ? "PIX"
-                      : payment?.method === "credit"
-                      ? "Cartão de crédito"
-                      : payment?.method === "debit"
-                      ? "Cartão de débito"
-                      : payment?.method === "cash"
-                      ? "Espécie"
-                      : "Não informado"}
+                        ? "PIX"
+                        : payment?.method === "credit"
+                        ? "Cartão de crédito"
+                        : payment?.method === "debit"
+                        ? "Cartão de débito"
+                        : payment?.method === "cash"
+                        ? "Espécie"
+                        : "Não informado"}
                     </small>
                   </div>
 
