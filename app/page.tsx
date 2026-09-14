@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/admin";
 import logo from "./yago-logo.png";
+import whatsappIcon from "./whatsapp.png";
+import instagramIcon from "./instagram.png";
 
 export const dynamic = "force-dynamic";
 
@@ -218,33 +220,51 @@ export default async function Home() {
       </section>
 
       {/* CONTATO */}
-      <section className="card">
-        <h2>Entre em contato</h2>
+<section className="card">
+  <h2>Entre em contato</h2>
 
-        <div className="row">
-          <span>📱 WhatsApp</span>
+  <div className="row">
+    <span>
+      <Image
+        src={whatsappIcon}
+        alt="WhatsApp"
+        width={24}
+        height={24}
+        style={{ objectFit: "contain", verticalAlign: "middle" }}
+      />{" "}
+      WhatsApp
+    </span>
 
-          <a
-            href={`https://wa.me/${whatsappNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            (85) 98601-6629
-          </a>
-        </div>
+    <a
+      href={`https://wa.me/${whatsappNumber}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      (85) 98601-6629
+    </a>
+  </div>
 
-        <div className="row">
-          <span>📸 Instagram</span>
+  <div className="row">
+    <span>
+      <Image
+        src={instagramIcon}
+        alt="Instagram"
+        width={24}
+        height={24}
+        style={{ objectFit: "contain", verticalAlign: "middle" }}
+      />{" "}
+      Instagram
+    </span>
 
-          <a
-            href={instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @yago_barberr
-          </a>
-        </div>
-      </section>
+    <a
+      href={instagramUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      @yago_barberr
+    </a>
+  </div>
+</section>
 
       {/* AVALIAÇÕES */}
       <section className="card">
