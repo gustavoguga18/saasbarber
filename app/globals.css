@@ -4584,3 +4584,786 @@ a {
     height: 38px;
   }
 }
+/* =========================================================
+   YAGO BARBERSHOP
+   HERO COM VÍDEO
+   ========================================================= */
+
+.hero-video-section {
+  position: relative;
+
+  width: calc(100% + 40px);
+  min-height: min(760px, 88vh);
+
+  margin-left: -20px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background: #050505;
+}
+
+
+/* =========================================================
+   VÍDEO
+   ========================================================= */
+
+.hero-video {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+
+  z-index: 0;
+
+  background: #050505;
+}
+
+
+/* =========================================================
+   OVERLAY ESCURO
+   ========================================================= */
+
+.hero-video-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.38) 40%,
+      rgba(0, 0, 0, 0.68) 100%
+    );
+}
+
+
+/* =========================================================
+   SEGUNDO OVERLAY
+   DEIXA O CENTRO MAIS LIMPO PARA O TEXTO
+   ========================================================= */
+
+.hero-video-section::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.08),
+      rgba(0, 0, 0, 0.35) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTEÚDO DO HERO
+   ========================================================= */
+
+.hero-video-content {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(760px, 100%);
+
+  padding: 70px 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.hero-video-logo {
+  width: 150px;
+  height: 150px;
+
+  object-fit: contain;
+
+  margin: 0 auto 18px;
+
+  filter:
+    drop-shadow(0 8px 25px rgba(0, 0, 0, 0.65));
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.hero-video-content .eyebrow {
+  margin: 0 0 12px;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 6px;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.hero-video-content h1 {
+  margin: 0;
+
+  max-width: 900px;
+
+  color: #ffffff;
+
+  font-size: clamp(42px, 7vw, 78px);
+
+  line-height: 0.95;
+
+  font-weight: 900;
+
+  letter-spacing: -2.5px;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 4px 25px rgba(0, 0, 0, 0.75);
+}
+
+
+/* =========================================================
+   SLOGAN
+   ========================================================= */
+
+.hero-video-slogan {
+  max-width: 700px;
+
+  margin: 24px auto 12px;
+
+  color: #ffffff;
+
+  font-size: clamp(18px, 2.5vw, 25px);
+
+  line-height: 1.35;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 3px 15px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================================
+   DESCRIÇÃO
+   ========================================================= */
+
+.hero-video-description {
+  max-width: 520px;
+
+  margin: 0 auto 28px;
+
+  color: rgba(255, 255, 255, 0.86);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================================
+   BOTÃO DO HERO
+   ========================================================= */
+
+.hero-video-button {
+  position: relative;
+
+  min-width: 220px;
+
+  padding: 15px 28px;
+
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #0b0b0b;
+
+  font-size: 14px;
+  font-weight: 900;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.35);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-video-button:hover {
+  transform: translateY(-3px);
+
+  background: #c9a45c;
+
+  border-color: #c9a45c;
+
+  color: #0b0b0b;
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================================
+   LINHA DE CORES
+   BARBER POLE — SUTIL
+   ========================================================= */
+
+.hero-color-line {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  z-index: 4;
+
+  width: 100%;
+  height: 4px;
+
+  display: flex;
+}
+
+.hero-color-line span:nth-child(1) {
+  flex: 1;
+
+  background: #c62828;
+}
+
+.hero-color-line span:nth-child(2) {
+  flex: 1;
+
+  background: #ffffff;
+}
+
+.hero-color-line span:nth-child(3) {
+  flex: 1;
+
+  background: #1565c0;
+}
+
+
+/* =========================================================
+   INDICADOR DE ROLAGEM
+   ========================================================= */
+
+.hero-scroll-indicator {
+  display: flex;
+
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 42px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.hero-scroll-indicator span {
+  width: 1px;
+  height: 28px;
+
+  background: rgba(255, 255, 255, 0.6);
+
+  animation: heroScrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes heroScrollPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+
+/* =========================================================
+   FAIXA DE IDENTIDADE
+   ========================================================= */
+
+.barber-identity-strip {
+  width: calc(100% + 40px);
+
+  margin-left: -20px;
+
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  padding: 10px 20px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  color: #111111;
+
+  border-top: 2px solid #c62828;
+  border-bottom: 2px solid #1565c0;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  white-space: nowrap;
+}
+
+.barber-identity-strip strong {
+  color: #c62828;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LABEL DAS SEÇÕES
+   ========================================================= */
+
+.section-label {
+  margin-bottom: 10px;
+
+  color: #c9a45c;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SERVIÇOS — NOVO VISUAL
+   ========================================================= */
+
+.barber-service {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 18px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #181818,
+      #101010
+    );
+
+  border: 1px solid #292929;
+
+  border-radius: 12px;
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.barber-service::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #c62828 0%,
+      #ffffff 50%,
+      #1565c0 100%
+    );
+}
+
+.barber-service:hover {
+  transform: translateX(3px);
+
+  border-color: rgba(201, 164, 92, 0.4);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1c1c1c,
+      #121212
+    );
+}
+
+.service-number {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #0b0b0b;
+
+  border: 1px solid #303030;
+
+  color: #c9a45c;
+
+  font-size: 18px;
+
+  flex-shrink: 0;
+}
+
+.service-info {
+  min-width: 0;
+}
+
+.service-info > strong {
+  display: block;
+
+  color: #f5f1e8;
+
+  font-size: 16px;
+
+  font-weight: 800;
+}
+
+.service-info p {
+  margin: 5px 0;
+
+  color: #8e8e8e;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+}
+
+.service-info span {
+  display: inline-block;
+
+  margin-top: 4px;
+
+  color: #777;
+
+  font-size: 11px;
+
+  letter-spacing: 0.3px;
+}
+
+.service-price {
+  color: #f5f1e8;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CTA FINAL
+   ========================================================= */
+
+.final-cta {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(198, 40, 40, 0.10),
+      transparent 45%
+    ),
+    #101010;
+}
+
+.final-cta-content {
+  position: relative;
+
+  z-index: 2;
+}
+
+.final-cta .eyebrow {
+  margin-bottom: 14px;
+}
+
+.final-cta h2 {
+  max-width: 760px;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .hero-video-section {
+    width: calc(100% + 30px);
+
+    margin-left: -15px;
+
+    min-height: 650px;
+
+    border-radius: 18px;
+  }
+
+  .hero-video {
+    object-position: center center;
+  }
+
+  .hero-video-content {
+    padding: 60px 18px 50px;
+  }
+
+  .hero-video-logo {
+    width: 125px;
+    height: 125px;
+
+    margin-bottom: 14px;
+  }
+
+  .hero-video-content .eyebrow {
+    font-size: 10px;
+
+    letter-spacing: 4px;
+  }
+
+  .hero-video-content h1 {
+    font-size: clamp(38px, 12vw, 54px);
+
+    line-height: 0.95;
+
+    letter-spacing: -1.8px;
+  }
+
+  .hero-video-slogan {
+    margin-top: 18px;
+
+    font-size: 17px;
+  }
+
+  .hero-video-description {
+    max-width: 320px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+  }
+
+  .hero-video-button {
+    width: 100%;
+
+    max-width: 320px;
+  }
+
+  .hero-scroll-indicator {
+    margin-top: 32px;
+
+    font-size: 8px;
+  }
+
+  .barber-identity-strip {
+    width: calc(100% + 30px);
+
+    margin-left: -15px;
+
+    justify-content: flex-start;
+
+    overflow-x: auto;
+
+    gap: 14px;
+
+    padding: 9px 16px;
+
+    font-size: 9px;
+
+    scrollbar-width: none;
+  }
+
+  .barber-identity-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-label {
+    font-size: 9px;
+
+    letter-spacing: 2.5px;
+  }
+
+  .barber-service {
+    grid-template-columns: 40px minmax(0, 1fr);
+
+    gap: 12px;
+
+    padding: 16px;
+  }
+
+  .service-number {
+    width: 38px;
+    height: 38px;
+
+    font-size: 16px;
+  }
+
+  .service-price {
+    grid-column: 2;
+
+    margin-top: -4px;
+
+    font-size: 17px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .hero-video-section {
+    min-height: 620px;
+
+    border-radius: 16px;
+  }
+
+  .hero-video-content {
+    padding: 48px 15px;
+  }
+
+  .hero-video-logo {
+    width: 105px;
+    height: 105px;
+  }
+
+  .hero-video-content h1 {
+    font-size: 38px;
+  }
+
+  .hero-video-slogan {
+    font-size: 15px;
+  }
+
+  .hero-video-description {
+    font-size: 12px;
+  }
+
+  .hero-scroll-indicator {
+    margin-top: 26px;
+  }
+
+  .barber-service {
+    padding: 14px;
+  }
+
+  .service-info > strong {
+    font-size: 15px;
+  }
+
+  .service-info p {
+    font-size: 12px;
+  }
+
+  .service-price {
+    font-size: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE — VÍDEO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero-video {
+    animation: none;
+  }
+
+  .hero-scroll-indicator span {
+    animation: none;
+  }
+}
