@@ -39,6 +39,10 @@ export async function GET(request: Request) {
 
     const admin = createAdminClient();
 
+    // =========================================================
+    // BUSCA O SERVIÇO
+    // =========================================================
+
     const { data: service, error: serviceError } = await admin
       .from("services")
       .select("id,duration_minutes,establishment_id")
@@ -53,7 +57,10 @@ export async function GET(request: Request) {
       );
     }
 
-    // Verifica se a barbearia está fechada nesta data.
+    // =========================================================
+    // 1. VERIFICA SE A DATA ESTÁ TOTALMENTE BLOQUEADA
+    // =========================================================
+
     const { data: blockedDate, error: blockedDateError } = await admin
       .from("blocked_dates")
       .select("id,reason")
@@ -73,6 +80,7 @@ export async function GET(request: Request) {
       );
     }
 
+    // Se estiver em blocked_dates, não existe nenhum horário.
     if (blockedDate) {
       return NextResponse.json({
         slots: [],
@@ -81,48 +89,103 @@ export async function GET(request: Request) {
       });
     }
 
-    const weekday = getWeekday(date);
+    // =========================================================
+    // 2. VERIFICA SE EXISTE HORÁRIO ESPECIAL PARA ESSA DATA
+    // =========================================================
 
-    const { data: workingHour, error: workingHourError } = await admin
-      .from("working_hours")
-      .select("open_time,close_time,active")
+    const { data: specialHour, error: specialHourError } = await admin
+      .from("special_hours")
+      .select("open_time,close_time,reason")
       .eq("establishment_id", service.establishment_id)
-      .eq("weekday", weekday)
-      .single();
+      .eq("special_date", date)
+      .maybeSingle();
 
-    if (workingHourError) {
+    if (specialHourError) {
       console.error(
-        "Erro ao buscar horário de funcionamento:",
-        workingHourError
+        "Erro ao verificar horário especial:",
+        specialHourError
       );
 
       return NextResponse.json(
-        { error: "Não foi possível consultar o horário de funcionamento." },
+        {
+          error:
+            "Não foi possível consultar o horário especial."
+        },
         { status: 500 }
       );
     }
 
-    if (
-      !workingHour ||
-      !workingHour.active ||
-      !workingHour.open_time ||
-      !workingHour.close_time
-    ) {
-      return NextResponse.json({
-        slots: [],
-        closed: false,
-      });
+    // =========================================================
+    // 3. DEFINE O HORÁRIO DE FUNCIONAMENTO
+    // =========================================================
+
+    let workingStart: number;
+    let workingEnd: number;
+    let specialReason: string | null = null;
+
+    if (specialHour) {
+      // Existe horário especial:
+      // ele substitui o horário normal da semana.
+
+      workingStart = timeToMinutes(specialHour.open_time);
+      workingEnd = timeToMinutes(specialHour.close_time);
+      specialReason = specialHour.reason ?? null;
+    } else {
+      // Não existe horário especial:
+      // usa o horário normal da semana.
+
+      const weekday = getWeekday(date);
+
+      const { data: workingHour, error: workingHourError } =
+        await admin
+          .from("working_hours")
+          .select("open_time,close_time,active")
+          .eq("establishment_id", service.establishment_id)
+          .eq("weekday", weekday)
+          .single();
+
+      if (workingHourError) {
+        console.error(
+          "Erro ao buscar horário de funcionamento:",
+          workingHourError
+        );
+
+        return NextResponse.json(
+          {
+            error:
+              "Não foi possível consultar o horário de funcionamento."
+          },
+          { status: 500 }
+        );
+      }
+
+      if (
+        !workingHour ||
+        !workingHour.active ||
+        !workingHour.open_time ||
+        !workingHour.close_time
+      ) {
+        return NextResponse.json({
+          slots: [],
+          closed: false,
+        });
+      }
+
+      workingStart = timeToMinutes(workingHour.open_time);
+      workingEnd = timeToMinutes(workingHour.close_time);
     }
 
-    const workingStart = timeToMinutes(workingHour.open_time);
-    const workingEnd = timeToMinutes(workingHour.close_time);
+    // =========================================================
+    // 4. BUSCA AGENDAMENTOS EXISTENTES
+    // =========================================================
 
-    const { data: appointments, error: appointmentsError } = await admin
-      .from("appointments")
-      .select("start_time,end_time")
-      .eq("establishment_id", service.establishment_id)
-      .eq("appointment_date", date)
-      .in("status", ["pending", "confirmed"]);
+    const { data: appointments, error: appointmentsError } =
+      await admin
+        .from("appointments")
+        .select("start_time,end_time")
+        .eq("establishment_id", service.establishment_id)
+        .eq("appointment_date", date)
+        .in("status", ["pending", "confirmed"]);
 
     if (appointmentsError) {
       console.error(
@@ -135,6 +198,10 @@ export async function GET(request: Request) {
         { status: 500 }
       );
     }
+
+    // =========================================================
+    // 5. VERIFICA HORÁRIO ATUAL
+    // =========================================================
 
     const now = new Date();
 
@@ -168,6 +235,10 @@ export async function GET(request: Request) {
         Math.ceil(currentTotal / 30) * 30;
     }
 
+    // =========================================================
+    // 6. GERA OS HORÁRIOS DISPONÍVEIS
+    // =========================================================
+
     const slots: string[] = [];
 
     for (
@@ -197,9 +268,15 @@ export async function GET(request: Request) {
       }
     }
 
+    // =========================================================
+    // 7. RETORNO
+    // =========================================================
+
     return NextResponse.json({
       slots,
       closed: false,
+      special: Boolean(specialHour),
+      reason: specialReason,
     });
   } catch (error) {
     console.error("Erro interno:", error);
