@@ -11,6 +11,8 @@ type AgendaActionsProps = {
   appointmentDate: string;
   startTime: string;
   price: number;
+  serviceId?: string;
+  canEdit?: boolean;
 };
 
 export function AgendaActions({
@@ -21,12 +23,22 @@ export function AgendaActions({
   appointmentDate,
   startTime,
   price,
+  serviceId,
+  canEdit = false,
 }: AgendaActionsProps) {
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [newDate, setNewDate] = useState(appointmentDate);
+  const [newTime, setNewTime] = useState("");
+  const [slots, setSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
   function openWhatsApp(
-    status: "confirmed" | "cancelled"
+    status: "confirmed" | "cancelled" | "rescheduled",
+    date = appointmentDate,
+    time = startTime
   ) {
     const phone = customerPhone.replace(/\D/g, "");
 
@@ -37,42 +49,61 @@ export function AgendaActions({
       return;
     }
 
-    const [year, month, day] = appointmentDate.split("-");
+    const [year, month, day] = date.split("-");
 
     const formattedDate =
       year && month && day
         ? `${day}/${month}/${year}`
-        : appointmentDate;
+        : date;
 
-    const formattedTime = startTime
-      ? startTime.slice(0, 5)
+    const formattedTime = time
+      ? time.slice(0, 5)
       : "";
 
     const formattedPrice = price
       .toFixed(2)
       .replace(".", ",");
 
-    const message =
-  status === "confirmed"
-    ? `Olá, ${customerName}! \u{1F4C8}
+    let message = "";
 
-Seu agendamento na Yago Barbershop foi confirmado! \u{2705}
+    if (status === "confirmed") {
+      message = `Olá, ${customerName}! 👋
 
-\u{1F4C5} Data: ${formattedDate}
-\u{1F552} Horário: ${formattedTime}
-\u{2702}\u{FE0F} Serviço: ${serviceName}
-\u{1F4B0} Valor: R$ ${formattedPrice}
+Seu agendamento na Yago Barbershop foi confirmado! ✅
 
-Te esperamos! \u{1F4C8}\u{2702}\u{FE0F}`
-        : `Olá, ${customerName}!
+📅 Data: ${formattedDate}
+🕐 Horário: ${formattedTime}
+✂️ Serviço: ${serviceName}
+💰 Valor: R$ ${formattedPrice}
 
-Seu agendamento na Yago Barbershop foi cancelado. \u{274C}
+Te esperamos! 💈✂️`;
+    }
 
-\u{1F4C5} Data: ${formattedDate}
-\u{1F552} Horário: ${formattedTime}
-\u{2702}\u{FE0F} Serviço: ${serviceName}
+    if (status === "cancelled") {
+      message = `Olá, ${customerName}!
 
-Caso queira, entre em contato conosco para escolher outro horário. \u{1F4C8}`;
+Seu agendamento na Yago Barbershop foi cancelado. ❌
+
+📅 Data: ${formattedDate}
+🕐 Horário: ${formattedTime}
+✂️ Serviço: ${serviceName}
+
+Caso queira, entre em contato conosco para escolher outro horário. 💈`;
+    }
+
+    if (status === "rescheduled") {
+      message = `Olá, ${customerName}! 👋
+
+Seu agendamento na Yago Barbershop foi alterado. 🔄
+
+📅 Nova data: ${formattedDate}
+🕐 Novo horário: ${formattedTime}
+✂️ Serviço: ${serviceName}
+💰 Valor: R$ ${formattedPrice}
+
+Te esperamos! 💈✂️`;
+    }
+
     const whatsappUrl =
       `https://wa.me/55${phone}` +
       `?text=${encodeURIComponent(message)}`;
@@ -119,10 +150,6 @@ Caso queira, entre em contato conosco para escolher outro horário. \u{1F4C8}`;
         return;
       }
 
-      /*
-       * Atualiza o status no banco primeiro.
-       * Somente depois abre o WhatsApp.
-       */
       openWhatsApp(status);
 
       router.refresh();
@@ -135,21 +162,225 @@ Caso queira, entre em contato conosco para escolher outro horário. \u{1F4C8}`;
     }
   }
 
+  async function loadSlots(date: string) {
+    if (!serviceId || !date) {
+      setSlots([]);
+      return;
+    }
+
+    setLoadingSlots(true);
+    setSlots([]);
+    setNewTime("");
+
+    try {
+      const response = await fetch(
+        `/api/availability?serviceId=${encodeURIComponent(
+          serviceId
+        )}&date=${encodeURIComponent(date)}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.error ??
+            "Não foi possível consultar os horários."
+        );
+        return;
+      }
+
+      setSlots(data.slots ?? []);
+    } catch {
+      alert(
+        "Não foi possível consultar os horários."
+      );
+    } finally {
+      setLoadingSlots(false);
+    }
+  }
+
+  async function reschedule() {
+    if (!newDate || !newTime) {
+      alert("Escolha a nova data e horário.");
+      return;
+    }
+
+    if (
+      newDate === appointmentDate &&
+      newTime === startTime.slice(0, 5)
+    ) {
+      alert(
+        "Escolha um horário diferente do atual."
+      );
+      return;
+    }
+
+    if (
+      !window.confirm(
+        `Alterar o agendamento para ${newDate} às ${newTime}?`
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "/api/admin/appointments",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: appointmentId,
+            status: "confirmed",
+            appointment_date: newDate,
+            start_time: newTime,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.error ??
+            "Não foi possível alterar o horário."
+        );
+        return;
+      }
+
+      setShowEdit(false);
+
+      openWhatsApp(
+        "rescheduled",
+        newDate,
+        newTime
+      );
+
+      router.refresh();
+    } catch {
+      alert(
+        "Não foi possível alterar o horário."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="admin-actions">
-      <button
-        type="button"
-        className="admin-action-confirm"
-        onClick={() => updateStatus("confirmed")}
-        disabled={loading}
-      >
-        {loading ? "..." : "Confirmar"}
-      </button>
+      {canEdit && (
+        <>
+          {!showEdit ? (
+            <button
+              type="button"
+              className="admin-action-confirm"
+              onClick={() => {
+                setShowEdit(true);
+                setNewDate(appointmentDate);
+                setNewTime("");
+                loadSlots(appointmentDate);
+              }}
+              disabled={loading}
+            >
+              Alterar horário
+            </button>
+          ) : (
+            <div className="admin-reschedule">
+              <label>
+                Nova data
+                <input
+                  type="date"
+                  value={newDate}
+                  onChange={(e) => {
+                    const date = e.target.value;
+                    setNewDate(date);
+                    loadSlots(date);
+                  }}
+                />
+              </label>
+
+              <label>
+                Novo horário
+                <select
+                  value={newTime}
+                  onChange={(e) =>
+                    setNewTime(e.target.value)
+                  }
+                  disabled={
+                    loadingSlots ||
+                    slots.length === 0
+                  }
+                >
+                  <option value="">
+                    {loadingSlots
+                      ? "Consultando..."
+                      : "Escolha um horário"}
+                  </option>
+
+                  {slots.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="admin-reschedule-buttons">
+                <button
+                  type="button"
+                  className="admin-action-confirm"
+                  onClick={reschedule}
+                  disabled={
+                    loading ||
+                    loadingSlots ||
+                    !newTime
+                  }
+                >
+                  {loading
+                    ? "Salvando..."
+                    : "Salvar horário"}
+                </button>
+
+                <button
+                  type="button"
+                  className="admin-action-cancel"
+                  onClick={() => {
+                    setShowEdit(false);
+                    setNewTime("");
+                  }}
+                  disabled={loading}
+                >
+                  Voltar
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {!canEdit && (
+        <button
+          type="button"
+          className="admin-action-confirm"
+          onClick={() =>
+            updateStatus("confirmed")
+          }
+          disabled={loading}
+        >
+          {loading ? "..." : "Confirmar"}
+        </button>
+      )}
 
       <button
         type="button"
         className="admin-action-cancel"
-        onClick={() => updateStatus("cancelled")}
+        onClick={() =>
+          updateStatus("cancelled")
+        }
         disabled={loading}
       >
         Cancelar
