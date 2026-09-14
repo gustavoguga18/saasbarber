@@ -15,9 +15,28 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
-  const today = new Date().toISOString().split("T")[0];
+  // =========================
+  // DATA E HORA - FORTALEZA
+  // =========================
+
+  const now = new Date();
+
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Fortaleza",
+  }).format(now);
+
+  const currentTime = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "America/Fortaleza",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(now);
 
   const admin = createAdminClient();
+
+  // =========================
+  // AGENDAMENTOS DE HOJE
+  // =========================
 
   const { data: appointments } = await admin
     .from("appointments")
@@ -38,6 +57,10 @@ export default async function AdminPage() {
     `)
     .eq("appointment_date", today)
     .order("start_time", { ascending: true });
+
+  // =========================
+  // ESTATÍSTICAS
+  // =========================
 
   const totalAppointments = appointments?.length ?? 0;
 
@@ -91,10 +114,24 @@ export default async function AdminPage() {
         0
       ) ?? 0;
 
+  // =========================
+  // PRÓXIMO ATENDIMENTO
+  // =========================
+  //
+  // Considera somente:
+  // - agendamentos de hoje
+  // - pendentes ou confirmados
+  // - horários que ainda não passaram
+  //
+  // Como os agendamentos já estão ordenados
+  // por start_time, o primeiro encontrado
+  // será o próximo atendimento.
+
   const nextAppointment = appointments?.find(
     (appointment) =>
-      appointment.status === "pending" ||
-      appointment.status === "confirmed"
+      (appointment.status === "pending" ||
+        appointment.status === "confirmed") &&
+      (appointment.start_time?.slice(0, 5) ?? "") >= currentTime
   );
 
   const nextCustomer = Array.isArray(nextAppointment?.customers)
@@ -108,12 +145,22 @@ export default async function AdminPage() {
   return (
     <main className="admin-page">
       <AdminRealtime />
+
       <AdminSidebar />
+
+      {/* =========================
+          CABEÇALHO
+      ========================= */}
+
       <header className="admin-header">
         <div>
           <p className="eyebrow">PAINEL ADMINISTRATIVO</p>
+
           <h1>Yago Barbershop</h1>
-          <p>Visão geral dos seus agendamentos.</p>
+
+          <p>
+            Visão geral dos seus agendamentos.
+          </p>
         </div>
 
         <div className="admin-user">
@@ -121,29 +168,47 @@ export default async function AdminPage() {
         </div>
       </header>
 
+      {/* =========================
+          ESTATÍSTICAS
+      ========================= */}
+
       <section className="admin-stats">
         <div className="admin-stat">
           <span>Agendamentos hoje</span>
-          <strong>{totalAppointments}</strong>
+
+          <strong>
+            {totalAppointments}
+          </strong>
         </div>
 
         <div className="admin-stat">
           <span>Confirmados</span>
-          <strong>{confirmedAppointments}</strong>
+
+          <strong>
+            {confirmedAppointments}
+          </strong>
         </div>
 
         <div className="admin-stat">
           <span>Pendentes</span>
-          <strong>{pendingAppointments}</strong>
+
+          <strong>
+            {pendingAppointments}
+          </strong>
         </div>
 
         <div className="admin-stat">
           <span>Valor previsto</span>
+
           <strong>
             R$ {totalValue.toFixed(2).replace(".", ",")}
           </strong>
         </div>
       </section>
+
+      {/* =========================
+          RESUMO DO DIA
+      ========================= */}
 
       <section className="admin-day-summary">
         <div className="admin-day-summary-card">
@@ -151,7 +216,9 @@ export default async function AdminPage() {
             CONFIRMADOS
           </span>
 
-          <strong>{confirmedAppointments}</strong>
+          <strong>
+            {confirmedAppointments}
+          </strong>
 
           <small>
             R$ {confirmedValue.toFixed(2).replace(".", ",")}
@@ -163,7 +230,9 @@ export default async function AdminPage() {
             PENDENTES
           </span>
 
-          <strong>{pendingAppointments}</strong>
+          <strong>
+            {pendingAppointments}
+          </strong>
 
           <small>
             R$ {pendingValue.toFixed(2).replace(".", ",")}
@@ -175,7 +244,9 @@ export default async function AdminPage() {
             CANCELADOS
           </span>
 
-          <strong>{cancelledAppointments}</strong>
+          <strong>
+            {cancelledAppointments}
+          </strong>
 
           <small>
             Agendamentos cancelados
@@ -183,11 +254,22 @@ export default async function AdminPage() {
         </div>
       </section>
 
+      {/* =========================
+          CONTEÚDO
+      ========================= */}
+
       <section className="admin-content">
+
+        {/* =========================
+            PRÓXIMO ATENDIMENTO
+        ========================= */}
+
         {nextAppointment && (
           <div className="admin-card admin-next-appointment">
             <div>
-              <p className="eyebrow">PRÓXIMO ATENDIMENTO</p>
+              <p className="eyebrow">
+                PRÓXIMO ATENDIMENTO
+              </p>
 
               <h2>
                 {nextAppointment.start_time?.slice(0, 5)}
@@ -223,22 +305,35 @@ export default async function AdminPage() {
           </div>
         )}
 
+        {/* =========================
+            AGENDA DO DIA
+        ========================= */}
+
         <div className="admin-card">
           <div className="admin-card-header">
             <div>
-              <p className="eyebrow">AGENDA</p>
-              <h2>Agendamentos de hoje</h2>
+              <p className="eyebrow">
+                AGENDA
+              </p>
+
+              <h2>
+                Agendamentos de hoje
+              </h2>
             </div>
 
             <span>
-              {new Date().toLocaleDateString("pt-BR")}
+              {new Date().toLocaleDateString("pt-BR", {
+                timeZone: "America/Fortaleza",
+              })}
             </span>
           </div>
 
           {appointments && appointments.length > 0 ? (
             <div className="admin-appointments">
               {appointments.map((appointment) => {
-                const service = Array.isArray(appointment.services)
+                const service = Array.isArray(
+                  appointment.services
+                )
                   ? appointment.services[0]
                   : appointment.services;
 
@@ -300,31 +395,56 @@ export default async function AdminPage() {
             <div className="admin-empty">
               <span>📅</span>
 
-              <strong>Nenhum agendamento hoje</strong>
+              <strong>
+                Nenhum agendamento hoje
+              </strong>
 
               <p>
-                Quando houver novos agendamentos, eles aparecerão
-                aqui.
+                Quando houver novos agendamentos,
+                eles aparecerão aqui.
               </p>
             </div>
           )}
         </div>
 
+        {/* =========================
+            ACESSO RÁPIDO
+        ========================= */}
+
         <aside className="admin-sidebar">
           <div className="admin-card">
-            <p className="eyebrow">ACESSO RÁPIDO</p>
+            <p className="eyebrow">
+              ACESSO RÁPIDO
+            </p>
 
-            <h2>Gerenciar</h2>
+            <h2>
+              Gerenciar
+            </h2>
 
             <div className="admin-menu">
-              <a href="/admin/agenda">📅 Agenda</a>
-              <a href="/admin/clientes">👥 Clientes</a>
-              <a href="/admin/servicos">✂️ Serviços</a>
-              <a href="/admin/horarios">🕐 Horários</a>
-              <a href="/admin/financeiro">💰 Financeiro</a>
+              <a href="/admin/agenda">
+                📅 Agenda
+              </a>
+
+              <a href="/admin/clientes">
+                👥 Clientes
+              </a>
+
+              <a href="/admin/servicos">
+                ✂️ Serviços
+              </a>
+
+              <a href="/admin/horarios">
+                🕐 Horários
+              </a>
+
+              <a href="/admin/financeiro">
+                💰 Financeiro
+              </a>
             </div>
           </div>
         </aside>
+
       </section>
     </main>
   );
