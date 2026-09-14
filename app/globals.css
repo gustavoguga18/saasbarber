@@ -4165,20 +4165,21 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+
   padding: 16px 18px;
 
-  border: 1px solid #e5e5e5;
+  border: 1px solid #303030;
   border-radius: 10px;
 
-  background: #ffffff;
-  color: #111111;
+  background: #151515;
+  color: #ffffff;
 }
 
 .special-hour-item strong {
   display: block;
   margin-bottom: 4px;
 
-  color: #111111;
+  color: #ffffff;
   font-size: 15px;
   font-weight: 700;
 }
@@ -4186,7 +4187,7 @@ a {
 .special-hour-item p {
   margin: 0;
 
-  color: #333333;
+  color: #dddddd;
   font-size: 14px;
 }
 
@@ -4194,14 +4195,13 @@ a {
   display: block;
   margin-top: 5px;
 
-  color: #666666;
+  color: #bdbdbd;
   font-size: 13px;
 }
 
 .special-hour-item button {
   flex-shrink: 0;
 }
-
 /* =========================
    TABLET / CELULAR
 ========================= */
